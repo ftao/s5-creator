@@ -1,0 +1,15 @@
+#labels Phase-Design
+S5-Creator 的设计笔记.
+
+= 编辑区域 =
+使用WYMEditor 作为 编辑器. 
+一个幻灯片作为整个编辑区域的内容. 
+根据S5的格式要求, 其实任何HTML内容都是可以的. 
+
+= 布局模板 = 
+基本来说常见的有 
+  * Cover (仅仅标题, 作者)
+  * Title-Content 标题, 内容
+  * Pure-Content  纯内容.
+
+WYMEditor 有一个Container的概念, 但是和我的要求不太一样.
