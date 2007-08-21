@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>S5 Editor</title>
+<link rel="stylesheet" type="text/css" media="screen"
+	href="js/wymeditor/skins/default/screen.css" />
+<style type="text/css" media="screen">
+.wym_skin_default .wym_iframe iframe      { height: 300px; }
+</style>
+<script type="text/javascript" src="js/jquery/jquery-1.1.3.1.js"></script>
+<script type="text/javascript" src="js/wymeditor/jquery.wymeditor.js"></script>
+<script type="text/javascript" src="js/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools.js"></script>
+<script type="text/javascript" src="js/wymeditor/plugins/tidy/jquery.wymeditor.tidy.js"></script>
+<script type="text/javascript">
+
+var $j = jQuery.noConflict();
+
+$j(function() {
+
+    $j('.wymeditor').wymeditor({
+
+      //options
+
+      //classes panel
+      classesItems: [
+        {'name': 'date', 'title': 'PARA: Date', 'expr': 'p'},
+        {'name': 'hidden-note', 'title': 'PARA: Hidden note',
+         'expr': 'p[@class!="important"]'},
+        {'name': 'important', 'title': 'PARA: Important',
+         'expr': 'p[@class!="hidden-note"]'},
+        {'name': 'border', 'title': 'IMG: Border', 'expr': 'img'},
+        {'name': 'special', 'title': 'LIST: Special', 'expr': 'ul, ol'}
+      ],
+
+      //editor css values for visual feedback
+      editorStyles: [
+        {'name': '.hidden-note',
+         'css': 'color: #999; border: 2px solid #ccc;'},
+        {'name': '.border', 'css': 'border: 4px solid #ccc;'},
+        {'name': '.date',
+         'css': 'background-color: #ff9; border: 2px solid #ee9;'},
+        {'name': '.important',
+         'css': 'color: red; font-weight: bold; border: 2px solid red;'},
+        {'name': '.special',
+         'css': 'background-color: #fc9; border: 2px solid red;'}
+      ],
+
+      //dialogs css values
+      dialogStyles: [
+        {'name': '.hidden-note',
+         'css': 'display: none;'},
+        {'name': '.border', 'css': 'border: 1px solid #ccc;'},
+        {'name': '.date',
+         'css': 'color: #ccf;'},
+        {'name': '.important',
+         'css': 'color: red; font-weight: bold;'},
+        {'name': '.special',
+         'css': 'color: green;'}
+      ],
+
+      //function called when WYMeditor instance is ready
+      //wym is the WYMeditor instance
+      postInit: function(wym) {
+
+        //set the editor's HTML value
+        wym.html("<h1>WYMeditor<\/h1>"
+               + "<h2>What is WYMeditor ?<\/h2>"
+               + "<p><strong>WYMeditor<\/strong> is a web-based <acronym title='What You See Is What You Mean'>WYSIWYM<\/acronym> editor.<\/p>"
+               + "<p><strong>WYMeditor<\/strong>'s main concept is to leave details of the document's visual layout, and to concentrate on its structure and meaning, while trying to give the user as much comfort as possible (at least as <acronym title='What You See Is What You Get'>WYSIWYG<\/acronym> editors).<\/p>"
+               + "<p><strong>WYMeditor<\/strong> has been created to generate a perfectly structured <acronym title='eXtensible HyperText Markup Language'>XHTML<\/acronym> code, to conform to the W3C specifications and to facilitate further processing by modern applications.<\/p>"
+               + "<p>With <strong>WYMeditor<\/strong>, the code can't be contaminated by visual informations like font styles and weights, borders, colors, ...<br />"
+               + "The end-user can concentrate on rich content, while layout and design are handled via style-sheets. The result is easy and quick maintenance of the information.<\/p>"
+               + "<p>As the code is compliant to W3C specifications, you can for example process it using a <acronym title='eXtensible Stylesheet Language Transformation'>XSLT<\/acronym> (at the client or the server side), giving you a wide range of applications.<\/p>"
+               + "<p><strong>WYMeditor<\/strong> is dual licensed under the MIT and GPL licenses and is maintained by <a href='http://www.honet.be/' title='H.O.net e-solutions'>H.O.net<\/a>, <a href='http://www.hovinne.com/' title='Jean-Fran?ois Hovinne'>Jean-Fran?ois Hovinne<\/a> and <a href='http://www.pixarea.com/' title='Daniel Reszka'>Daniel Reszka<\/a>. If you want to contribute, don't hesitate to <a href='http://www.wymeditor.org/' title='WYMeditor website'>contact us<\/a>.<\/p>"
+               + "<p><a href='http://sourceforge.net' title='SourceForge website'><img src='http://sourceforge.net/sflogo.php?group_id=148869&amp;type=1' width='88' height='31' border='0' alt='SourceForge.net Logo' id='sourceforge-logo' /><\/a><\/p>"
+        );
+
+        //set the status bar value
+        wym.status('&nbsp;');
+
+        //activate 'tidy' plugin
+        //which cleans up the HTML
+        var wymtidy = wym.tidy({
+
+          sUrl:          "wymeditor/tags/0.3-b1/wymeditor/plugins/tidy/tidy.php",
+          sButtonHtml:   "<li class='wym_tools_tidy'>"
+                       + "<a name='CleanUp' href='#'"
+                       + " style='background-image:"
+                       + " url(wymeditor/tags/0.3-b1/wymeditor/plugins/tidy/wand.png)'>"
+                       + "Clean up HTML"
+                       + "<\/a><\/li>"
+        });
+        wymtidy.init();
+
+        //activate 'hovertools' plugin
+        //which gives more feedback to the user
+        wym.hovertools();
+
+      },
+
+      //function called when dialog is ready
+      //wym is the WYMeditor instance
+      //wdw is the dialog's window
+      postInitDialog: function(wym,wdw) {
+
+        var body = wdw.document.body;
+
+        //add a select box populated with predefined values to the dialog
+
+        var sSelectLink = "<div class='row row-indent'>"
+        + "<select class='wym_select_link'>"
+        + "<option selected value='WYMeditor http://www.wymeditor.org/'>"
+        + "WYMeditor<\/option>"
+        + "<option value='SourceForge http://www.sourceforge.net/'>"
+        + "SourceForge<\/option>"
+        + "<option value='GNU http://www.gnu.org/'>"
+        + "GNU<\/option>"
+        + "<\/select>"
+        + "<input class='wym_choose' type='button'"
+        + " value='{Choose}' />"
+        + "<\/div>";
+
+        $j(body)
+          .filter('.wym_dialog_link').find('fieldset').eq(0)
+          .prepend(wym.replaceStrings(sSelectLink));
+
+        $j(body)
+          .find('.wym_choose')
+          .click(function() {
+
+            var sVal = $j(body).find('.wym_select_link').val();
+
+            $j(body)
+              .find('.wym_href')
+              .val(sVal.substring(sVal.lastIndexOf(' ') + 1));
+            $j(body)
+              .find('.wym_title')
+              .val(sVal.substr(0, sVal.lastIndexOf(' ')));
+          });
+      }
+    });
+
+    $j('.wymsubmit').click(function() {
+      alert($j(this).siblings('.wymeditor').val());
+    });
+});
+
+</script>
+</head>
+<body>
+<h1>S5 Editor</h1>
+<div>
+模板 列表
+</div>
+<form method="post" action="">
+<textarea class="wymeditor"></textarea>
+<input type="submit" class="wymupdate" />
+</form>
+</body>
+</html>
