@@ -11,5 +11,6 @@ S5-Creator 的设计笔记.
   * Cover (仅仅标题, 作者)
   * Title-Content 标题, 内容
   * Pure-Content  纯内容.
-
-WYMEditor 有一个Container的概念, 但是和我的要求不太一样.
+将编辑区域,分成几部分. 点击激活某一部分的编辑.
+这个写一个JQuery插件.
+WYMEditor 有一个Container的概念, 可以借用. 但是需要更改. 
