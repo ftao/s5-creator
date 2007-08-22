@@ -5,7 +5,7 @@ S5-Creator 的设计笔记.
 使用WYMEditor 作为 编辑器. 
 一个幻灯片作为整个编辑区域的内容. 
 根据S5的格式要求, 其实任何HTML内容都是可以的. 
-
+document.designMode = "on" 可以是一个document 变成可编辑的, 这是可视化编辑器的基础.
 = 布局模板 = 
 基本来说常见的有 
   * Cover (仅仅标题, 作者)
