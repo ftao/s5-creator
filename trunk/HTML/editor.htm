@@ -19,21 +19,19 @@
 <script type="text/javascript"
 	src="js/wymeditor/plugins/tidy/jquery.wymeditor.tidy.js"></script>
 <script type="text/javascript"
+	src="js/wymeditor/plugins/changeTarget/jquery.wymeditor.changeTarget.js"></script>
+<script type="text/javascript"
 	src="js/jquery.inputable.js"></script>
 <script type="text/javascript"><!--
 
 var $j = jQuery.noConflict();
 $j(function() {
-	$j(".editable").click(
-		function(){
-				alert("we should switch to edit this");
-				//$j(this).
-		}
-	);
-    $j('.slidecontent').wymeditor({
+
+    //$j('.slidecontent').wymeditor(
+    var wymOptions = {
 
       //options
-	  html: $j(".slidecontent").html(),
+	  surroundElement : $j("div#editable_area"),
 
 	  skin: 's5_editor',
 
@@ -99,7 +97,7 @@ $j(function() {
 
         //activate 'hovertools' plugin
         //which gives more feedback to the user
-        wym.hovertools();
+        //wym.hovertools();
  /*       var inputs = $j(wym._doc.body).find(".inputable-ture,.inputable-false");
         //alert(inputs.length);
         if(inputs){
@@ -153,11 +151,33 @@ $j(function() {
               .val(sVal.substr(0, sVal.lastIndexOf(' ')));
           });
       }
-    });
+    }
 
-    $j('.wymsubmit').click(function() {
-      alert($j(this).siblings('.wymeditor').val());
-    });
+
+	$j(".editable").click(
+		function(){
+				var found = false;
+				for(var i = 0 ; i < WYM_INSTANCES.length; i++)
+				{
+
+					if($j(WYM_INSTANCES[i]._element).get() != $j(this).get())
+						WYM_INSTANCES[i].hide();
+					else
+					{
+						found = true;
+						WYM_INSTANCES[i].show();
+					}
+				}
+				if(!found)
+				{
+					$j(this).wymeditor(
+						$j.extend(wymOptions,
+							{html: $j(this).html()}
+						)
+					);
+				}
+		}
+	);
 });
 
 --></script>
@@ -172,21 +192,16 @@ $j(function() {
 	<li>Pure-Content</li>
 </ul>
 </div>
-<div id="editable_area_container">
-<div id="place_holder">
-&nbsp;
-</div>
 <div id="editable_area" class="slide">
-	<h1 class="slidetitle editable">
+	<h1 class="slidetitle editable" style="height:50%">
 		[slide title]
 	</h1>
-	<div class="slidecontent editable">
+	<div class="slidecontent editable" style="height:250px;">
 		[slide content]
 	</div>
-	<div class="handout editable">
+	<div class="handout editable" style="height:100px;">
 		[slide comment]
 	</div>
-</div>
 </div>
 </body>
 </html>
