@@ -367,7 +367,8 @@ $j.fn.wymeditor = function(options) {
               + WYM_CLASSES
               + "</div>"
               + "<div class='wym_area_main'>"
-              + WYM_SURROUND
+              + WYM_HTML
+              + WYM_IFRAME
               + WYM_STATUS
               + "</div>"
               + "<div class='wym_area_bottom'>"
@@ -692,7 +693,7 @@ function Wymeditor(elem,index,options) {
   this._element = elem;
   this._index = index;
   this._options = options;
-  this._html = $j(elem).val();
+  this._html = $j(elem).html();
 
   if(this._options.html) this._html = this._options.html;
   this._options.basePath = this._options.basePath
@@ -744,6 +745,8 @@ Wymeditor.prototype.init = function() {
       //extend the Wymeditor object
       $j.extend(this, WymClass);
 
+      //load wymbox
+      this._box = $j(this._element).hide().after(this._options.boxHtml).next();
 
       //construct the iframe
       var iframeHtml = this._options.iframeHtml;
@@ -751,39 +754,15 @@ Wymeditor.prototype.init = function() {
         .replaceAll(WYM_INDEX,this._index)
         .replaceAll(WYM_IFRAME_BASE_PATH, this._options.iframeBasePath);
 
-      //load wymbox
-      $j(this._element).hide();
-
-      //this._box = $j(this._element).hide().after(this._options.boxHtml).next();
-	  //console.log("options ");
-	  //console.log(this._options.htmlHtml);
-      $j(this._element).after(iframeHtml);
-      //alert(this._options.htmlHTML);
-      $j(this._element).after(this._options.htmlHtml);
-	  var surroundHtml = $j(this._surroundElement).html();
-	  //console.log(this._options.boxHtml);
-	  //console.log($j(this._surroundElement));
-	  $j(this._surroundElement).html(this._options.boxHtml);
-	  console.log($j(this._surroundElement).html());
-	  this._box = $j(this._surroundElement).children(".wym_box");
-	  console.log(this._box);
-	  console.log($j(this._box).html());
-
-	  var boxHtml = $j(this._box).html();
-      boxHtml = boxHtml.replaceAll(WYM_SURROUND,surroundHtml);
-	  //$j(this._box).html(boxHtml);
-      //alert(boxHtml);
-
       //construct wymbox
-      //var boxHtml = $j(this._box).html();
+      var boxHtml = $j(this._box).html();
 
       boxHtml = boxHtml.replaceAll(WYM_TOOLS, this._options.toolsHtml);
       boxHtml = boxHtml.replaceAll(WYM_CONTAINERS,this._options.containersHtml);
       boxHtml = boxHtml.replaceAll(WYM_CLASSES, this._options.classesHtml);
-      //boxHtml = boxHtml.replaceAll(WYM_HTML, this._options.htmlHtml);
-      //boxHtml = boxHtml.replaceAll(WYM_IFRAME, iframeHtml);
+      boxHtml = boxHtml.replaceAll(WYM_HTML, this._options.htmlHtml);
+      boxHtml = boxHtml.replaceAll(WYM_IFRAME, iframeHtml);
       boxHtml = boxHtml.replaceAll(WYM_STATUS, this._options.statusHtml);
-
 
       //construct tools list
       var aTools = eval(this._options.toolsItems);
