@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>S5 Editor</title>
 <link rel="stylesheet" type="text/css" media="screen"
-	href="js/wymeditor/skins/s5_editor/screen.css" />
+	href="js/wymeditor/skins/default/screen.css" />
 <style type="text/css" media="screen">
 
 #editable_area_container {position: relative; top:0px;};
@@ -34,9 +34,6 @@ $j(function() {
     var wymOptions = {
 
       //options
-	  surroundElement : $j("div#editable_area"),
-
-	  skin: 's5_editor',
 
       //classes panel
       classesItems: [
@@ -151,8 +148,10 @@ $j(function() {
           });
       }
     }
-	$j(".editable").eq(0).wymeditor(
-		wymOptions
+	$j("#wymeditor").wymeditor(
+		$j.extend(wymOptions,
+			{html:$j(".slide").hide().html()}
+		)
 	);
 
 });
@@ -169,7 +168,7 @@ $j(function() {
 	<li>Pure-Content</li>
 </ul>
 </div>
-<div id="editable_area" class="slide">
+<div class="slide">
 	<h1 class="slidetitle editable" style="height:50px;">
 		[slide title]
 	</h1>
@@ -180,5 +179,7 @@ $j(function() {
 		[slide comment]
 	</div>
 </div>
+<textarea id="wymeditor">
+</textarea>
 </body>
 </html>
