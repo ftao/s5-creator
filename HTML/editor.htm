@@ -8,12 +8,13 @@
 <link rel="stylesheet" type="text/css" media="screen"
 	href="js/wymeditor/skins/default/screen.css" />
 <style type="text/css" media="screen">
-
-#editable_area_container {position: relative; top:0px;};
-.editable { position:relative; top: };
+.wym_box .wym_iframe iframe { height: 450px;};
 </style>
 <script type="text/javascript">
-var console = {log:function(msg){}};
+if(!window.console)
+{
+	window.console = {log:function(msg){}};
+}
 </script>
 <script type="text/javascript" src="js/jquery/jquery-1.1.3.1.js"></script>
 <script type="text/javascript" src="js/wymeditor/jquery.wymeditor.js"></script>
@@ -34,7 +35,7 @@ $j(function() {
     var wymOptions = {
 
       //options
-
+	  stylesheet: 'css/editorStyle.css',
       //classes panel
       classesItems: [
         {'name': 'date', 'title': 'PARA: Date', 'expr': 'p'},
@@ -97,7 +98,7 @@ $j(function() {
 
         //activate 'hovertools' plugin
         //which gives more feedback to the user
-        //wym.hovertools();
+        wym.hovertools();
 
 
 		$j(wym.box()).find(".editable").click(
@@ -150,10 +151,32 @@ $j(function() {
     }
 	$j("#wymeditor").wymeditor(
 		$j.extend(wymOptions,
-			{html:$j(".slide").hide().html()}
+			{html:$j(".slide").html()}
 		)
 	);
-
+	$j(".slide").hide();
+	$j("#layout_switch li").click(
+		function(){
+			var wym = WYM_INSTANCES[0];
+			//console.log(wym._doc);
+			switch($j(this).attr("id"))
+			{
+			case "layout_1":
+				return;
+				$(wym._doc.body).children(".slidecontent").hide();
+				$(wym._doc.body).children(".slidetitle").show();
+				break;
+			case "layout_2":
+				$(wym._doc.body).children(".slidecontent").show();
+				$(wym._doc.body).children(".slidetitle").show();
+				break;
+			case "layout_3":
+				$(wym._doc.body).children(".slidecontent").show();
+				$(wym._doc.body).children(".slidetitle").hide();
+				break
+			}
+		}
+	);
 });
 
 --></script>
@@ -161,22 +184,22 @@ $j(function() {
 <body>
 <h1>S5 Editor</h1>
 <div>
-<ul>
-	模板
-	<li>Cover</li>
-	<li>Title-Content</li>
-	<li>Pure-Content</li>
+<h3>模板</h3>
+<ul id="layout_switch">
+<!--
+	<li id="layout_1">Cover</li>
+-->
+	<li id="layout_2">Title-Content</li>
+	<li id="layout_3">Content</li>
 </ul>
 </div>
 <div class="slide">
-	<h1 class="slidetitle editable" style="height:50px;">
+	<h1 class="slidetitle editable" style="height:50px">
 		[slide title]
 	</h1>
-	<div class="slidecontent editable" style="height:250px;">
+
+	<div class="slidecontent editable" style="height:300px">
 		[slide content]
-	</div>
-	<div class="handout editable" style="height:100px;">
-		[slide comment]
 	</div>
 </div>
 <textarea id="wymeditor">
