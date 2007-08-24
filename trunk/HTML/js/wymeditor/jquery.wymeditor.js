@@ -689,7 +689,6 @@ function Wymeditor(elem,index,options) {
 
   WYM_INSTANCES[index] = this;
   this._surroundElement = options.surroundElement;
-  //	|| elem;
   this._element = elem;
   this._index = index;
   this._options = options;
@@ -745,8 +744,11 @@ Wymeditor.prototype.init = function() {
       //extend the Wymeditor object
       $j.extend(this, WymClass);
 
+	  this._element_height = $j(this._element).height();
       //load wymbox
-      this._box = $j(this._element).hide().after(this._options.boxHtml).next();
+      this._box = $j(this._surroundElement).hide()
+      	.after(this._options.boxHtml).next();
+
 
       //construct the iframe
       var iframeHtml = this._options.iframeHtml;
@@ -823,6 +825,12 @@ Wymeditor.prototype.init = function() {
       //hide the html value
       $j(this._box).find(this._options.htmlSelector).hide();
 
+	  //here insert the surroundContent
+	  $j(this._element).after($j(this._box).find(".wym_iframe"));
+	  $j(this._element).after($j(this._box).find(this._options.htmlSelector));
+	  $j(this._box).find(".wym_area_main").prepend($j(this._surroundElement.show()));
+	  $j(this._box).find(this._options.iframeSelector).height($j(this._element).height());
+	  $j(this._element).hide();
       //enable the skin
       this.skin();
 
@@ -1122,7 +1130,7 @@ Wymeditor.prototype.status = function(sMessage) {
 Wymeditor.prototype.update = function() {
 
   var html = this.xhtml();
-  $j(this._element).val(html);
+  $j(this._element).html(html);
   $j(this._box).find(this._options.htmlValSelector).val(html);
 };
 
