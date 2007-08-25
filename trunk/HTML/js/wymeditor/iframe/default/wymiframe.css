@@ -89,6 +89,8 @@
     font-weight: normal; }
 
  /* for s5 editor */
- .editable {margin:10px;  border:1px dashed  !important;}
+ .editable {margin:10px;  border:1px dashed;}
+ .hide {display:none !important;}
+ .show {display:bloack}
 
- .editing {border:1px dashed}
+

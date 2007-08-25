@@ -13,7 +13,7 @@
 <script type="text/javascript">
 if(!window.console)
 {
-	window.console = {log:function(msg){}};
+	window.console = {log:function(msg){alert(msg);}};
 }
 </script>
 <script type="text/javascript" src="js/jquery/jquery-1.1.3.1.js"></script>
@@ -24,8 +24,6 @@ if(!window.console)
 	src="js/wymeditor/plugins/tidy/jquery.wymeditor.tidy.js"></script>
 <script type="text/javascript"
 	src="js/wymeditor/plugins/changeTarget/jquery.wymeditor.changeTarget.js"></script>
-<script type="text/javascript"
-	src="js/jquery.inputable.js"></script>
 <script type="text/javascript"><!--
 
 var $j = jQuery.noConflict();
@@ -106,6 +104,7 @@ $j(function() {
 				wym.changeTarget($j(this));
 			}
 		);
+		wym._removed = {};
       },
 
       //function called when dialog is ready
@@ -157,24 +156,32 @@ $j(function() {
 	$j(".slide").hide();
 	$j("#layout_switch li").click(
 		function(){
-			var wym = WYM_INSTANCES[0];
-			//console.log(wym._doc);
+			var wym = $j.wymeditors(0);
+			//console.log(wym._doc.body.innerHTML);
+			//console.log($j(this).attr("id"));
+			//$j(wym._doc).attr("designMode","off");
+			var iframe_body = $j(wym._doc.body);
 			switch($j(this).attr("id"))
 			{
 			case "layout_1":
-				return;
-				$(wym._doc.body).children(".slidecontent").hide();
-				$(wym._doc.body).children(".slidetitle").show();
+				wym._removed[".slidecontent"] = iframe_body.find(".slidecontent").remove()
+				if(wym._removed[".slidetitle"])
+					iframe_body.prepend(wym._removed[".slidetitle"]);
 				break;
 			case "layout_2":
-				$(wym._doc.body).children(".slidecontent").show();
-				$(wym._doc.body).children(".slidetitle").show();
+				if(wym._removed[".slidetitle"])
+					iframe_body.prepend(wym._removed[".slidetitle"]);
+				if(wym._removed[".slidecontent"])
+					iframe_body.append(wym._removed[".slidecontent"]);
 				break;
 			case "layout_3":
-				$(wym._doc.body).children(".slidecontent").show();
-				$(wym._doc.body).children(".slidetitle").hide();
+				wym._removed[".slidetitle"] = iframe_body.find(".slidetitle").remove()
+				if(wym._removed[".slidecontent"])
+					iframe_body.append(wym._removed[".slidecontent"]);
 				break
 			}
+			wym.update();
+			//$j(wym._doc).attr("designMode","on");
 		}
 	);
 });
@@ -186,13 +193,17 @@ $j(function() {
 <div>
 <h3>模板</h3>
 <ul id="layout_switch">
-<!--
+
 	<li id="layout_1">Cover</li>
--->
+
 	<li id="layout_2">Title-Content</li>
 	<li id="layout_3">Content</li>
 </ul>
 </div>
+<!--
+
+
+ -->
 <div class="slide">
 	<h1 class="slidetitle editable" style="height:50px">
 		[slide title]
