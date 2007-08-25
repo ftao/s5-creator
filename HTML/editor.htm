@@ -13,7 +13,7 @@
 <script type="text/javascript">
 if(!window.console)
 {
-	window.console = {log:function(msg){alert(msg);}};
+	window.console = {log:function(msg){/*alert(msg);*/}};
 }
 </script>
 <script type="text/javascript" src="js/jquery/jquery-1.1.3.1.js"></script>
@@ -25,6 +25,15 @@ if(!window.console)
 <script type="text/javascript"
 	src="js/wymeditor/plugins/changeTarget/jquery.wymeditor.changeTarget.js"></script>
 <script type="text/javascript"><!--
+var slide_title_template =
+  '<h1 class="slidetitle editable" style="height:50px">'
++ '	[slide title]'
++ '</h1>';
+var slide_content_template =
+  '<div class="slidecontent editable" style="height:300px">'
++ '[slide content]'
++ '</div>';
+
 
 var $j = jQuery.noConflict();
 $j(function() {
@@ -104,7 +113,8 @@ $j(function() {
 				wym.changeTarget($j(this));
 			}
 		);
-		wym._removed = {};
+		wym.defineEditPart("slidetitle",".slidetitle");
+		wym.defineEditPart("slidecontent",".slidecontent");
       },
 
       //function called when dialog is ready
@@ -164,21 +174,17 @@ $j(function() {
 			switch($j(this).attr("id"))
 			{
 			case "layout_1":
-				wym._removed[".slidecontent"] = iframe_body.find(".slidecontent").remove()
-				if(wym._removed[".slidetitle"])
-					iframe_body.prepend(wym._removed[".slidetitle"]);
+				wym.unRemoveEditPart("slidetitle");
+				wym.removeEditPart("slidecontent");
 				break;
 			case "layout_2":
-				if(wym._removed[".slidetitle"])
-					iframe_body.prepend(wym._removed[".slidetitle"]);
-				if(wym._removed[".slidecontent"])
-					iframe_body.append(wym._removed[".slidecontent"]);
+				wym.unRemoveEditPart("slidetitle");
+				wym.unRemoveEditPart("slidecontent");
 				break;
 			case "layout_3":
-				wym._removed[".slidetitle"] = iframe_body.find(".slidetitle").remove()
-				if(wym._removed[".slidecontent"])
-					iframe_body.append(wym._removed[".slidecontent"]);
-				break
+				wym.removeEditPart("slidetitle");
+				wym.unRemoveEditPart("slidecontent");
+				break;
 			}
 			wym.update();
 			//$j(wym._doc).attr("designMode","on");
