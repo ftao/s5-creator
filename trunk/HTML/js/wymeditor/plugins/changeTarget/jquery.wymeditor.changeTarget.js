@@ -14,7 +14,13 @@ Wymeditor.prototype.changeTarget = function(newTarget) {
 	$j(this._box).find(".wym_iframe iframe").height(this._element_height);
 
 }
-
+/*
+ * @name defineEditPart
+ * @description define a edit part
+ * @param name the name of the ediat-able part
+ * @param exp jquery expression used to define the area
+ * @option order optional param the order in the dom tree (>0 Integer)
+ */
 Wymeditor.prototype.defineEditPart = function (name,exp,order)
 {
 	if(!this._editParts)
@@ -26,6 +32,14 @@ Wymeditor.prototype.defineEditPart = function (name,exp,order)
 	this._editParts.maxOrder = order || this._editParts.maxOrder + 1;
 	this._editParts[name].order = this._editParts.maxOrder;
 
+}
+
+Wymeditor.prototype.editPart = function(name)
+{
+	if(this._editParts[name])
+		return this._editParts[name]
+	else
+		return null;
 }
 
 Wymeditor.prototype.removeEditPart = function(name)
