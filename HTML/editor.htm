@@ -17,6 +17,8 @@ if(!window.console)
 }
 </script>
 <script type="text/javascript" src="js/jquery/jquery-1.1.3.1.js"></script>
+<script type="text/javascript" src="js/center.js"></script>
+
 <script type="text/javascript" src="js/wymeditor/jquery.wymeditor.js"></script>
 <script type="text/javascript"
 	src="js/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools.js"></script>
@@ -42,7 +44,7 @@ $j(function() {
     var wymOptions = {
 
       //options
-	  stylesheet: 'css/editorStyle.css',
+	  //stylesheet: 'css/editorStyle.css',
       //classes panel
       classesItems: [
         {'name': 'date', 'title': 'PARA: Date', 'expr': 'p'},
@@ -175,6 +177,7 @@ $j(function() {
 			{
 			case "layout_1":
 				wym.unRemoveEditPart("slidetitle");
+				//wym.editPart("slidetitle").center();
 				wym.removeEditPart("slidecontent");
 				break;
 			case "layout_2":
