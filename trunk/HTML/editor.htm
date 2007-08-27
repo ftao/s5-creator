@@ -25,7 +25,7 @@ if(!window.console)
 <script type="text/javascript"
 	src="js/wymeditor/plugins/tidy/jquery.wymeditor.tidy.js"></script>
 <script type="text/javascript"
-	src="js/wymeditor/plugins/changeTarget/jquery.wymeditor.changeTarget.js"></script>
+	src="js/wymeditor/plugins/editparts/jquery.wymeditor.editparts.js"></script>
 <script type="text/javascript"><!--
 var slide_title_template =
   '<h1 class="slidetitle editable" style="height:50px">'
@@ -107,7 +107,7 @@ $j(function() {
 
         //activate 'hovertools' plugin
         //which gives more feedback to the user
-        wym.hovertools();
+        //wym.hovertools();
 
 
 		$j(wym.box()).find(".editable").click(
@@ -209,16 +209,12 @@ $j(function() {
 	<li id="layout_3">Content</li>
 </ul>
 </div>
-<!--
-
-
- -->
 <div class="slide">
-	<h1 class="slidetitle editable" style="height:50px">
+	<h1 class="slidetitle editable" style="min-height:50px;height:50px">
 		[slide title]
 	</h1>
 
-	<div class="slidecontent editable" style="height:300px">
+	<div class="slidecontent editable" style="min-height:300px;height:300px">
 		[slide content]
 	</div>
 </div>
