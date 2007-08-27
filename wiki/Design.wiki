@@ -11,8 +11,8 @@ document.designMode = "on" 可以是一个document 变成可编辑的, 这是可
 ~~几个页面区域,点击生成用这个区域构造WYMEditor. 
 用CCS重新定位WYMEditor的工具栏,状态栏的位置. 让编辑器看起来包括整个页面.  
 这样对编辑器的改造最少..  --------这种方法, 切换是页面闪烁. 否定. ~~~
-~~或者只有一个WYMeditor实例, 点击时切换. -----改造 WYMeditor的
- * 环绕元素, 编辑元素. 传入两个元素.~~~
+~~或者只有一个WYMeditor实例, 点击时切换. -----改造 WYMeditor的~~
+~~ * 环绕元素, 编辑元素. 传入两个元素.~~~
 ==最终实现==
 我实现了一个WYMEditor 的插件,来定义可编辑区域. 
 切换布局是将根据是否要显示移除/撤销移除可编辑区域.
@@ -26,4 +26,3 @@ document.designMode = "on" 可以是一个document 变成可编辑的, 这是可
   * Title-Content 标题, 内容
   * Pure-Content  纯内容.
  
-
