@@ -26,3 +26,7 @@ document.designMode = "on" 可以是一个document 变成可编辑的, 这是可
   * Title-Content 标题, 内容
   * Pure-Content  纯内容.
  
+=缩略图视图=
+  * 显示缩略图 - 纯文字没有大问题. 如果有图片还没有处理. 
+  * 新建/编辑/删除 某张幻灯片
+  * 同时这个区域也作为存储区域. 
