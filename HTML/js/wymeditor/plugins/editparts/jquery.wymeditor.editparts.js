@@ -1,50 +1,74 @@
+jQuery.extend({
+	in_array :function(ele,arr)
+	{
+		for(var i = 0; i < arr.length; i++)
+		{
+			if (arr [i] == ele)
+				return true;
+		}
+		return false;
+	}
+});
+
 /*
  * @name defineEditPart
  * @description define a edit part
- * @param name the name of the ediat-able part
- * @param exp jquery expression used to define the area
- * @option order optional param the order in the dom tree (>0 Integer)
+ * @param {string} name the name of the ediat-able part
+ * @param {jqexp/function} filter jquery expression/filter function used to define the area
+ * @option {string} defaultHtml
  */
-Wymeditor.prototype.defineEditPart = function (name,exp,order)
+Wymeditor.prototype.defineEditPart = function (name,filter,defaultHtml)
 {
 	if(!this._editParts)
 	{
 		this._editParts = {};
 		this._editParts.maxOrder = 0;
 	}
-	this._editParts[name] = $j(this._doc).find(exp);
-	this._editParts.maxOrder = order || this._editParts.maxOrder + 1;
-	this._editParts[name].order = this._editParts.maxOrder;
+	this._editParts[name] = {
+		"filter":filter,
+		"order":++this._editParts.maxOrder,
+		"defaultHtml" : defaultHtml,
+		//content: $j(this._doc.body).find(aExp),
+		remvoed:false
+	}
 
 }
 
-Wymeditor.prototype.editPart = function(name)
+/**
+ * TODO
+ * @param {string} name
+ */
+Wymeditor.prototype.editPart = function(exp)
 {
-	if(this._editParts[name])
-		return this._editParts[name]
+	if(this._editParts[exp])
+		return this._editParts[exp]
 	else
 		return null;
 }
 
+Wymeditor.prototype.updateEditPart = function(name)
+{
+		this._editParts[name].content =
+			$j(this._doc.body).children().filter(this._editParts[name].filter);
+}
+
 Wymeditor.prototype.removeEditPart = function(name)
 {
-	if(!this._editParts[name]._removed)
+	if(!this._editParts[name].removed)
 	{
-		this._editParts[name].remove();
-		this._editParts[name]._removed = true;
+		this._editParts[name].content =
+			$j(this._doc.body).children().filter(this._editParts[name].filter);
+		console.log(this._editParts[name].content);
+		this._editParts[name].content.remove();
+		this._editParts[name].removed = true;
 	}
 }
 
 Wymeditor.prototype.unRemoveEditPart = function(name)
 {
-	var all = $j(this._doc.body).find("*");
-	if (!this._editParts[name]._removed)
-	{
-		if (all.index(this._editParts[name][0]) == -1)
-			this._editParts[name]._removed = true;
-	}
-	if(!this._editParts[name]._removed)	//not remvoed , do nothing
-		return;
+
+	if (!this._editParts[name].removed)
+		return ;
 
 	//find a place to re-insert the element
 	//for all edit parts , find the un-deleted element with maxOrder (less than name's order)
@@ -55,20 +79,20 @@ Wymeditor.prototype.unRemoveEditPart = function(name)
 	{
 		if (this._editParts.hasOwnProperty(n) && n != "maxOrder")
 		{
-			if (!this._editParts[n]._removed)
+			if (this._editParts[n].removed)
+				continue;
+			else
 			{
-				console.log(n + " is not removed");
-				if (all.index(this._editParts[n][0]) == -1)
-				{
-					this._editParts[n]._removed = true;
-					console.log(n + " is deleted");
-				}
+				this._editParts[n].content =
+					$j(this._doc.body).children().filter(this._editParts[n].filter);
+				if(this._editParts[n].content.length <=0)
+					continue;
 			}
+
 			console.log(this._editParts[n].order  + ">=" + this._editParts[name].order);
 			if (this._editParts[n].order >= this._editParts[name].order)
 				continue;
-			if (!this._editParts[n]._removed
-			 && this._editParts[n].order > nearest_order)
+			if(this._editParts[n].order > nearest_order)
 			{
 				nearest_order = this._editParts[n].order;
 				nearest_name = n;
@@ -76,12 +100,78 @@ Wymeditor.prototype.unRemoveEditPart = function(name)
 			}
 		}
 	}
+
+	var content = this._editParts[name].defaultHtml;
+	if(this._editParts[name].content.length > 0 )
+		content = this._editParts[name].content;
+
 	if(nearest_order < 0)
 	{
 		//console.log(nearest_order);
-		$j(this._doc.body).prepend(this._editParts[name])
+		$j(this._doc.body).prepend(content)
 	}
 	else
-		$j(this._editParts[nearest_name]).after(this._editParts[name]);
-	this._editParts[name]._removed = false;
+		$j(this._editParts[nearest_name].content).after(content);
+	this._editParts[name].removed = false;
+}
+
+
+//layout
+Wymeditor.prototype.layout = function(options)
+{
+	var layout = new Layout(options, this);
+	return(layout);
+};
+
+function Layout(options, wym)
+{
+	var options = $j.extend({
+		switchLayoutSelector:"#layout_switch .layout",
+		parts: ["st","sc"],
+		layouts:{
+			"Title-Only":["st"],
+			"Title-Content":["st","sc"],
+			"Content-Only":["sc"]
+		}
+	}, options);
+	this._options = options;
+	if (wym._options.layout){
+		this._options.currentLayout = wym._options.layout;
+	}
+	this._wym = wym;
+}
+
+Layout.prototype.init  = function()
+{
+	var layout = this;
+	$j(layout._options.switchLayoutSelector).click(
+		function()
+		{
+			layout.switchTo($j(this).attr("layout"));
+		}
+	)
+}
+
+Layout.prototype.switchTo = function(layout)
+{
+	console.log(layout);
+	var options = this._options;
+	var wym = this._wym;
+	if(options.layouts[layout])
+	{
+		console.log(options.parts);
+		for(var i = 0 ; i < options.parts.length; i++)
+		{
+			var part = options.parts[i];
+			if ($j.in_array(part,options.layouts[layout]))
+			{
+				wym.unRemoveEditPart(part);
+			}
+			else
+			{
+				wym.removeEditPart(part);
+			}
+		}
+		wym.update();
+	}
 }
