@@ -5,20 +5,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>S5 Editor</title>
+<link rel="stylesheet" href="css/layout.css" media="screen"/>
 <link rel="stylesheet" type="text/css" media="screen"
 	href="js/wymeditor/skins/default/screen.css" />
 <style type="text/css" media="screen">
-.wym_box .wym_iframe iframe { height: 450px;};
+.wym_box .wym_iframe iframe { height: 420px;width:560px}
 </style>
 <script type="text/javascript">
 if(!window.console)
 {
-	window.console = {log:function(msg){/*alert(msg);*/}};
+//	window.console = {log:function(msg){/*alert(msg);*/}};
 }
 </script>
 <script type="text/javascript" src="js/jquery/jquery-1.1.3.1.js"></script>
 <script type="text/javascript" src="js/center.js"></script>
-
 <script type="text/javascript" src="js/wymeditor/jquery.wymeditor.js"></script>
 <script type="text/javascript"
 	src="js/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools.js"></script>
@@ -26,199 +26,51 @@ if(!window.console)
 	src="js/wymeditor/plugins/tidy/jquery.wymeditor.tidy.js"></script>
 <script type="text/javascript"
 	src="js/wymeditor/plugins/editparts/jquery.wymeditor.editparts.js"></script>
-<script type="text/javascript"><!--
-var slide_title_template =
-  '<h1 class="slidetitle editable" style="height:50px">'
-+ '	[slide title]'
-+ '</h1>';
-var slide_content_template =
-  '<div class="slidecontent editable" style="height:300px">'
-+ '[slide content]'
-+ '</div>';
-
-
-var $j = jQuery.noConflict();
-$j(function() {
-
-    //$j('.slidecontent').wymeditor(
-    var wymOptions = {
-
-      //options
-	  //stylesheet: 'css/editorStyle.css',
-      //classes panel
-      classesItems: [
-        {'name': 'date', 'title': 'PARA: Date', 'expr': 'p'},
-        {'name': 'hidden-note', 'title': 'PARA: Hidden note',
-         'expr': 'p[@class!="important"]'},
-        {'name': 'important', 'title': 'PARA: Important',
-         'expr': 'p[@class!="hidden-note"]'},
-        {'name': 'border', 'title': 'IMG: Border', 'expr': 'img'},
-        {'name': 'special', 'title': 'LIST: Special', 'expr': 'ul, ol'}
-      ],
-
-      //editor css values for visual feedback
-      editorStyles: [
-        {'name': '.hidden-note',
-         'css': 'color: #999; border: 2px solid #ccc;'},
-        {'name': '.border', 'css': 'border: 4px solid #ccc;'},
-        {'name': '.date',
-         'css': 'background-color: #ff9; border: 2px solid #ee9;'},
-        {'name': '.important',
-         'css': 'color: red; font-weight: bold; border: 2px solid red;'},
-        {'name': '.special',
-         'css': 'background-color: #fc9; border: 2px solid red;'}
-      ],
-
-      //dialogs css values
-      dialogStyles: [
-        {'name': '.hidden-note',
-         'css': 'display: none;'},
-        {'name': '.border', 'css': 'border: 1px solid #ccc;'},
-        {'name': '.date',
-         'css': 'color: #ccf;'},
-        {'name': '.important',
-         'css': 'color: red; font-weight: bold;'},
-        {'name': '.special',
-         'css': 'color: green;'}
-      ],
-
-      //function called when WYMeditor instance is ready
-      //wym is the WYMeditor instance
-      postInit: function(wym) {
-
-        //set the status bar value
-        wym.status('&nbsp;');
-
-        //activate 'tidy' plugin
-        //which cleans up the HTML
-        /*
-        var wymtidy = wym.tidy({
-
-          sUrl:          "wymeditor/tags/0.3-b1/wymeditor/plugins/tidy/tidy.php",
-          sButtonHtml:   "<li class='wym_tools_tidy'>"
-                       + "<a name='CleanUp' href='#'"
-                       + " style='background-image:"
-                       + " url(wymeditor/tags/0.3-b1/wymeditor/plugins/tidy/wand.png)'>"
-                       + "Clean up HTML"
-                       + "<\/a><\/li>"
-        });
-        wymtidy.init();
-        */
-
-        //activate 'hovertools' plugin
-        //which gives more feedback to the user
-        //wym.hovertools();
-
-
-		$j(wym.box()).find(".editable").click(
-			function(){
-				wym.changeTarget($j(this));
-			}
-		);
-		wym.defineEditPart("slidetitle",".slidetitle");
-		wym.defineEditPart("slidecontent",".slidecontent");
-      },
-
-      //function called when dialog is ready
-      //wym is the WYMeditor instance
-      //wdw is the dialog's window
-      postInitDialog: function(wym,wdw) {
-
-        var body = wdw.document.body;
-
-        //add a select box populated with predefined values to the dialog
-
-        var sSelectLink = "<div class='row row-indent'>"
-        + "<select class='wym_select_link'>"
-        + "<option selected value='WYMeditor http://www.wymeditor.org/'>"
-        + "WYMeditor<\/option>"
-        + "<option value='SourceForge http://www.sourceforge.net/'>"
-        + "SourceForge<\/option>"
-        + "<option value='GNU http://www.gnu.org/'>"
-        + "GNU<\/option>"
-        + "<\/select>"
-        + "<input class='wym_choose' type='button'"
-        + " value='{Choose}' />"
-        + "<\/div>";
-
-        $j(body)
-          .filter('.wym_dialog_link').find('fieldset').eq(0)
-          .prepend(wym.replaceStrings(sSelectLink));
-
-        $j(body)
-          .find('.wym_choose')
-          .click(function() {
-
-            var sVal = $j(body).find('.wym_select_link').val();
-
-            $j(body)
-              .find('.wym_href')
-              .val(sVal.substring(sVal.lastIndexOf(' ') + 1));
-            $j(body)
-              .find('.wym_title')
-              .val(sVal.substr(0, sVal.lastIndexOf(' ')));
-          });
-      }
-    }
-	$j("#wymeditor").wymeditor(
-		$j.extend(wymOptions,
-			{html:$j(".slide").html()}
-		)
-	);
-	$j(".slide").hide();
-	$j("#layout_switch li").click(
-		function(){
-			var wym = $j.wymeditors(0);
-			//console.log(wym._doc.body.innerHTML);
-			//console.log($j(this).attr("id"));
-			//$j(wym._doc).attr("designMode","off");
-			var iframe_body = $j(wym._doc.body);
-			switch($j(this).attr("id"))
-			{
-			case "layout_1":
-				wym.unRemoveEditPart("slidetitle");
-				//wym.editPart("slidetitle").center();
-				wym.removeEditPart("slidecontent");
-				break;
-			case "layout_2":
-				wym.unRemoveEditPart("slidetitle");
-				wym.unRemoveEditPart("slidecontent");
-				break;
-			case "layout_3":
-				wym.removeEditPart("slidetitle");
-				wym.unRemoveEditPart("slidecontent");
-				break;
-			}
-			wym.update();
-			//$j(wym._doc).attr("designMode","on");
-		}
-	);
-});
-
---></script>
+<script type="text/javascript"
+	src="js/init.js">
+</script>
 </head>
 <body>
-<h1>S5 Editor</h1>
-<div>
-<h3>模板</h3>
-<ul id="layout_switch">
-
-	<li id="layout_1">Cover</li>
-
-	<li id="layout_2">Title-Content</li>
-	<li id="layout_3">Content</li>
-</ul>
-</div>
-<div class="slide">
-	<h1 class="slidetitle editable" style="min-height:50px;height:50px">
-		[slide title]
-	</h1>
-
-	<div class="slidecontent editable" style="min-height:300px;height:300px">
-		[slide content]
+<div id="contentWrapper">
+	<div id="header">
+	<h1>S5 Editor</h1>
+	</div>
+	<div id="left">
+		<h1>工具栏</h1>
+		<div id="slide_toolbar">
+			<span action="add_slide">New</span>
+			<span action="edit_slide">Edit</span>
+			<span action="delete_slide">Delete</span>
+		</div>
+		<div class="thumb">
+			<div class="slide">
+				<h1>
+					[slide title]
+				</h1>
+				<p>slide content</p>
+			</div>
+		</div>
+	</div>
+	<div id="main">
+		<div id="layout_switch">
+			<h3>模板</h3>
+			<ul>
+				<li class="layout" layout="Title-Only">Cover</li>
+				<li class="layout" layout="Title-Content">Title-Content</li>
+				<li class="layout" layout="Content-Only">Content</li>
+			</ul>
+		</div>
+		<div id="sample" class="slide">
+			<h1>
+				[slide title]
+			</h1>
+			<p>ddd</p>
+		</div>
+		<form method="post" action="">
+		<textarea id="wymeditor"></textarea>
+		<input type="submit" class="wymsubmit" />
+		</form>
 	</div>
 </div>
-<textarea id="wymeditor">
-</textarea>
 </body>
 </html>
