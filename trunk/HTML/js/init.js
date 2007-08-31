@@ -190,6 +190,27 @@ $j(function() {
 			{
 				current.html(html);
 			}
+			/*
+			//a little test , do preview
+			$j("#contentWrapper").hide();
+			//#$j("#preview").load(
+			window.preview = function(iframe){
+				$j(iframe).show();
+				var doc = iframe.contentWindow.document;
+				console.log($j(doc).html());
+				var data = {
+					title:"test",
+					data:"2007888",
+					location:"home",
+					slides:$j(".thumb").html()
+				}
+				$j(doc.body).find(".presentation").html(data.slides);
+				iframe.contentWindow.startup();
+			}
+			//#);
+			$j("#preview").attr("onload","preview(this)");
+			$j("#preview").attr("src","../s5-template/preview.html");
+			*/
 			return false;
     	}
 	);
