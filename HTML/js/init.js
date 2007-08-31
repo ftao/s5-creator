@@ -159,65 +159,19 @@ $j(function() {
 	);
 
 	$j("#sample").hide();
-	$j("#slide_toolbar span").click(
-		function(){
-			console.log($j(this).attr('action'));
-			switch($j(this).attr('action'))
-			{
-			case 'add_slide':
-				break;
-			case 'edit_slide':
-				break;
-			case 'delete_slide':
-				break;
-			}
-		}
-	)
+	var tv = new ThumbView(
+		$j('#left')
+	);
+	tv.init();
     $j('.wymsubmit').click(
 		function()
 		{
-			$j.wymeditors(0).update();
-			var html = $j(this).siblings('#wymeditor').val()
+			var wym = $j.wymeditors(0);
+			wym.update();
+			tv.update(new Slide(wym._layout.layout(),wym.html()));
 			var current = $j('div.thumb div.editing');
-			if (current.length == 0)
-			{
-				$j('div.thumb').append(
-					"<div class=\"slide editing\">"
-				  +	html
-				  + "</div>\n");
-			}
-			else
-			{
-				current.html(html);
-			}
-			/*
-			//a little test , do preview
-			$j("#contentWrapper").hide();
-			//#$j("#preview").load(
-			window.preview = function(iframe){
-				$j(iframe).show();
-				var doc = iframe.contentWindow.document;
-				console.log($j(doc).html());
-				var data = {
-					title:"test",
-					data:"2007888",
-					location:"home",
-					slides:$j(".thumb").html()
-				}
-				$j(doc.body).find(".presentation").html(data.slides);
-				iframe.contentWindow.startup();
-			}
-			//#);
-			$j("#preview").attr("onload","preview(this)");
-			$j("#preview").attr("src","../s5-template/preview.html");
-			*/
 			return false;
     	}
 	);
-	$j('div.thumb div.slide').click(
-		function()
-		{
 
-		}
-	)
 });

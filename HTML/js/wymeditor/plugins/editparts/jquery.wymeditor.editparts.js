@@ -120,6 +120,7 @@ Wymeditor.prototype.unRemoveEditPart = function(name)
 Wymeditor.prototype.layout = function(options)
 {
 	var layout = new Layout(options, this);
+	this._layout = layout;
 	return(layout);
 };
 
@@ -152,6 +153,10 @@ Layout.prototype.init  = function()
 	)
 }
 
+Layout.prototype.layout = function(){
+	return this._options.currentLayout;
+}
+
 Layout.prototype.switchTo = function(layout)
 {
 	console.log(layout);
@@ -159,11 +164,11 @@ Layout.prototype.switchTo = function(layout)
 	var wym = this._wym;
 	if(options.layouts[layout])
 	{
-		console.log(options.parts);
-		for(var i = 0 ; i < options.parts.length; i++)
+		console.log(this._options.parts);
+		for(var i = 0 ; i < this._options.parts.length; i++)
 		{
-			var part = options.parts[i];
-			if ($j.in_array(part,options.layouts[layout]))
+			var part = this._options.parts[i];
+			if ($j.in_array(part,this._options.layouts[layout]))
 			{
 				wym.unRemoveEditPart(part);
 			}
@@ -172,6 +177,19 @@ Layout.prototype.switchTo = function(layout)
 				wym.removeEditPart(part);
 			}
 		}
+		this._options.currentLayout = layout;	//save current layout
 		wym.update();
 	}
+}
+
+/**
+ * init the wymeditor with slide
+ * @param Slide slide
+ *
+ */
+
+Wymeditor.prototype.initWithSlide = function(slide)
+{
+	$j(this._doc.body).html(slide.content);
+	this._layout.switchTo(slide.layout);
 }
