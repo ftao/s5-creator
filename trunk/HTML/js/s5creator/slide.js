@@ -3,9 +3,9 @@
  * 表示幻灯片
  */
 
-function Slide(id,layout,content)
+function Slide(layout,content)
 {
-	this.id = id;
+	//this.id = id;
 	this.layout = layout;
 	this.content = content;
 	this.status = "normal";
