@@ -32,6 +32,11 @@ ThumbView.prototype.init = function()
 			tv.select(this);
 		}
 	)
+	$j(this._box).find(this._options.slideSelector).dblclick(
+		function(){
+			tv.editSlide(this);
+		}
+	)
 	$j(this._box).find(this._options.toolbarItemSelector).click(
 		function(){
 			var action = $j(this).attr('action');
@@ -45,25 +50,31 @@ ThumbView.prototype.init = function()
 				tv.editSlide(tv.select());
 				break;
 			case 'delete_slide':
+				tv.deleteSlide(tv.select());
 				break;
 			}
 		}
 	)
 }
+/**
+ * 返回当前选择的幻灯片
+ * 或选择/取消选择一个幻灯片
+ * 支持多选
+ * @param {Object} slide
+ */
 ThumbView.prototype.select = function(slide)
 {
 	if(!slide)
 	{
-		var selector = this._options.thumbSelector + " ." + this._options.selectedClass;
-		return $j(this._box).find(selector);
+		return $j(this._box).find(
+			this._options.thumbSelector + " ." + this._options.selectedClass
+		);
 	}
 	else
 	{
 		console.log("select " + slide);
-		$j(slide).addClass(this._options.selectedClass);
+		$j(slide).toggleClass(this._options.selectedClass);
 	}
-	//return $j(this._box).find(slideSelector + " ." + )
-
 }
 
 ThumbView.prototype.slide = function(index)
@@ -98,14 +109,49 @@ ThumbView.prototype.addSlide = function(content,after)
 	newSlide.removeClass(this._options.newClass);
 	this.editSlide(newSlide);
 }
-
+/**
+ * edit slide
+ * 如果有多选的,不做任何动作
+ * @param Element slide
+ */
 ThumbView.prototype.editSlide = function(slide){
 	console.log("edit slide " + slide);
 	var slide = slide || this.selected();
-	if(!slide)
+	if(!slide || $j(slide).length != 1)	// no select or more than one selected
 		return false;
+	if($j(slide).is("." + this._options.editingClass))//已经在编辑状态
+	{
+		console.log("already editing this slide");
+		return false;
+	}
+	$j(this._box)
+		.find(this._options.thumbSelector + " ." + this._options.editingClass)
+		.removeClass(this._options.editingClass);
+
 	$j(slide).addClass(this._options.editingClass);	//应该产生一些效果
+
 	//wym
 	var wym = WYM_INSTANCES[0];
 	wym.initWithSlide(new Slide($j(slide).attr("layout"),$j(slide).html()));
+};
+
+/**
+ * delete the slides
+ * 这个对多选的情况完全支持
+ * @param Element slide
+ */
+ThumbView.prototype.deleteSlide = function(slide){
+	console.log("delete slide " + slide);
+	var slide = slide || this.selected();
+	if(!slide)
+	{
+		console.log("nothig to delete");
+		return false;
+	}
+	if($j(slide).is("." + this._options.editingClass))
+	{
+		var wym = WYM_INSTANCES[0];
+		wym.clean();
+	}
+	$j(slide).remove();
 };

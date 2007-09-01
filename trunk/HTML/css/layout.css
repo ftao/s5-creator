@@ -1,44 +1,34 @@
+/* general style*/
 body {
 	font-size: .90em;
 	font-family: arial,helvetica;
 	margin: 0;
 	padding: 0;
 }
-
-.thumb {
-
-	font-size: 50%;
-	/*
-	width:125px;
-	border:double 2px;
-	padding:2.5px;
-	*/
-}
-
-
-.thumb .slide {
-	width:120px;
-	height:80px;
-	border:solid 1px;
-}
-
+/*
 h1,h2,h3,h4,h5 {
 	font-weight: bold;
 	text-decoration: none;
 	padding-left: 0.4em;
 }
-
+*/
+/* layout style */
 #header {
-		position: relative;
+	position: relative;
 }
 
 #left {
 	position: absolute;
 	left: 0;
-	width: 8em;
+	width: 10em;
 	line-height: 1.6em;
 	padding: 1.5em 0.5em 0.5em 0.5em;
 	font-size: 1.1em;
+}
+
+#left h1 , #left .slide_toolbar{
+	font-size: 1.1em;
+	width:100%;
 }
 
 #main {
@@ -51,6 +41,32 @@ h1,h2,h3,h4,h5 {
 	width: 16em;
 	font-size: .9em;
 }
+
+
+/*left part thumb view and toolbar*/
+
+#left .thumb {
+	font-size: 50%;
+	/*
+	width:125px;
+	border:double 2px;
+	padding:2.5px;
+	*/
+}
+
+#left .thumb *{
+	font-size: 50%;
+}
+
+#left .thumb .slide {
+	width:120px;
+	height:80px;
+	border:solid 1px;
+}
+
+
+
+
 #lay_out_switch {
 }
 #layout_switch ul li{
