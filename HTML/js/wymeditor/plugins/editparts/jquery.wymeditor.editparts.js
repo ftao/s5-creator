@@ -187,9 +187,15 @@ Layout.prototype.switchTo = function(layout)
  * @param Slide slide
  *
  */
-
 Wymeditor.prototype.initWithSlide = function(slide)
 {
 	$j(this._doc.body).html(slide.content);
 	this._layout.switchTo(slide.layout);
+}
+
+Wymeditor.prototype.clean = function()
+{
+	$j(this._doc.body).html("");
+	//this._layout.disable();
+	this.update();
 }
