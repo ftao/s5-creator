@@ -116,71 +116,7 @@ Wymeditor.prototype.unRemoveEditPart = function(name)
 }
 
 
-//layout
-Wymeditor.prototype.layout = function(options)
-{
-	var layout = new Layout(options, this);
-	this._layout = layout;
-	return(layout);
-};
 
-function Layout(options, wym)
-{
-	var options = $j.extend({
-		switchLayoutSelector:"#layout_switch .layout",
-		parts: ["st","sc"],
-		layouts:{
-			"Title-Only":["st"],
-			"Title-Content":["st","sc"],
-			"Content-Only":["sc"]
-		}
-	}, options);
-	this._options = options;
-	if (wym._options.layout){
-		this._options.currentLayout = wym._options.layout;
-	}
-	this._wym = wym;
-}
-
-Layout.prototype.init  = function()
-{
-	var layout = this;
-	$j(layout._options.switchLayoutSelector).click(
-		function()
-		{
-			layout.switchTo($j(this).attr("layout"));
-		}
-	)
-}
-
-Layout.prototype.layout = function(){
-	return this._options.currentLayout;
-}
-
-Layout.prototype.switchTo = function(layout)
-{
-	console.log(layout);
-	var options = this._options;
-	var wym = this._wym;
-	if(options.layouts[layout])
-	{
-		console.log(this._options.parts);
-		for(var i = 0 ; i < this._options.parts.length; i++)
-		{
-			var part = this._options.parts[i];
-			if ($j.in_array(part,this._options.layouts[layout]))
-			{
-				wym.unRemoveEditPart(part);
-			}
-			else
-			{
-				wym.removeEditPart(part);
-			}
-		}
-		this._options.currentLayout = layout;	//save current layout
-		wym.update();
-	}
-}
 
 /**
  * init the wymeditor with slide
@@ -190,7 +126,7 @@ Layout.prototype.switchTo = function(layout)
 Wymeditor.prototype.initWithSlide = function(slide)
 {
 	$j(this._doc.body).html(slide.content);
-	this._layout.switchTo(slide.layout);
+	//this._layout.switchTo(slide.layout);
 }
 
 Wymeditor.prototype.clean = function()

@@ -18,8 +18,8 @@ function ThumbView(box,options)
 		newClass: 				"new",
 		editingClass: 			"editing",
 		selectedClass:			"selected",
-		slideTemplate: 	"<div class=\"slide "+ this.newSlideClass + "\">\n"
-				  	  + "{$SLIDE_CONTENT}"
+		slideTemplate: 	"<div class=\"slide \">\n"
+				  	  + "{SLIDE_CONTENT}"
 				      + "</div>\n"
 	},options);
 	this._box = box;
@@ -44,7 +44,7 @@ ThumbView.prototype.init = function()
 			switch(action)
 			{
 			case 'add_slide':
-				tv.addSlide("",tv.select());
+				//tv.addSlide("",tv.select());
 				break;
 			case 'edit_slide':
 				tv.editSlide(tv.select());
@@ -66,9 +66,7 @@ ThumbView.prototype.select = function(slide)
 {
 	if(!slide)
 	{
-		return $j(this._box).find(
-			this._options.thumbSelector + " ." + this._options.selectedClass
-		);
+		return $j(this._box).find(this._options.slideSelector);
 	}
 	else
 	{
@@ -76,10 +74,15 @@ ThumbView.prototype.select = function(slide)
 		$j(slide).toggleClass(this._options.selectedClass);
 	}
 }
-
+/**
+ * NOT USED
+ * ERROR
+ * @param {Object} index
+ */
 ThumbView.prototype.slide = function(index)
 {
-
+	if(index == "last")
+		return $j(this._box).find(this._options.thumbSelector).append(newSlide);
 }
 /**
  * update editing slide
@@ -95,10 +98,14 @@ ThumbView.prototype.update = function(slide)
 
 ThumbView.prototype.addSlide = function(content,after)
 {
-	var after = after || this.selected() || this.slide("last");
+	var after = after || this.select();
+
+	//choose layout here
+	console.log(content);
 	var content = content || "";
-	var newSlide = $j(this._options.slideTemplate.replaceAll("{$SLIDE_CONTENT}",content));
-	if(after)
+	var newSlide = $j(this._options.slideTemplate.replaceAll("{SLIDE_CONTENT}",content));
+	console.log(newSlide);
+	if(after && after.length == 1)
 	{
 		$j(after).after(newSlide);
 	}
