@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>S5 Editor</title>
+<link rel="stylesheet" href="css/layout.css" media="screen"/>
+<link rel="stylesheet" type="text/css" media="screen"
+	href="js/wymeditor/skins/default/screen.css" />
+<style type="text/css" media="screen">
+.wym_box .wym_iframe iframe { height: 420px;width:560px}
+</style>
+<script type="text/javascript">
+if(!window.console)
+{
+	window.console = {log:function(msg){/*alert(msg);*/}};
+}
+</script>
+<script type="text/javascript" src="js/jquery/jquery-1.1.3.1.js"></script>
+<script type="text/javascript" src="js/s5creator/slide.js"></script>
+<script type="text/javascript" src="js/wymeditor/jquery.wymeditor.js"></script>
+<script type="text/javascript"
+	src="js/s5creator/thumbView.js"></script>
+
+<script type="text/javascript"
+	src="js/wymeditor/plugins/editparts/jquery.wymeditor.editparts.js"></script>
+
+<script type="text/javascript"
+	src="js/init.js">
+</script>
+</head>
+<body>
+<div id="contentWrapper">
+	<div id="header">
+	<h1>S5 Editor</h1>
+	</div>
+	<div id="left">
+		<h1>缩略图</h1>
+		<div class="slide_toolbar">
+			<span action="add_slide">New</span>
+			<span action="edit_slide">Edit</span>
+			<span action="delete_slide">Delete</span>
+		</div>
+		<div class="thumb">
+		</div>
+	</div>
+	<div id="main">
+		<div id="layout_switch">
+			<h3>模板</h3>
+			<ul>
+				<li class="layout" layout="Title-Only">Cover</li>
+				<li class="layout" layout="Title-Content">Title-Content</li>
+				<li class="layout" layout="Content-Only">Content</li>
+			</ul>
+		</div>
+		<div id="sample" class="slide">
+			<h1>
+				[slide title]
+			</h1>
+			<p>ddd</p>
+		</div>
+		<form method="post" action="">
+		<textarea id="wymeditor"></textarea>
+		<input type="submit" class="wymsubmit" />
+		</form>
+	</div>
+</div>
+<iframe id="preview" style="display:none;height=100%;width:100%;"></iframe>
+</body>
+</html>
