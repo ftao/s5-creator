@@ -93,18 +93,7 @@ $j(function() {
 				wym.changeTarget($j(this));
 			}
 		);
-		wym.defineEditPart("st",s5_st_filter,'<h1>[slide title]</h1>');
-		wym.defineEditPart("sc",s5_sc_filter,'');
-		var layout = wym.layout({
-			switchLayoutSelector:"#layout_switch .layout",
-			parts: ["st","sc"],
-			layouts:{
-				"Title-Only":["st"],
-				"Title-Content":["st","sc"],
-				"Content-Only":["sc"]
-			}
-		});
-		layout.init();
+
       },
 
       //function called when dialog is ready
@@ -174,4 +163,8 @@ $j(function() {
     	}
 	);
 
+	var lv = $("#layout_switch").layoutChooser({
+		thumbView:tv
+	});
+	lv.init();
 });

@@ -1,9 +1,13 @@
 /* general style*/
 body {
-	font-size: .90em;
+	/*font-size: .90em;*/
+	font-size: 12px;
 	font-family: arial,helvetica;
 	margin: 0;
 	padding: 0;
+}
+#contentWrapper {
+	z-index:10
 }
 /*
 h1,h2,h3,h4,h5 {
@@ -43,6 +47,7 @@ h1,h2,h3,h4,h5 {
 }
 
 
+
 /*left part thumb view and toolbar*/
 
 #left .thumb {
@@ -58,22 +63,60 @@ h1,h2,h3,h4,h5 {
 	font-size: 50%;
 }
 
-#left .thumb .slide {
+/* thumb view*/
+#left .thumb .slide{
 	width:120px;
 	height:80px;
 	border:solid 1px;
 }
 
-
-
-
-#lay_out_switch {
-}
-#layout_switch ul li{
 /*
-	position:relative;
-	float:left;
-	display:block;
-*/
+layout choosen
+
+.layout_switch .layout {
+	font-size:.90em;
 }
 
+
+*/
+#layout_switch {
+	position:absolute;
+	display:none;
+	width:440px;
+	height:200px;
+	z-index: 300;
+ 	position: absolute;
+  	top: 50px;
+  	left: 20%;
+  	background-color: #c4dded;
+}
+
+#layout_switch .layout {
+	float:left;
+	width:100px;
+	height:100px;
+	margin:5px;
+}
+
+#layout_switch .selected {
+	background-color:red;
+	border:1px;
+}
+
+#layout_switch .button{
+	clear:both;
+
+}
+#layout_switch .layout h1{
+	font-size:100%;
+	height:5px;
+}
+
+#layout_switch .layout .slide{
+	width:100px;
+	height:75px;
+	border:solid 1px;
+}
+#layout_switch .layout .slide *{
+	font-size:80%;
+}
