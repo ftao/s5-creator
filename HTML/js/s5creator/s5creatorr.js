@@ -18,25 +18,73 @@
  *      ??IO处理接口 (配合不同的后端, 比如本地Javascript,PHP,Python)
  */
 
-function S5Creator(box,options)
+/**
+ * do we really need box ?
+ * @param {Object} options
+ */
+function S5Creator(options)
 {
 	this._options = $j.extend({
 			thumbViewSelector:	".s5ThumbView",
 			editorSelector:		".s5Editor",
 			layoutSelector:		".s5Layout",
 			previewSelector:	".s5Preview",
-			themeSelector:		".s5Theme"
+			themeSelector:		".s5Theme",
+			thumbViewOptions: {},
+			editorOptions: {},
+			layoutOptions: {},
+			previewOptions: {},
+			themeOptions: {}
 		},options);
-	this._box = box || document.body;
-
+	//this._box = box || document.body;
 }
 
-S5Creator.prototype.onChangeSlide = function()
+/**
+ * singleton method
+ * get S5Creator Instance
+ * @param {Object} options
+ */
+S5Creator.singleton = function(options)
 {
-
+	if(!S5Creator.instance)
+	{
+		S5Creator.instance = new S5Creator(options);
+	}
+	return S5Creator.instance;
 }
 
-S5Creator.prototype.onSaveSlide = function()
+
+S5Creator.prototype.init = function()
 {
+	var s5c = this;
+	//creat and init the components
 
+	this._components = {
+		ThumbView: $j(s5c._options.thumbViewSelector).thumbView(
+			s5c._options.thumbViewOptions
+		),
+		Editor: $j(s5c._options.editorSelector).wymeditor(
+			s5c._options.editorOptions
+		),
+		Layout : $j(s5c._options.layoutSelector).layoutChooser(
+			s5c._options.layoutOptions
+		)
+	}
+
+	for(comp in this._components)
+	{
+		if (this._components.hasOwnProperty(comp))
+		{
+			this._components[comp].init();
+		}
+	}
 }
+
+S5Creator.prototype.getComponent = function(name)
+{
+	return this._components[name];
+}
+
+
+
+

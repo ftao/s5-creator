@@ -70,6 +70,10 @@ h1,h2,h3,h4,h5 {
 	border:solid 1px;
 }
 
+#left .thumb .selected {
+	background-color:green;
+}
+
 /*
 layout choosen
 
