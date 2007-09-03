@@ -1,8 +1,8 @@
 $j.fn.layoutChooser = function(options){
-	return new Layout(options,this);
+	return new Layout(this,options);
 };
 
-function Layout(options, box)
+function Layout(box,options)
 {
 	var options = $j.extend({
 		layoutSelector:".slide",

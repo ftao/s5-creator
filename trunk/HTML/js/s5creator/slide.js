@@ -3,12 +3,12 @@
  * 表示幻灯片
  */
 
-function Slide(layout,content)
+function Slide(content)
 {
 	//this.id = id;
-	this.layout = layout;
+	//this.layout = layout;
 	this.content = content;
-	this.status = "normal";
+	//this.status = "normal";
 }
 
 Slide.prototype.state = function(state)

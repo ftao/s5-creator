@@ -12,18 +12,9 @@ var slide_content_template =
 var $j = jQuery.noConflict();
 $j(function() {
 
-	var s5_st_filter = function(index){
-		return (index == 0) && this.tagName.toLowerCase() == "h1";
-	}
-	var s5_sc_filter = function(index){
-		return !s5_st_filter.call(this,index);
-	}
-
-    //$j('.slidecontent').wymeditor(
     var wymOptions = {
 
       //options
-	  //stylesheet: 'css/editorStyle.css',
       //classes panel
       classesItems: [
         {'name': 'date', 'title': 'PARA: Date', 'expr': 'p'},
@@ -64,36 +55,8 @@ $j(function() {
       //function called when WYMeditor instance is ready
       //wym is the WYMeditor instance
       postInit: function(wym) {
-
         //set the status bar value
         wym.status('&nbsp;');
-
-        //activate 'tidy' plugin
-        //which cleans up the HTML
-        /*
-        var wymtidy = wym.tidy({
-
-          sUrl:          "wymeditor/tags/0.3-b1/wymeditor/plugins/tidy/tidy.php",
-          sButtonHtml:   "<li class='wym_tools_tidy'>"
-                       + "<a name='CleanUp' href='#'"
-                       + " style='background-image:"
-                       + " url(wymeditor/tags/0.3-b1/wymeditor/plugins/tidy/wand.png)'>"
-                       + "Clean up HTML"
-                       + "<\/a><\/li>"
-        });
-        wymtidy.init();
-        */
-
-        //activate 'hovertools' plugin
-        //which gives more feedback to the user
-        //wym.hovertools();
-
-		$j(wym.box()).find(".editable").click(
-			function(){
-				wym.changeTarget($j(this));
-			}
-		);
-
       },
 
       //function called when dialog is ready
@@ -138,33 +101,38 @@ $j(function() {
       }
     }//end wym editor options
 
-	$j("#wymeditor").wymeditor(
-		$j.extend(wymOptions,
-			{
-				html:$j("#sample").html(),
-				layout:"Title-Content"
-			}
-		)
-	);
+	var s5c = S5Creator.singleton({
+			thumbViewSelector:	"#left",
+			editorSelector:		"#wymeditor",
+			layoutSelector:		"#layout_switch",
+			editorOptions: wymOptions
+	});
+	s5c.init();
+	//layoutSelector
+	//$j("#wymeditor").wymeditor(
+	//	wymOptions
+	//);
 
-	$j("#sample").hide();
-	var tv = new ThumbView(
-		$j('#left')
-	);
-	tv.init();
-    $j('.wymsubmit').click(
-		function()
+	//var tv = new ThumbView(
+	//	$j('#left')
+	//);
+	//tv.init();
+    /*
+	$j('.wymsubmit').click(
+		function(event)
 		{
+			console.log("submit");
+
 			var wym = $j.wymeditors(0);
 			wym.update();
-			tv.update(new Slide(wym._layout.layout(),wym.html()));
-			var current = $j('div.thumb div.editing');
+
+			tv.update(new Slide(wym.html()));
 			return false;
     	}
 	);
-
-	var lv = $("#layout_switch").layoutChooser({
-		thumbView:tv
-	});
-	lv.init();
+	*/
+	//var lv = $("#layout_switch").layoutChooser({
+	//	thumbView:tv
+	//});
+	//lv.init();
 });

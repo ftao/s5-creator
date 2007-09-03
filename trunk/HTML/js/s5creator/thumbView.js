@@ -7,6 +7,10 @@
  * licensed under GPL licenses.
  */
 
+$j.fn.thumbView = function(options){
+	return new ThumbView(this,options);
+};
+
 function ThumbView(box,options)
 {
 	this._options = $j.extend({
@@ -14,7 +18,7 @@ function ThumbView(box,options)
 		toolbarItemSelector: 	".slide_toolbar span",
 		actionNameAttr: 		"action",
 		thumbSelector:	 		".thumb",
-		slideSelector:			".thumb .slide",
+		slideSelector:			".slide",
 		newClass: 				"new",
 		editingClass: 			"editing",
 		selectedClass:			"selected",
@@ -24,21 +28,35 @@ function ThumbView(box,options)
 	},options);
 	this._box = box;
 }
+
+/**
+ * TODO:关于单击/双击事件 以后增加的slide 如何增加这些事件
+ */
 ThumbView.prototype.init = function()
 {
 	var tv  = this;
-	$j(this._box).find(this._options.slideSelector).click(
-		function(){
-			tv.select(this);
+	$j(this._box).find(this._options.thumbSelector).click(
+		function(event){
+			var target = event.target;
+			if (!$j(target).is(tv._options.slideSelector))
+				target = $j(target).parents(tv._options.slideSelector);
+			tv.select(target);
 		}
 	)
-	$j(this._box).find(this._options.slideSelector).dblclick(
-		function(){
+	/*
+	 no-dbclick
+	$j(this._box).find(this._options.thumbSelector).dblclick(
+		function(event){
+			var target = event.target;
+			if (!$j(target).is(tv._options.slideSelector))
+				target = $j(target).parents(tv._options.slideSelector);
+			tv.select(target);
 			tv.editSlide(this);
 		}
 	)
+	*/
 	$j(this._box).find(this._options.toolbarItemSelector).click(
-		function(){
+		function(event){
 			var action = $j(this).attr('action');
 			console.log(action);
 			switch(action)
@@ -66,7 +84,7 @@ ThumbView.prototype.select = function(slide)
 {
 	if(!slide)
 	{
-		return $j(this._box).find(this._options.slideSelector);
+		return $j(this._box).find("." + this._options.selectedClass);
 	}
 	else
 	{
@@ -74,16 +92,8 @@ ThumbView.prototype.select = function(slide)
 		$j(slide).toggleClass(this._options.selectedClass);
 	}
 }
-/**
- * NOT USED
- * ERROR
- * @param {Object} index
- */
-ThumbView.prototype.slide = function(index)
-{
-	if(index == "last")
-		return $j(this._box).find(this._options.thumbSelector).append(newSlide);
-}
+
+
 /**
  * update editing slide
  * @param {Object} slide
@@ -93,7 +103,6 @@ ThumbView.prototype.update = function(slide)
 	var selector = this._options.thumbSelector + " ." + this._options.editingClass;
 	var editing = $j(this._box).find(selector);
 	editing.html(slide.content);
-	editing.attr("layout",slide.layout);
 }
 
 ThumbView.prototype.addSlide = function(content,after)
@@ -116,6 +125,7 @@ ThumbView.prototype.addSlide = function(content,after)
 	newSlide.removeClass(this._options.newClass);
 	this.editSlide(newSlide);
 }
+
 /**
  * edit slide
  * 如果有多选的,不做任何动作
