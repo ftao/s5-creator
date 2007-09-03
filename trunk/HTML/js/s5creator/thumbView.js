@@ -27,6 +27,7 @@ function ThumbView(box,options)
 				      + "</div>\n"
 	},options);
 	this._box = box;
+	this.init();
 }
 
 /**
@@ -135,7 +136,10 @@ ThumbView.prototype.editSlide = function(slide){
 	console.log("edit slide " + slide);
 	var slide = slide || this.selected();
 	if(!slide || $j(slide).length != 1)	// no select or more than one selected
+	{
+		console.log("will not edit " + $j(slide));
 		return false;
+	}
 	if($j(slide).is("." + this._options.editingClass))//已经在编辑状态
 	{
 		console.log("already editing this slide");
@@ -147,9 +151,9 @@ ThumbView.prototype.editSlide = function(slide){
 
 	$j(slide).addClass(this._options.editingClass);	//应该产生一些效果
 
-	//wym
-	var wym = WYM_INSTANCES[0];
-	wym.initWithSlide(new Slide($j(slide).attr("layout"),$j(slide).html()));
+	var editor = S5Creator.singleton().getComponent("Editor");
+	console.log("editor: " + editor);
+	editor.html($j(slide).html());
 };
 
 /**

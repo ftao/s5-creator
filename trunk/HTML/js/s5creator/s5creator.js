@@ -43,12 +43,14 @@ function S5Creator(options)
  * singleton method
  * get S5Creator Instance
  * @param {Object} options
+ * @return S5Creator
  */
 S5Creator.singleton = function(options)
 {
 	if(!S5Creator.instance)
 	{
 		S5Creator.instance = new S5Creator(options);
+		S5Creator.instance.init();
 	}
 	return S5Creator.instance;
 }
@@ -58,19 +60,21 @@ S5Creator.prototype.init = function()
 {
 	var s5c = this;
 	//creat and init the components
-
-	this._components = {
-		ThumbView: $j(s5c._options.thumbViewSelector).thumbView(
+	var tv =  $j(s5c._options.thumbViewSelector).thumbView(
 			s5c._options.thumbViewOptions
-		),
-		Editor: $j(s5c._options.editorSelector).wymeditor(
-			s5c._options.editorOptions
-		),
-		Layout : $j(s5c._options.layoutSelector).layoutChooser(
+	);
+	var layout = $j(s5c._options.layoutSelector).layoutChooser(
 			s5c._options.layoutOptions
-		)
+	);
+	$j(s5c._options.editorSelector).wymeditor(
+			s5c._options.editorOptions
+	);
+	this._components = {
+		ThumbView: tv,
+		Editor: $j.wymeditors(0),
+		Layout : layout
 	}
-
+	/*
 	for(comp in this._components)
 	{
 		if (this._components.hasOwnProperty(comp))
@@ -78,8 +82,14 @@ S5Creator.prototype.init = function()
 			this._components[comp].init();
 		}
 	}
+	*/
 }
 
+/**
+ * get component
+ * @param {String}  name
+ * @return the components layout thumbview
+ */
 S5Creator.prototype.getComponent = function(name)
 {
 	return this._components[name];

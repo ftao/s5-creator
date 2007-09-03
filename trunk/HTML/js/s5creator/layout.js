@@ -15,6 +15,7 @@ function Layout(box,options)
 	this._options = options;
 	this._box = box;
 	console.log(this._options);
+	this.init();
 }
 
 Layout.prototype.init  = function()
@@ -40,7 +41,8 @@ Layout.prototype.init  = function()
 			var selected = layout.select();
 			if (selected.length != 1)
 				return ;
-			layout._options.thumbView.addSlide(selected.html());
+			var tv = S5Creator.singleton().getComponent("ThumbView");
+			tv.addSlide(selected.html());
 			selected.removeClass(layout._options.selectedClass);
 			$j(layout._box).jqmHide();
 		}
