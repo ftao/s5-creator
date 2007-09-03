@@ -1,14 +1,3 @@
-/*
-var slide_title_template =
-  '<h1 class="slidetitle editable" style="height:50px">'
-+ '[slide title]'
-+ '</h1>';
-var slide_content_template =
-  '<div class="slidecontent editable" style="height:300px">'
-+ '[slide content]'
-+ '</div>';
-*/
-
 var $j = jQuery.noConflict();
 $j(function() {
 
@@ -107,16 +96,7 @@ $j(function() {
 			layoutSelector:		"#layout_switch",
 			editorOptions: wymOptions
 	});
-	s5c.init();
-	//layoutSelector
-	//$j("#wymeditor").wymeditor(
-	//	wymOptions
-	//);
 
-	//var tv = new ThumbView(
-	//	$j('#left')
-	//);
-	//tv.init();
     /*
 	$j('.wymsubmit').click(
 		function(event)
@@ -131,8 +111,5 @@ $j(function() {
     	}
 	);
 	*/
-	//var lv = $("#layout_switch").layoutChooser({
-	//	thumbView:tv
-	//});
-	//lv.init();
+
 });
