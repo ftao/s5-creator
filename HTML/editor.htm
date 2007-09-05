@@ -20,11 +20,14 @@ if(!window.console)
 }
 </script>
 <script type="text/javascript" src="js/jquery/jquery-1.1.3.1.js"></script>
+<script type="text/javascript" src="js/jquery/json.js"></script>
 <script type="text/javascript" src="js/jquery/jqModal.js"></script>
 <script type="text/javascript" src="js/s5creator/slide.js"></script>
 <script type="text/javascript" src="js/wymeditor/jquery.wymeditor.js"></script>
 <script type="text/javascript" src="js/s5creator/thumbView.js"></script>
 <script type="text/javascript" src="js/s5creator/layout.js"></script>
+<script type="text/javascript" src="js/s5creator/backend.js"></script>
+<script type="text/javascript" src="js/s5creator/presentationtool.js"></script>
 
 <script type="text/javascript"
 	src="js/wymeditor/plugins/editparts/jquery.wymeditor.editparts.js"></script>
@@ -34,7 +37,13 @@ if(!window.console)
 <body>
 <div id="contentWrapper">
 	<div id="header">
-	<h1>S5 Editor</h1>
+		<h1>S5 Editor</h1>
+		<div class="presentation_toolbar">
+				<span action="new_pres"">New Presentation</span>
+				<span action="load_pres"">Load Presentation</span>
+				<span action="save_pres">Edit</span>
+				<span action="delete_pres">Delete</span>
+		</div>
 	</div>
 	<div id="left">
 		<h1>缩略图</h1>

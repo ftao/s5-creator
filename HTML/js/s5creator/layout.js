@@ -42,7 +42,7 @@ Layout.prototype.init  = function()
 			if (selected.length != 1)
 				return ;
 			var tv = S5Creator.singleton().getComponent("ThumbView");
-			tv.addSlide(selected.html());
+			tv.add(new Slide(selected.html()));
 			selected.removeClass(layout._options.selectedClass);
 			$j(layout._box).jqmHide();
 		}
@@ -62,3 +62,15 @@ Layout.prototype.select = function(layout)
 	}
 }
 
+
+/****************************************************************
+ *  下面是公共接口, 其他代码只应该使用这些函数
+ ****************************************************************/
+
+/**
+ * @return {Slide}
+ */
+Layout.prototype.get = function()
+{
+	return 	new Slide(this.select().html());
+}

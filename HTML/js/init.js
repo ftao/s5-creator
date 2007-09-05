@@ -90,26 +90,25 @@ $j(function() {
       }
     }//end wym editor options
 
-	var s5c = S5Creator.singleton({
+	S5Creator.singleton({
 			thumbViewSelector:	"#left",
 			editorSelector:		"#wymeditor",
 			layoutSelector:		"#layout_switch",
-			editorOptions: wymOptions
+			presentationToolSelector: ".presentation_toolbar",
+			editorOptions: wymOptions,
+			backend:PHPBackend
 	});
 
-    /*
 	$j('.wymsubmit').click(
 		function(event)
 		{
 			console.log("submit");
-
-			var wym = $j.wymeditors(0);
+			var wym = S5Creator.singleton().getComponent("Editor");
 			wym.update();
-
+			var tv = S5Creator.singleton().getComponent("ThumbView");
 			tv.update(new Slide(wym.html()));
 			return false;
     	}
 	);
-	*/
 
 });

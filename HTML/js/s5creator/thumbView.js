@@ -11,6 +11,13 @@ $j.fn.thumbView = function(options){
 	return new ThumbView(this,options);
 };
 
+/**
+ * ThumbView 需要暴露给外部的接口
+ *  1. 设置/获得当前编辑的幻灯片 (内容, 可能有其他信息, 封装成Slide 对象)
+ *  2. 统计信息?　（幻灯片数目？)
+ * @param {Object} box
+ * @param {Object} options
+ */
 function ThumbView(box,options)
 {
 	this._options = $j.extend({
@@ -44,18 +51,15 @@ ThumbView.prototype.init = function()
 			tv.select(target);
 		}
 	)
-	/*
-	 no-dbclick
+
 	$j(this._box).find(this._options.thumbSelector).dblclick(
 		function(event){
 			var target = event.target;
 			if (!$j(target).is(tv._options.slideSelector))
 				target = $j(target).parents(tv._options.slideSelector);
-			tv.select(target);
-			tv.editSlide(this);
+			tv.editSlide(target);
 		}
 	)
-	*/
 	$j(this._box).find(this._options.toolbarItemSelector).click(
 		function(event){
 			var action = $j(this).attr('action');
@@ -130,11 +134,12 @@ ThumbView.prototype.addSlide = function(content,after)
 /**
  * edit slide
  * 如果有多选的,不做任何动作
+ * 我们将自动更新现在编辑的幻灯片 (编辑器->缩略图)
  * @param Element slide
  */
 ThumbView.prototype.editSlide = function(slide){
 	console.log("edit slide " + slide);
-	var slide = slide || this.selected();
+	var slide = slide || this.select();
 	if(!slide || $j(slide).length != 1)	// no select or more than one selected
 	{
 		console.log("will not edit " + $j(slide));
@@ -145,15 +150,19 @@ ThumbView.prototype.editSlide = function(slide){
 		console.log("already editing this slide");
 		return false;
 	}
+	//更新现有编辑内容
+	var editor = S5Creator.singleton().getComponent("Editor")
+	this.set(editor.get());
+
 	$j(this._box)
-		.find(this._options.thumbSelector + " ." + this._options.editingClass)
+		.find("." + this._options.editingClass)
 		.removeClass(this._options.editingClass);
 
 	$j(slide).addClass(this._options.editingClass);	//应该产生一些效果
 
-	var editor = S5Creator.singleton().getComponent("Editor");
-	console.log("editor: " + editor);
-	editor.html($j(slide).html());
+	//更新编辑器
+	console.log(this.get());
+	editor.set(this.get());
 };
 
 /**
@@ -163,7 +172,7 @@ ThumbView.prototype.editSlide = function(slide){
  */
 ThumbView.prototype.deleteSlide = function(slide){
 	console.log("delete slide " + slide);
-	var slide = slide || this.selected();
+	var slide = slide || this.select();
 	if(!slide)
 	{
 		console.log("nothig to delete");
@@ -171,8 +180,44 @@ ThumbView.prototype.deleteSlide = function(slide){
 	}
 	if($j(slide).is("." + this._options.editingClass))
 	{
-		var wym = WYM_INSTANCES[0];
-		wym.clean();
+		S5Creator.singleton().getComponent("Editor").set(new Slide(""));
 	}
 	$j(slide).remove();
 };
+
+/****************************************************************
+ *  下面是公共接口, 其他代码只应该使用这些函数
+ ****************************************************************/
+
+/**
+ * get current editing slide content
+ * @return {Slide}
+ */
+ThumbView.prototype.get = function()
+{
+	return new Slide($j(this._box).find("." + this._options.editingClass).html());
+}
+
+/**
+ * set current editing slide content
+ * @param {Slide} slide
+ */
+ThumbView.prototype.set = function(slide)
+{
+	return $j(this._box).find("." + this._options.editingClass).html(slide.content);
+}
+
+ThumbView.prototype.add = function(slide)
+{
+	this.addSlide(slide.content);
+}
+
+ThumbView.prototype.getAll = function()
+{
+	return $j(this._box).find(this._options.thumbSelector).html();
+}
+
+ThumbView.prototype.setAll = function(html)
+{
+	return $j(this._box).find(this._options.thumbSelector).html(html);
+}

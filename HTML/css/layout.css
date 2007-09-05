@@ -21,6 +21,14 @@ h1,h2,h3,h4,h5 {
 	position: relative;
 }
 
+#header .presentation_toolbar {
+}
+
+#header .presentation_toolbar span{
+	margin:2px;
+	background-color:gray;
+}
+
 #left {
 	position: absolute;
 	left: 0;

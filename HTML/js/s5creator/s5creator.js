@@ -19,8 +19,8 @@
  */
 
 /**
- * do we really need box ?
- * @param {Object} options
+ * do we really need box ? NO
+ * @param {Hash} options
  */
 function S5Creator(options)
 {
@@ -30,11 +30,14 @@ function S5Creator(options)
 			layoutSelector:		".s5Layout",
 			previewSelector:	".s5Preview",
 			themeSelector:		".s5Theme",
+			presentationToolSelector :".s5PreTool",
 			thumbViewOptions: {},
 			editorOptions: {},
 			layoutOptions: {},
 			previewOptions: {},
-			themeOptions: {}
+			presentationToolOptions:{},
+			themeOptions: {},
+			backednOptions:{}
 		},options);
 	//this._box = box || document.body;
 }
@@ -42,8 +45,8 @@ function S5Creator(options)
 /**
  * singleton method
  * get S5Creator Instance
- * @param {Object} options
- * @return S5Creator
+ * @param {Hash} options
+ * @return {S5Creator}
  */
 S5Creator.singleton = function(options)
 {
@@ -66,35 +69,39 @@ S5Creator.prototype.init = function()
 	var layout = $j(s5c._options.layoutSelector).layoutChooser(
 			s5c._options.layoutOptions
 	);
+	var pt = $j(s5c._options.presentationToolSelector).presentationTool(
+			s5c._options.presentationToolOptions
+	);
 	$j(s5c._options.editorSelector).wymeditor(
 			s5c._options.editorOptions
 	);
 	this._components = {
 		ThumbView: tv,
 		Editor: $j.wymeditors(0),
-		Layout : layout
+		Layout : layout,
+		Backend : new s5c._options.backend(s5c._options.backendOptions),
+		PresentationTool:pt
 	}
-	/*
-	for(comp in this._components)
-	{
-		if (this._components.hasOwnProperty(comp))
-		{
-			this._components[comp].init();
-		}
-	}
-	*/
 }
 
 /**
  * get component
  * @param {String}  name
- * @return the components layout thumbview
+ * @return {component} the components layout thumbview
  */
 S5Creator.prototype.getComponent = function(name)
 {
 	return this._components[name];
 }
 
-
+/**
+ *
+ * @param {String} from
+ * @param {String} to
+ */
+S5Creator.prototype.update = function(from,to)
+{
+	this.getComponent(to).set(this.getComponent(from).get());
+}
 
 
