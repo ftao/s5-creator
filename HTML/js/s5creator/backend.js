@@ -27,7 +27,7 @@ function PHPBackend(options)
 PHPBackend.prototype.load = function(pid,callback)
 {
 	var backend = this;
-	var param = {}
+	var param = {action:"load"};
 	param[this._options.idName] = pid;
 	$j.getJSON(
 		this._options.url,
@@ -35,10 +35,10 @@ PHPBackend.prototype.load = function(pid,callback)
 		function(data)
 		{
 			backend._lastloaded = data;
-			callback(data)
+
+			callback(data);
 		}
 	);
-	this._options.storageSelector
 }
 
 /**
@@ -48,10 +48,12 @@ PHPBackend.prototype.load = function(pid,callback)
 PHPBackend.prototype.save = function(content)
 {
 	var backend = this;
-	this._lastloaded.content =content ;//S5Creator.singleton().getComponent("ThumbView").getAll();
-	var param = {}
+	this._lastloaded.content = content ;
+	var param = {action:"save"};
 	param[this._options.saveParamName] = $j.toJSON(this._lastloaded);
-	$j(this._options.storageSelector).post(
-		urlPrefix,param,function(data){console.log(data);}
+	$j.post(
+		this._options.url,
+		param,
+		function(data){console.log(data);}
 	);
 }
