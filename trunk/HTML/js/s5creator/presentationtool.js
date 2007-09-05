@@ -19,7 +19,7 @@ $j.fn.presentationTool = function(options)
 function PresentationTool(box,options)
 {
 	this._options = $j.extend({
-		toolbarItemSelector: "span"
+		toolbarItemSelector: ".toolbar span"
 	},options);
 	this._box = box;
 	this.init();
@@ -38,9 +38,20 @@ PresentationTool.prototype.init = function()
 			case 'load_pres':
 				pt.load(0);
 				break;
+			case 'save_pres':
+				pt.save();
+				break;
+			case 'create_pres':
+				pt.create();
+				break;
 			}
 		}
 	)
+}
+
+PresentationTool.prototype.create  = function()
+{
+
 }
 
 PresentationTool.prototype.load = function(pid)
@@ -54,5 +65,12 @@ PresentationTool.prototype.load = function(pid)
 			S5Creator.singleton().getComponent("ThumbView").setAll(data.content);
 		}
 	);
+}
 
+PresentationTool.prototype.save = function()
+{
+	var pt = this;
+	var content = S5Creator.singleton().getComponent("ThumbView").getAll();
+	var backend = S5Creator.singleton().getComponent("Backend");
+	backend.save(content);
 }

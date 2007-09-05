@@ -19,12 +19,13 @@ h1,h2,h3,h4,h5 {
 /* layout style */
 #header {
 	position: relative;
+	margin:10px;
 }
 
-#header .presentation_toolbar {
+#header .presentation_tools {
 }
 
-#header .presentation_toolbar span{
+#header .presentation_tools .toolbar span{
 	margin:2px;
 	background-color:gray;
 }

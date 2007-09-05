@@ -38,12 +38,20 @@ if(!window.console)
 <div id="contentWrapper">
 	<div id="header">
 		<h1>S5 Editor</h1>
-		<div class="presentation_toolbar">
-				<span action="new_pres"">New Presentation</span>
-				<span action="load_pres"">Load Presentation</span>
-				<span action="save_pres">Edit</span>
-				<span action="delete_pres">Delete</span>
+		<div class="presentation_tools">
+			<div class="info">
+				<span class="name">Test Presentation</span>
+				<span class="author">Filia Tao </span>
+				<span class="date">2007-9-5 21:29</span>
+			</div>
+			<div class="toolbar">
+					<span action="create_pres"">New Presentation</span>
+					<span action="load_pres"">Load Presentation</span>
+					<span action="save_pres">Save</span>
+					<span action="delete_pres">Delete</span>
+			</div>
 		</div>
+	</div>
 	</div>
 	<div id="left">
 		<h1>缩略图</h1>
@@ -96,6 +104,7 @@ if(!window.console)
 			<button class="close cancel">Cancel</button>
 		</div>
 	</div>
+
 <!--/div-->
 <iframe id="preview" style="display:none;height=100%;width:100%;"></iframe>
 </body>
