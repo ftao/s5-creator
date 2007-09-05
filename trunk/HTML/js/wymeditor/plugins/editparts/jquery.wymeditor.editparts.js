@@ -4,3 +4,24 @@ Wymeditor.prototype.clean = function()
 	//this._layout.disable();
 	this.update();
 }
+
+/****************************************************************
+ *  下面是公共接口, 其他代码只应该使用这些函数
+ ****************************************************************/
+
+/**
+ * @return {Slide}
+ */
+Wymeditor.prototype.get = function()
+{
+	return new Slide(this.html());
+}
+
+/**
+ * @param {Slide} slide
+ */
+Wymeditor.prototype.set = function(slide)
+{
+	this.html(slide.content);
+}
+
