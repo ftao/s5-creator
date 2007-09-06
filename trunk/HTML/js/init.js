@@ -94,7 +94,7 @@ $j(function() {
 			thumbViewSelector:	"#left",
 			editorSelector:		"#wymeditor",
 			layoutSelector:		"#layout_switch",
-			presentationToolSelector: ".presentation_toolbar",
+			presentationToolSelector: ".presentation_tools",
 			editorOptions: wymOptions,
 			backend:PHPBackend
 	});

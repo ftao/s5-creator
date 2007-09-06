@@ -22,6 +22,7 @@ if(!window.console)
 <script type="text/javascript" src="js/jquery/jquery-1.1.3.1.js"></script>
 <script type="text/javascript" src="js/jquery/json.js"></script>
 <script type="text/javascript" src="js/jquery/jqModal.js"></script>
+<script type="text/javascript" src="js/jquery/jquery.blockui.js"></script>
 <script type="text/javascript" src="js/s5creator/slide.js"></script>
 <script type="text/javascript" src="js/wymeditor/jquery.wymeditor.js"></script>
 <script type="text/javascript" src="js/s5creator/thumbView.js"></script>
@@ -45,10 +46,17 @@ if(!window.console)
 				<span class="date">2007-9-5 21:29</span>
 			</div>
 			<div class="toolbar">
-					<span action="create_pres"">New Presentation</span>
-					<span action="load_pres"">Load Presentation</span>
-					<span action="save_pres">Save</span>
-					<span action="delete_pres">Delete</span>
+				<span class="createPresTrigger" action="create_pres">New Presentation</span>
+				<span action="load_pres">Load Presentation</span>
+				<span action="save_pres">Save</span>
+				<span action="delete_pres">Delete</span>
+			</div>
+			<div id="create_pres_dialog">
+				<label>Name: <input type="text" id="create_pres_name"/></label>
+				<div class="button">
+					<button class="ok">OK</button>
+					<button class="close cancel">Cancel</button>
+				</div>
 			</div>
 		</div>
 	</div>
