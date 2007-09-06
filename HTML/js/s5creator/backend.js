@@ -13,11 +13,16 @@ function PHPBackend(options)
 {
 	this._options = $j.extend({
 		storageSelector: ".thumb",
-		url:"../backend/phpbackend.php",
-		idName:"pid",
-		saveParamName:"data"
+		url:"../backend/php/index.php",
+		idName:"presentation_id",
+		dataParamName:"data"
 	},options);
 
+}
+
+PHPBackend.prototype.buildURL = function(action)
+{
+	return this._options.url + "?action=" + action;
 }
 
 /**
@@ -27,15 +32,14 @@ function PHPBackend(options)
 PHPBackend.prototype.load = function(pid,callback)
 {
 	var backend = this;
-	var param = {action:"load"};
+	var param = {};
 	param[this._options.idName] = pid;
 	$j.getJSON(
-		this._options.url,
+		this.buildURL("load"),
 		param,
 		function(data)
 		{
 			backend._lastloaded = data;
-
 			callback(data);
 		}
 	);
@@ -45,15 +49,55 @@ PHPBackend.prototype.load = function(pid,callback)
  * save a presentation
  * @param {Object} content
  */
-PHPBackend.prototype.save = function(content)
+PHPBackend.prototype.save = function(content,callback)
 {
 	var backend = this;
+	console.log("last loaded " + $j.toJSON(this._lastloaded));
+	if(!this._lastloaded)
+		this._lastloaded = {};
 	this._lastloaded.content = content ;
-	var param = {action:"save"};
-	param[this._options.saveParamName] = $j.toJSON(this._lastloaded);
+	var param = {};
+	param[this._options.dataParamName] = $j.toJSON(this._lastloaded);
 	$j.post(
-		this._options.url,
+		this.buildURL("save"),
 		param,
-		function(data){console.log(data);}
+		function(data){
+			console.log(data);
+			callback(data);
+		}
+	);
+}
+
+PHPBackend.prototype.create = function(name,callback)
+{
+
+	var backend = this;
+	var param = {};
+	param[this._options.dataParamName]=$j.toJSON({"name":name});
+
+	$j.getJSON(
+		this.buildURL("create"),
+		param,
+		function(data)
+		{
+			console.log(data);
+			backend._lastloaded = data;
+			callback(data);
+		}
+	);
+}
+
+PHPBackend.prototype.list = function(callback)
+{
+	var backend = this;
+	$j.getJSON(
+		this.buildURL("list"),
+		{},
+		function(data)
+		{
+			console.log(data);
+			//backend._lastloaded = data;
+			callback(data);
+		}
 	);
 }

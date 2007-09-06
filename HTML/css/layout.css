@@ -85,12 +85,6 @@ h1,h2,h3,h4,h5 {
 
 /*
 layout choosen
-
-.layout_switch .layout {
-	font-size:.90em;
-}
-
-
 */
 #layout_switch {
 	position:absolute;
@@ -132,4 +126,20 @@ layout choosen
 }
 #layout_switch .layout .slide *{
 	font-size:80%;
+}
+
+
+/*
+create presentation dialog
+*/
+#create_pres_dialog {
+	position:absolute;
+	display:none;
+	width:250px;
+	height:60px;
+	z-index: 300;
+ 	position: absolute;
+  	top: 50px;
+  	left: 20%;
+  	background-color: #c4dded;
 }
