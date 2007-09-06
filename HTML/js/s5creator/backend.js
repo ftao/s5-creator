@@ -101,3 +101,22 @@ PHPBackend.prototype.list = function(callback)
 		}
 	);
 }
+
+PHPBackend.prototype.remove = function(pid,callback)
+{
+	var backend = this;
+	var param = {};
+	var pid = pid || this._lastloaded[this._options.idName];
+	param[this._options.idName] = pid;
+	$j.get(
+		this.buildURL("remove"),
+		param,
+		function(data)
+		{
+			if(data == "1")
+				backend._lastloaded = null;
+			if (typeof callback == "function")
+				callback(data);
+		}
+	);
+}

@@ -57,6 +57,9 @@ PresentationTool.prototype.init = function()
 			case 'create_pres':
 				//pt.create();
 				break;
+			case 'remove_pres':
+				pt.remove();
+				break;
 			}
 		}
 	)
@@ -158,4 +161,11 @@ PresentationTool.prototype.list = function()
 			//S5Creator.singleton().getComponent("ThumbView").setAll(data.content);
 		}
 	);
+}
+
+
+PresentationTool.prototype.remove = function()
+{
+	var backend = S5Creator.singleton().getComponent("Backend");
+	backend.remove();
 }

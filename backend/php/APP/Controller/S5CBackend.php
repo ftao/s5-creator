@@ -63,7 +63,7 @@ class Controller_S5CBackend
 		echo json_encode($data);
     }
 
-    function deleteCreate()
+    function actionRemove()
     {
     	$pid = $_GET['presentation_id'];
     	$modelPres =& new Presentations();
