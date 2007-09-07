@@ -22,6 +22,7 @@ Wymeditor.prototype.get = function()
  */
 Wymeditor.prototype.set = function(slide)
 {
+	console.log(slide);
 	this.html(slide.content);
 }
 
