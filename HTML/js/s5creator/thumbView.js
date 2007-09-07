@@ -66,8 +66,9 @@ ThumbView.prototype.init = function()
 			console.log(action);
 			switch(action)
 			{
-			case 'add_slide':
-				//tv.addSlide("",tv.select());
+			case 'add_slide': //show layout chooser
+				var lv = S5Creator.singleton().getComponent("Layout");
+				lv.show();
 				break;
 			case 'edit_slide':
 				tv.editSlide(tv.select());

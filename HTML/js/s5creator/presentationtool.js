@@ -23,11 +23,15 @@ function PresentationTool(box,options)
 {
 	this._options = $j.extend({
 		toolbarItemSelector: ".toolbar span",
+		infobarItemSelector: ".info span",
+		messageSelector: ".info .message",
+		nameSelector: ".info .name",
 		createPresSelector: "#create_pres_dialog",
 		createPresOptions : {
 			trigger :".createPresTrigger",
 			closeClass : "close",
 			okSelector : "button.ok",
+			cacnelSelector:"button.cancel",
 			nameInputSelector:"#create_pres_name",
 			modal:true,
 			toTop: true
@@ -40,6 +44,7 @@ function PresentationTool(box,options)
 PresentationTool.prototype.init = function()
 {
 	var pt = this;
+	var inputName = $j(this._box).find(pt._options.createPresSelector);
 
 	$j(this._box).find(this._options.toolbarItemSelector).click(
 		function(event){
@@ -55,6 +60,9 @@ PresentationTool.prototype.init = function()
 				pt.save();
 				break;
 			case 'create_pres':
+				$j.blockUI(
+					inputName
+				);
 				//pt.create();
 				break;
 			case 'remove_pres':
@@ -64,24 +72,24 @@ PresentationTool.prototype.init = function()
 		}
 	)
 	console.log($j(this._box).find(this._options.createPresSelector));
-	$j(this._box).find(this._options.createPresSelector).jqm(
-			pt._options.createPresOptions
-	);
-	//jqModal 可能将元素移动了.
-	$j(this._box)
-		.find(this._options.createPresSelector)
-		.find(this._options.createPresOptions.okSelector).click(
+
+	inputName.find(this._options.createPresOptions.okSelector).click(
 		function(event)
 		{
 			var name = $j(pt._options.createPresOptions.nameInputSelector).val();
-			console.log(name);
 			if (name != "")
 			{
 				pt.create(name);
 			}
-			$j(pt._options.createPresSelector).jqmHide();
+			$j.unblockUI();
 		}
-	)
+	);
+	inputName.find(this._options.createPresOptions.cacnelSelector).click(
+		function(event)
+		{
+			$j.unblockUI();
+		}
+	);
 
 }
 
@@ -115,6 +123,13 @@ PresentationTool.prototype.load = function(pid)
 		pid,
 		function(data)
 		{
+			$j(pt._box).find(pt._options.messageSelector).html(
+				"<string>文件已加载</string>"
+			);
+			$j(pt._box).find(pt._options.nameSelector).html(
+				data.name
+			);
+
 			S5Creator.singleton().getComponent("ThumbView").setAll(data.content);
 		}
 	);

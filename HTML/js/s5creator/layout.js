@@ -22,12 +22,13 @@ Layout.prototype.init  = function()
 {
 	var layout = this;
 	console.log(layout._options.trigger);
-	$j(this._box).jqm({
+	/*$j(this._box).jqm({
 		modal:true,
 		trigger:layout._options.trigger,
 		closeClass:layout._options.closeClass,
 		toTop: true
 	});
+	*/
 	$j(this._box).find(this._options.layoutSelector).click(
 		function()
 		{
@@ -38,13 +39,22 @@ Layout.prototype.init  = function()
 		function()
 		{
 			console.log("ok clicked");
+
 			var selected = layout.select();
 			if (selected.length != 1)
 				return ;
 			var tv = S5Creator.singleton().getComponent("ThumbView");
 			tv.add(new Slide(selected.html()));
 			selected.removeClass(layout._options.selectedClass);
-			$j(layout._box).jqmHide();
+			$j.unblockUI();
+		}
+	);
+	$j(this._box).find(this._options.cancelSelector).click(
+		function()
+		{
+			console.log("cacel clicked");
+			$j.unblockUI();
+			layout.select().removeClass(layout._options.selectedClass);
 		}
 	);
 }
@@ -73,4 +83,9 @@ Layout.prototype.select = function(layout)
 Layout.prototype.get = function()
 {
 	return 	new Slide(this.select().html());
+}
+
+Layout.prototype.show = function()
+{
+	$j.blockUI(this._box);
 }
