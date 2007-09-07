@@ -86,16 +86,22 @@ h1,h2,h3,h4,h5 {
 /*
 layout choosen
 */
+
 #layout_switch {
+	/*
 	position:absolute;
+	top: 50px;
+  	left: 20%;
+
+	*/
+	background-color: #c4dded;
 	display:none;
 	width:440px;
 	height:200px;
-	z-index: 300;
+	z-index:2000;
  	position: absolute;
-  	top: 50px;
-  	left: 20%;
-  	background-color: #c4dded;
+
+
 }
 
 #layout_switch .layout {
@@ -133,13 +139,14 @@ layout choosen
 create presentation dialog
 */
 #create_pres_dialog {
-	position:absolute;
 	display:none;
 	width:250px;
 	height:60px;
-	z-index: 300;
+	z-index: 2000;
+	/*
  	position: absolute;
   	top: 50px;
   	left: 20%;
+	*/
   	background-color: #c4dded;
 }
