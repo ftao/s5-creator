@@ -181,7 +181,7 @@ ThumbView.prototype.deleteSlide = function(slide){
 	}
 	if($j(slide).is("." + this._options.editingClass))
 	{
-		S5Creator.singleton().getComponent("Editor").set(new Slide(""));
+		S5Creator.singleton().getComponent("Editor").set(new Slide(" "));
 	}
 	$j(slide).remove();
 };
@@ -220,5 +220,20 @@ ThumbView.prototype.getAll = function()
 
 ThumbView.prototype.setAll = function(html)
 {
-	return $j(this._box).find(this._options.thumbSelector).html(html);
+	$j(this._box).find(this._options.thumbSelector).html(html);
+	S5Creator.singleton().getComponent("Editor").set(new Slide(" "));
+}
+
+/**
+ * 编辑第index个幻灯片,同时会更新编辑区域
+ * @param {Object} index
+ */
+ThumbView.prototype.focus = function(index)
+{
+	var slides = $j(this._box).find(this._options.slideSelector);
+	if (index < 0)
+		index = slides.length + index;
+	if(index < 0 || index >= slides.length)
+		return false;
+	this.editSlide(slides[index]);
 }

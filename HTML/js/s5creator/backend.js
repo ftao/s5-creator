@@ -106,7 +106,12 @@ PHPBackend.prototype.remove = function(pid,callback)
 {
 	var backend = this;
 	var param = {};
-	var pid = pid || this._lastloaded[this._options.idName];
+	try{
+		var pid = pid || this._lastloaded[this._options.idName];
+	}
+	catch(e){
+		return false;
+	}
 	param[this._options.idName] = pid;
 	$j.get(
 		this.buildURL("remove"),

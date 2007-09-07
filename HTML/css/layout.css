@@ -92,14 +92,15 @@ layout choosen
 	position:absolute;
 	top: 50px;
   	left: 20%;
-
+position: absolute;
+background-color: #c4dded;
 	*/
-	background-color: #c4dded;
+
 	display:none;
 	width:440px;
 	height:200px;
 	z-index:2000;
- 	position: absolute;
+
 
 
 }
@@ -116,10 +117,13 @@ layout choosen
 	border:1px;
 }
 
+/*
 #layout_switch .button{
 	clear:both;
-
 }
+
+
+*/
 #layout_switch .layout h1{
 	font-size:100%;
 	height:5px;
@@ -141,12 +145,22 @@ create presentation dialog
 #create_pres_dialog {
 	display:none;
 	width:250px;
-	height:60px;
+	padding:5px 0px;
 	z-index: 2000;
 	/*
+	height:60px;
  	position: absolute;
   	top: 50px;
   	left: 20%;
+	background-color: #c4dded;
 	*/
-  	background-color: #c4dded;
 }
+
+/*
+.dialog .dlg_title {
+	font-size:larger;
+	font-weight:bold;
+	color:red;
+	text-align:center;
+}
+*/
