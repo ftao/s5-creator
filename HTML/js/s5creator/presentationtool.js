@@ -50,32 +50,31 @@ PresentationTool.prototype.init = function()
 			{
 			case 'load_pres':
 				pt.list();
-				//pt.load(0);
 				break;
 			case 'save_pres':
 				pt.save();
 				break;
 			case 'create_pres':
-				if(!this._inputNameDlg)
-				{
-					this._inputNameDlg = new Dialog(inputName,{
-						title: '输入文件名称',
-						ondialogaccept: function(event)
+				//create every time ?
+				//or create on time and reuse it
+				//if(!this._inputNameDlg)
+				//{
+					this._inputNameDlg = Dialog.prompt(
+						'输入文件名称',
+						'new presentation',
+						function(value)
 						{
-							var name = $j(pt._options.createPresOptions.nameInputSelector).val();
-							console.log(name);
-							if (name != "")
+							if (value != null)
 							{
+								if(value == "")
+ 									value = "new presentation";
 								pt.create(name);
 							}
 						}
-					});
-				}
-				this._inputNameDlg.show();
-				//$j.blockUI(
-				//	inputName
-				//);
-				//pt.create();
+					);
+				//}
+				//else
+				//	this._inputNameDlg.show();
 				break;
 			case 'remove_pres':
 				pt.remove();
@@ -83,27 +82,6 @@ PresentationTool.prototype.init = function()
 			}
 		}
 	)
-	//console.log($j(this._box).find(this._options.createPresSelector));
-
-	inputName.find(this._options.createPresOptions.okSelector).click(
-		function(event)
-		{
-			var name = $j(pt._options.createPresOptions.nameInputSelector).val();
-			if (name != "")
-			{
-				pt.create(name);
-			}
-			//$j.unblockUI();
-		}
-	);
-	/*
-	inputName.find(this._options.createPresOptions.cacnelSelector).click(
-		function(event)
-		{
-			$j.unblockUI();
-		}
-	);
-	*/
 
 }
 
@@ -222,7 +200,20 @@ PresentationTool.prototype.list = function()
  */
 PresentationTool.prototype.remove = function()
 {
+	var pt = this;
 	var backend = S5Creator.singleton().getComponent("Backend");
-	backend.remove();
+	backend.remove(
+		function(data)
+		{
+			var msg = data == '1'?"文件已删除":"文件删除失败";
+			$j(pt._box).find(pt._options.messageSelector).html(
+				"<string>" + msg +　"</string>"
+			);
+			if(data == "1")
+			{
+				var tv = S5Creator.singleton().getComponent("ThumbView").setAll("");
+			}
+		}
+	);
 }
 

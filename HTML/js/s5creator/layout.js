@@ -32,11 +32,11 @@ Layout.prototype.init  = function()
 		buttons:"accept,cancel",
 		ondialogaccept:function()
 		{
-			layout.onaccept();
+			return layout.onaccept();
 		},
 		ondialogcancel:function()
 		{
-			layout.oncancel();
+			return layout.oncancel();
 		}
 	});
 	$j(this._box).find(this._options.layoutSelector).click(
@@ -73,7 +73,9 @@ Layout.prototype.onaccept = function()
 {
 	var selected = this.select();
 	if (selected.length != 1)
-		return ;
+	{
+		return false;
+	}
 	var tv = S5Creator.singleton().getComponent("ThumbView");
 	tv.add(new Slide(selected.html()));
 	selected.removeClass(this._options.selectedClass);
