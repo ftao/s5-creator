@@ -4,7 +4,7 @@
  * 显示缩略图
  * 新建/编辑/删除 某张幻灯片
  * 同时这个区域也作为存储区域.
- * licensed under GPL licenses.
+ * licensed under GPL license.
  */
 
 $j.fn.thumbView = function(options){
@@ -249,4 +249,14 @@ ThumbView.prototype.focus = function(index)
 	if(index < 0 || index >= slides.length)
 		return false;
 	this.editSlide(slides[index]);
+}
+
+/**
+ * 清理,清除编辑,选择等状态. 存储时不应包含这些状态(?)
+ */
+ThumbView.prototype.clean = function()
+{
+	var slides = $j(this._box).find(this._options.slideSelector);
+	slides.removeClass(this._options.selectedClass);
+	slides.removeClass(this._options.editingClass);
 }

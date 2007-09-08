@@ -68,7 +68,7 @@ PresentationTool.prototype.init = function()
 							{
 								if(value == "")
  									value = "new presentation";
-								pt.create(name);
+								pt.create(value);
 							}
 						}
 					);
@@ -143,9 +143,10 @@ PresentationTool.prototype.save = function()
 {
 	console.log("saveing  ");
 	var pt = this;
-	var content = S5Creator.singleton().getComponent("ThumbView").getAll();
+	var tv = S5Creator.singleton().getComponent("ThumbView");
+	tv.clean();
+	var content = tv.getAll();
 	var backend = S5Creator.singleton().getComponent("Backend");
-
 	backend.save(content,function(){});
 }
 

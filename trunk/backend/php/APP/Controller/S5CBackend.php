@@ -48,6 +48,7 @@ class Controller_S5CBackend
 
     function actionSave()
     {
+    	//print_r($_POST);
     	$data = (array)json_decode($_POST['data']);
 		$modelPres =& new Presentations();
 		echo (int)$modelPres->save($data);
