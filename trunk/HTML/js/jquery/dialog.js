@@ -1,3 +1,15 @@
+/*
+ * Dialog : a modal dialog using jquery and blockUI
+ * Copyright (C) 2007 Tao Fei  - http://filia.cn
+ * Licensed under GPL 3 licenses.
+ *
+ * File Name:
+ *        dialog.js
+ *
+ * File Authors:
+ *        Tao Fei  (Filia.Tao@gmail.com)
+ */
+
 var $j = jQuery.noConflict();
 
 /**
@@ -67,11 +79,19 @@ Dialog.prototype.init = function()
 			$j(dlg._box).find("." + button).click(
 				function(event){
 					var callback =	dlg._options["ondialog"+button];
+					var ret = true;
 					if(callback)
 					{
-						callback(event);
+						ret = callback(event);
 					}
-					dlg._defaultAction[button](event);
+					if (ret === false)
+					{
+						//prevent default
+					}
+					else
+					{
+						dlg._defaultAction[button](event);
+					}
 				}
 			);
 		})();

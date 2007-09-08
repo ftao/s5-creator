@@ -102,12 +102,13 @@ PHPBackend.prototype.list = function(callback)
 	);
 }
 
-PHPBackend.prototype.remove = function(pid,callback)
+PHPBackend.prototype.remove = function(callback)
 {
 	var backend = this;
 	var param = {};
+	var pid = null;
 	try{
-		var pid = pid || this._lastloaded[this._options.idName];
+		pid = this._lastloaded[this._options.idName];
 	}
 	catch(e){
 		return false;

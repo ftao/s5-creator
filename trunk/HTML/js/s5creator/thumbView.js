@@ -43,6 +43,7 @@ function ThumbView(box,options)
 ThumbView.prototype.init = function()
 {
 	var tv  = this;
+	//点击选择
 	$j(this._box).find(this._options.thumbSelector).click(
 		function(event){
 			var target = event.target;
@@ -52,14 +53,20 @@ ThumbView.prototype.init = function()
 		}
 	)
 
+	/*
+	//双击编辑
 	$j(this._box).find(this._options.thumbSelector).dblclick(
 		function(event){
 			var target = event.target;
+
 			if (!$j(target).is(tv._options.slideSelector))
 				target = $j(target).parents(tv._options.slideSelector);
+			alert($j(target).html());
 			tv.editSlide(target);
 		}
 	)
+	*/
+
 	$j(this._box).find(this._options.toolbarItemSelector).click(
 		function(event){
 			var action = $j(this).attr('action');
@@ -88,12 +95,14 @@ ThumbView.prototype.init = function()
  */
 ThumbView.prototype.select = function(slide)
 {
+
 	if(!slide)
 	{
 		return $j(this._box).find("." + this._options.selectedClass);
 	}
 	else
 	{
+
 		console.log("select " + slide);
 		$j(slide).toggleClass(this._options.selectedClass);
 	}
@@ -128,7 +137,7 @@ ThumbView.prototype.addSlide = function(content,after)
 	{
 		$j(this._box).find(this._options.thumbSelector).append(newSlide);
 	}
-	newSlide.removeClass(this._options.newClass);
+	//newSlide.removeClass(this._options.newClass);
 	this.editSlide(newSlide);
 }
 
@@ -139,11 +148,12 @@ ThumbView.prototype.addSlide = function(content,after)
  * @param Element slide
  */
 ThumbView.prototype.editSlide = function(slide){
-	console.log("edit slide " + slide);
+
+	console.log("edit slide " + slide.html());
 	var slide = slide || this.select();
 	if(!slide || $j(slide).length != 1)	// no select or more than one selected
 	{
-		console.log("will not edit " + $j(slide));
+		console.log("will not edit " + $j(slide).get());
 		return false;
 	}
 	if($j(slide).is("." + this._options.editingClass))//已经在编辑状态
@@ -151,6 +161,7 @@ ThumbView.prototype.editSlide = function(slide){
 		console.log("already editing this slide");
 		return false;
 	}
+
 	//更新现有编辑内容
 	var editor = S5Creator.singleton().getComponent("Editor")
 	this.set(editor.get());
@@ -162,7 +173,8 @@ ThumbView.prototype.editSlide = function(slide){
 	$j(slide).addClass(this._options.editingClass);	//应该产生一些效果
 
 	//更新编辑器
-	console.log(this.get());
+	//console.log(this.get());
+	//a little
 	editor.set(this.get());
 };
 
@@ -205,7 +217,7 @@ ThumbView.prototype.get = function()
  */
 ThumbView.prototype.set = function(slide)
 {
-	return $j(this._box).find("." + this._options.editingClass).html(slide.content);
+	$j(this._box).find("." + this._options.editingClass).html(slide.content);
 }
 
 ThumbView.prototype.add = function(slide)
@@ -222,6 +234,7 @@ ThumbView.prototype.setAll = function(html)
 {
 	$j(this._box).find(this._options.thumbSelector).html(html);
 	S5Creator.singleton().getComponent("Editor").set(new Slide(" "));
+	this.editSlide();
 }
 
 /**
