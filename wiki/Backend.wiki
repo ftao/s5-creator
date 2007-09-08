@@ -1,0 +1,21 @@
+=PHP backend=
+==提供的服务==
+  #文档列表 list
+  # 载入某一个文档 load
+  # 保存某一个文档 save
+  # 新建一个文档  create
+  # 删除一个文档 delete
+  # 版本?
+==数据库设计==
+{{{
+ CREATE TABLE `presentations` (
+  `presentation_id` int(11) NOT NULL auto_increment,
+   `name` varchar(255) NOT NULL,
+   `author` varchar(255) default NULL,
+   `content` text NOT NULL,
+   `theme_id` int(11) default NULL,
+   `created` int(11) default NULL,
+   `updated` int(11) default NULL,
+   PRIMARY KEY  (`presentation_id`)
+);
+}}}
