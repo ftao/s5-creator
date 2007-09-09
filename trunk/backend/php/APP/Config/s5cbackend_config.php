@@ -11,7 +11,7 @@
    `updated` int(11) default NULL,
    PRIMARY KEY  (`presentation_id`)
 );
- */
+*/
 return array(
     'defaultController' => 'S5CBackend',
     'responseCharset'	=> 'utf-8',
@@ -23,6 +23,15 @@ return array(
         'login'         => 's5cphp',
         'password'      => 's5cphp',
         'database'      => 's5cphp',
+    ),
+    'view' => 'FLEA_View_Smarty',
+    'viewConfig' => array(
+        'smartyDir'         => './Smarty',
+        'template_dir'      => './templates',
+        'compile_dir'       => './templates_c',
+        'left_delimiter'    => '{{',
+        'right_delimiter'   => '}}',
+        'force_compile'     => true,
     ),
 );
 ?>

@@ -79,6 +79,9 @@ PresentationTool.prototype.init = function()
 			case 'remove_pres':
 				pt.remove();
 				break;
+			case 'preview_pres':
+				pt.save();
+				pt.preview();
 			}
 		}
 	)
@@ -216,5 +219,12 @@ PresentationTool.prototype.remove = function()
 			}
 		}
 	);
+}
+
+PresentationTool.prototype.preview = function()
+{
+	var pt = this;
+	var backend = S5Creator.singleton().getComponent("Backend");
+	backend.preview();
 }
 
