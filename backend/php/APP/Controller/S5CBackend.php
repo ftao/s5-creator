@@ -19,7 +19,7 @@ class Presentations extends FLEA_Db_TableDataGateway
 }
 
 
-class Controller_S5CBackend
+class Controller_S5CBackend extends FLEA_Controller_Action
 {
     function actionIndex()
     {
@@ -48,7 +48,6 @@ class Controller_S5CBackend
 
     function actionSave()
     {
-    	//print_r($_POST);
     	$data = (array)json_decode($_POST['data']);
 		$modelPres =& new Presentations();
 		echo (int)$modelPres->save($data);
@@ -69,6 +68,21 @@ class Controller_S5CBackend
     	$pid = $_GET['presentation_id'];
     	$modelPres =& new Presentations();
     	echo (int)$modelPres->removeByPkv($pid);
+    }
+
+    function actionPreview()
+    {
+		//we should have save the document before export
+		//so we only need presentation_id here to export
+		$pid = $_GET['presentation_id'];
+		$modelPres =& new Presentations();
+		$row = $modelPres->findByField("presentation_id",$pid);
+		print_r($row);
+        $smarty =& $this->_getView();
+        /* @var $smarty Smarty */
+        $smarty->assign('link_prefix', '../../s5-files/');
+        $smarty->assign('presentation',$row);
+        $smarty->display('preview.html');
     }
 }
 ?>

@@ -159,3 +159,13 @@ PHPBackend.prototype.remove = function(callback)
 		}
 	);
 }
+
+PHPBackend.prototype.preview = function()
+{
+	if(!this._lastloaded)
+		return false;
+	var url = this.buildURL("preview");
+	url += "&presentation_id=" + this._lastloaded.presentation_id;
+	window.open(url);
+	return true;
+}
