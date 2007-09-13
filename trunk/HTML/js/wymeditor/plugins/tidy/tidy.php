@@ -14,7 +14,7 @@ if(strlen($html) > 0) {
             'drop-font-tags'              => true,
             'drop-proprietary-attributes' => true,
             'enclose-block-text'          => true,
-            'indent'                      => true,
+            'indent'                      => false,
             'join-classes'                => true,
             'join-styles'                 => true,
             'logical-emphasis'            => true,
