@@ -40,34 +40,37 @@
 		<h1>S5 Editor</h1>
 		<div class="presentation_tools">
 			<div class="info">
-				<span class="name">Test Presentation</span>
-				<span class="author">Filia Tao </span>
-				<span class="date">2007-9-5 21:29</span>
+				<label class="name">Test Presentation</label>
+				<label class="author">
+				    作者:
+					<span>Filia Tao </span>
+				</label>
+				<label class="date">
+					最后保存时间:
+					<span >2007-9-5 21:29</span>
+				</label>
 				<span class="message"></span>
 			</div>
 			<div class="toolbar">
-				<span class="createPresTrigger" action="create_pres">新建</span>
-				<span action="load_pres">加载</span>
-				<span action="save_pres">保存</span>
-				<span action="remove_pres">删除</span>
-				<span action="preview_pres">预览</span>
+				<ul>
+					<li class="createPresTrigger" action="create_pres">新建</li>
+					<li action="load_pres">加载</li>
+					<li action="save_pres">保存</li>
+					<li action="remove_pres">删除</li>
+					<li action="preview_pres">预览</li>
+				</ul>
 			</div>
-			<!--div id="create_pres_dialog" >
-				<label>Name: <input type="text" id="create_pres_name"/></label>
-				<div class="button">
-					<button class="ok">OK</button>
-					<button class="close cancel">Cancel</button>
-				</div>
-			</div-->
 		</div>
 	</div>
-	</div>
+
 	<div id="left">
 		<h1>缩略图</h1>
 		<div class="slide_toolbar">
-			<span class="chooseLayoutTrigger" action="add_slide">New</span>
-			<span action="edit_slide">Edit</span>
-			<span action="delete_slide">Delete</span>
+			<ul>
+				<li class="chooseLayoutTrigger" action="add_slide">New</li>
+				<li action="edit_slide">Edit</li>
+				<li action="delete_slide">Delete</li>
+			</ul>
 		</div>
 		<div class="thumb">
 		</div>
@@ -81,7 +84,6 @@
 </div>
 <!--div id="hidden" -->
 	<div id="layout_switch">
-		<!--h3>选择幻灯片布局模板 </h3-->
 		<ul>
 			<li class="layout" layout="Title-Only">
 				<h1>Cover</h1>
@@ -109,13 +111,8 @@
 				</div>
 			</li>
 		</ul>
-		<!--div class="button">
-			<button class="ok">OK</button>
-			<button class="close cancel">Cancel</button>
-		</div-->
 	</div>
 
 <!--/div-->
-<iframe id="preview" style="display:none;height=100%;width:100%;"></iframe>
 </body>
 </html>

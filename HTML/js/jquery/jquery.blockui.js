@@ -229,9 +229,9 @@ $.blockUI.impl = {
         css = jQuery.extend(basecss, css || {});
         var f = ($.browser.msie) ? $('<iframe class="blockUI" style="z-index:1000;border:none;margin:0;padding:0;position:absolute;width:100%;height:100%;top:0;left:0" src="javascript:false;"></iframe>')
                                  : $('<div class="blockUI" style="display:none"></div>');
-        var w = $('<div class="blockUI" style="z-index:1001;cursor:wait;border:none;margin:0;padding:0;width:100%;height:100%;top:0;left:0"></div>');
-        var m = full ? $('<div class="blockUI blockMsg" style="z-index:1002;cursor:wait;padding:0;position:fixed"></div>')
-                     : $('<div class="blockUI" style="display:none;z-index:1002;cursor:wait;position:absolute"></div>');
+        var w = $('<div class="blockUI" style="z-index:1001;border:none;margin:0;padding:0;width:100%;height:100%;top:0;left:0"></div>');
+        var m = full ? $('<div class="blockUI blockMsg" style="z-index:1002;padding:0;position:fixed"></div>')
+                     : $('<div class="blockUI" style="display:none;z-index:1002;position:absolute"></div>');
         w.css('position', full ? 'fixed' : 'absolute');
         if (msg) m.css(css);
         if (!noalpha) w.css($.blockUI.defaults.overlayCSS);
