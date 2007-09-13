@@ -18,20 +18,10 @@ $j.fn.presentationTool = function(options)
 function PresentationTool(box,options)
 {
 	this._options = $j.extend({
-		toolbarItemSelector: ".toolbar span",
+		toolbarItemSelector: ".toolbar ul li",
 		infobarItemSelector: ".info span",
 		messageSelector: ".info .message",
-		nameSelector: ".info .name",
-		createPresSelector: "#create_pres_dialog",
-		createPresOptions : {
-			trigger :".createPresTrigger",
-			closeClass : "close",
-			okSelector : "button.ok",
-			cacnelSelector:"button.cancel",
-			nameInputSelector:"#create_pres_name",
-			modal:true,
-			toTop: true
-		}
+		nameSelector: ".info .name"
 	},options);
 	this._box = box;
 	this.init();
@@ -40,7 +30,7 @@ function PresentationTool(box,options)
 PresentationTool.prototype.init = function()
 {
 	var pt = this;
-	var inputName = $j(this._box).find(pt._options.createPresSelector);
+
 
 	$j(this._box).find(this._options.toolbarItemSelector).click(
 		function(event){
@@ -61,7 +51,7 @@ PresentationTool.prototype.init = function()
 				//{
 					this._inputNameDlg = Dialog.prompt(
 						'输入文件名称',
-						'new presentation',
+						'新建演示文稿',
 						function(value)
 						{
 							if (value != null)
@@ -101,7 +91,7 @@ PresentationTool.prototype.create  = function(name)
 		function(data)
 		{
 			$j(pt._box).find(pt._options.messageSelector).html(
-				"<string>文件已加载</string>"
+				"文件已加载"
 			);
 			$j(pt._box).find(pt._options.nameSelector).html(
 				data.name
@@ -127,7 +117,7 @@ PresentationTool.prototype.load = function(pid)
 		{
 			console.log(data);
 			$j(pt._box).find(pt._options.messageSelector).html(
-				"<string>文件已加载</string>"
+				"文件已加载"
 			);
 			$j(pt._box).find(pt._options.nameSelector).html(
 				data.name
@@ -141,13 +131,16 @@ PresentationTool.prototype.load = function(pid)
 
 /**
  * save current document to server
+ * 保存文档到服务器.
+ *
  */
 PresentationTool.prototype.save = function()
 {
 	console.log("saveing  ");
 	var pt = this;
 	var tv = S5Creator.singleton().getComponent("ThumbView");
-	tv.clean();
+	//不需要做清理, 保持所有状态.
+	//tv.clean();
 	var content = tv.getAll();
 	var backend = S5Creator.singleton().getComponent("Backend");
 	backend.save(content,function(){});
@@ -155,22 +148,22 @@ PresentationTool.prototype.save = function()
 
 /**
  * list the files
+ * 列出文件(名称)
  */
 PresentationTool.prototype.list = function()
 {
 	var pt = this;
-	var dlg = new Dialog("<h1>获取文件列表.......</h1>",{
-		buttons:"",
-		title:""
+	var dlg = new Dialog("正在获取文件列表...",{
+		buttons:"cancel",
+		title:"",
+		ondialogcancle:function(){ dlg.hide();}
 	});
 	dlg.show();
-	//$j.blockUI("<h1>获取文件列表.......</h1>" );
 
 	var backend = S5Creator.singleton().getComponent("Backend");
 	backend.list(
 		function(data)
 		{
-			//$j.unblockUI();
 			var html = "<ol style='cursor: default;text-align:left'>";
 			for(var i = 0 ; i < data.length; i++)
 			{
@@ -183,24 +176,19 @@ PresentationTool.prototype.list = function()
 			$j(list).find("li").click(
 				function(event){
 					dlg.hide();
-					//$j.unblockUI();
-					//dlg.content("载入" + $j(this).html() + "....");
 					var pid = $j(this).attr("pid");
-					//$j.blockUI("<h1>加载文件" + $j(this).html() + "</h1>");
 					pt.load(pid);
 				}
 			);
-
-			//$j.blockUI(list);
 			dlg.title("请单击文件载入");
 			dlg.content(list);
-			//S5Creator.singleton().getComponent("ThumbView").setAll(data.content);
 		}
 	);
 }
 
 /**
  * remove current file
+ * 删除当前文件
  */
 PresentationTool.prototype.remove = function()
 {
@@ -209,10 +197,8 @@ PresentationTool.prototype.remove = function()
 	backend.remove(
 		function(data)
 		{
-			var msg = data == '1'?"文件已删除":"文件删除失败";
-			$j(pt._box).find(pt._options.messageSelector).html(
-				"<string>" + msg +　"</string>"
-			);
+			var msg = (data == '1'?"文件已删除":"文件删除失败");
+			$j(pt._box).find(pt._options.messageSelector).html(msg);
 			if(data == "1")
 			{
 				var tv = S5Creator.singleton().getComponent("ThumbView").setAll("");
@@ -227,4 +213,3 @@ PresentationTool.prototype.preview = function()
 	var backend = S5Creator.singleton().getComponent("Backend");
 	backend.preview();
 }
-

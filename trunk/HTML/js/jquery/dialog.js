@@ -194,11 +194,10 @@ Dialog.confirm = function(msg,callback)
  */
 Dialog.prompt = function(msg,defaultValue,callback)
 {
-	var content = msg + "<br/>"
-				+ "<input type=\"text\" class=\"input\" value=\""
-				+ defaultValue + "\"/>";
+	var content =$j("<input type=\"text\" class=\"input\" value=\""
+				+ defaultValue + "\"/>");
 	var dlg = new Dialog(content,{
-		title:"",
+		title:msg,
 		buttons:"accept,cancel",
 		buttonlabelaccept:"OK",
 		buttonlabelcancel:"Cancel",
@@ -212,6 +211,7 @@ Dialog.prompt = function(msg,defaultValue,callback)
 		}
 	});
 	dlg.show();
+	content.select();
 	return dlg;
 }
 

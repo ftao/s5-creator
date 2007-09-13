@@ -22,7 +22,7 @@ function ThumbView(box,options)
 {
 	this._options = $j.extend({
 		toolbarSelector:	 	".slide_toolbar",
-		toolbarItemSelector: 	".slide_toolbar span",
+		toolbarItemSelector: 	".slide_toolbar ul li",
 		actionNameAttr: 		"action",
 		thumbSelector:	 		".thumb",
 		slideSelector:			".slide",
@@ -53,19 +53,17 @@ ThumbView.prototype.init = function()
 		}
 	)
 
-	/*
 	//双击编辑
 	$j(this._box).find(this._options.thumbSelector).dblclick(
 		function(event){
 			var target = event.target;
-
 			if (!$j(target).is(tv._options.slideSelector))
 				target = $j(target).parents(tv._options.slideSelector);
-			alert($j(target).html());
-			tv.editSlide(target);
+			if ($j(target).length == 1)
+				tv.editSlide(target);
 		}
 	)
-	*/
+
 
 	$j(this._box).find(this._options.toolbarItemSelector).click(
 		function(event){
@@ -74,8 +72,8 @@ ThumbView.prototype.init = function()
 			switch(action)
 			{
 			case 'add_slide': //show layout chooser
-				var lv = S5Creator.singleton().getComponent("Layout");
-				lv.show();
+				var lo = S5Creator.singleton().getComponent("Layout");
+				lo.show();
 				break;
 			case 'edit_slide':
 				tv.editSlide(tv.select());
@@ -102,7 +100,6 @@ ThumbView.prototype.select = function(slide)
 	}
 	else
 	{
-
 		console.log("select " + slide);
 		$j(slide).toggleClass(this._options.selectedClass);
 	}
@@ -125,10 +122,8 @@ ThumbView.prototype.addSlide = function(content,after)
 	var after = after || this.select();
 
 	//choose layout here
-	console.log(content);
 	var content = content || "";
 	var newSlide = $j(this._options.slideTemplate.replaceAll("{SLIDE_CONTENT}",content));
-	console.log(newSlide);
 	if(after && after.length == 1)
 	{
 		$j(after).after(newSlide);
@@ -137,7 +132,6 @@ ThumbView.prototype.addSlide = function(content,after)
 	{
 		$j(this._box).find(this._options.thumbSelector).append(newSlide);
 	}
-	//newSlide.removeClass(this._options.newClass);
 	this.editSlide(newSlide);
 }
 
@@ -149,7 +143,7 @@ ThumbView.prototype.addSlide = function(content,after)
  */
 ThumbView.prototype.editSlide = function(slide){
 
-	console.log("edit slide " + slide.html());
+	console.log("edit slide " + $j(slide).html());
 	var slide = slide || this.select();
 	if(!slide || $j(slide).length != 1)	// no select or more than one selected
 	{
@@ -173,8 +167,6 @@ ThumbView.prototype.editSlide = function(slide){
 	$j(slide).addClass(this._options.editingClass);	//应该产生一些效果
 
 	//更新编辑器
-	//console.log(this.get());
-	//a little
 	editor.set(this.get());
 };
 
@@ -239,7 +231,7 @@ ThumbView.prototype.setAll = function(html)
 
 /**
  * 编辑第index个幻灯片,同时会更新编辑区域
- * @param {Object} index
+ * @param {int} index
  */
 ThumbView.prototype.focus = function(index)
 {
@@ -252,7 +244,7 @@ ThumbView.prototype.focus = function(index)
 }
 
 /**
- * 清理,清除编辑,选择等状态. 存储时不应包含这些状态(?)
+ * 清理,清除编辑,选择等状态. 存储时不应包含这些状态(???)
  */
 ThumbView.prototype.clean = function()
 {

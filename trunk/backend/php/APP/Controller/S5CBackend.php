@@ -77,12 +77,13 @@ class Controller_S5CBackend extends FLEA_Controller_Action
 		$pid = $_GET['presentation_id'];
 		$modelPres =& new Presentations();
 		$row = $modelPres->findByField("presentation_id",$pid);
-		print_r($row);
+		//print_r($row);
         $smarty =& $this->_getView();
         /* @var $smarty Smarty */
         $smarty->assign('link_prefix', '../../s5-files/');
         $smarty->assign('presentation',$row);
         $smarty->display('preview.html');
     }
+
 }
 ?>
