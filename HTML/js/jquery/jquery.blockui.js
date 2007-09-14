@@ -143,7 +143,7 @@ $.fn.displayBox = function(css, fn, isFlash) {
     var $msg = $(msg);
     css = css || {};
 
-    var w = $msg.width()  || $msg.attr('width')  || css.width  || $.blockUI.defaults.displayBoxCSS.width;
+    var w = $msg.width()  || $msg.attr('width') || $msg.css('width') || css.width  || $.blockUI.defaults.displayBoxCSS.width;
     var h = $msg.height() || $msg.attr('height') || css.height || $.blockUI.defaults.displayBoxCSS.height ;
     if (w[w.length-1] == '%') {
         var ww = document.documentElement.clientWidth || document.body.clientWidth;

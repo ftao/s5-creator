@@ -47,8 +47,10 @@ ThumbView.prototype.init = function()
 	$j(this._box).find(this._options.thumbSelector).click(
 		function(event){
 			var target = event.target;
-			if (!$j(target).is(tv._options.slideSelector))
-				target = $j(target).parents(tv._options.slideSelector);
+			//parerntsOfSelf is in jquery.wymeditor.js
+			target = $j(target).parentsOrSelf(tv._options.slideSelector);
+			//if (!$j(target).is(tv._options.slideSelector))
+			//	target = $j(target).parents(tv._options.slideSelector);
 			tv.select(target);
 		}
 	)
@@ -57,8 +59,9 @@ ThumbView.prototype.init = function()
 	$j(this._box).find(this._options.thumbSelector).dblclick(
 		function(event){
 			var target = event.target;
-			if (!$j(target).is(tv._options.slideSelector))
-				target = $j(target).parents(tv._options.slideSelector);
+			target = $j(target).parentsOrSelf(tv._options.slideSelector);
+			//if (!$j(target).is(tv._options.slideSelector))
+			//	target = $j(target).parents(tv._options.slideSelector);
 			if ($j(target).length == 1)
 				tv.editSlide(target);
 		}

@@ -32,7 +32,8 @@ function Dialog(content,options)
 				+ "<div class='dlg_title'></div>"
 				+ "<div class='dlg_content'></div>"
 				+ "<div class='dlg_button'></div>"
-				+ "</div>"
+				+ "</div>",
+		css:{width:"auto",height:"auto"}
 	},options);
 	this._box = $j(this._options.template);
 	this.init();
@@ -104,7 +105,9 @@ Dialog.prototype.init = function()
  */
 Dialog.prototype.show = function()
 {
-	$j.blockUI(this._box);
+
+	$j.blockUI(this._box,this._options.css);
+	//$j(this._box).width($j(this._box).find("dlg_content").width());
 }
 
 /**
