@@ -28,5 +28,6 @@ Wymeditor.prototype.set = function(slide)
 {
 	console.log(slide.content);
 	this.html(" " + slide.content);
+	//this.html("<div class='slide' id='currrentSlide''>" + slide.content + "</div>");
 }
 

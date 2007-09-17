@@ -6,12 +6,12 @@
  *
  * For further information visit:
  *        http://www.wymeditor.org/
- * 
+ *
  * File Name:
  *        wymeditor.css
  *        Main editor css file.
  *        See the documentation for more info.
- * 
+ *
  * File Authors:
  *        Jean-Francois Hovinne (jf.hovinne@wymeditor.org)
  *        Daniel Reszka (d.reszka@wymeditor.org)
@@ -21,8 +21,9 @@
 
 /* basic */
   body  { background: #e1e8f1;}
- 
+
 /* make HTML blocs visible */
+/*
   p,
   h1,
   h2,
@@ -46,12 +47,12 @@
   td            { width: 25%; }
   blockquote    { margin-left: 30px; }
   pre           { background-color:transparent; border: 1px solid white; }
-
+*/
 /* Gecko min height fix */
   p             { min-height: 1em; } /*min-height is needed under Firefox, because empty parargraphs */
   *+html p      { min-height: auto; } /* but we have to remove it under IE7 because it triggers the 'haslayout' mode */
   td            { height: 1.6em; }
- 
+
 /* labels */
   p         { background-image: url(lbl-p.png); }
   h1        { background-image: url(lbl-h1.png); }
