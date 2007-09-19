@@ -7,6 +7,27 @@
  * licensed under GPL license.
  */
 
+/** should move to somewhere else*/
+String.prototype.replaceAll = function(old, rep) {
+  var rExp = new RegExp(old, "g");
+  return(this.replace(rExp, rep));
+};
+
+// Returns the Parents or the node itself
+// jqexpr = a jQuery expression
+jQuery.fn.parentsOrSelf = function(jqexpr) {
+  var n = this;
+
+  if (n[0].nodeType == 3)
+    n = n.parents().slice(0,1);
+
+//  if (n.is(jqexpr)) // XXX should work, but doesn't (probably a jQuery bug)
+  if (n.filter(jqexpr).size() == 1)
+    return n;
+  else
+    return n.parents(jqexpr).slice(0,1);
+};
+
 $j.fn.thumbView = function(options){
 	return new ThumbView(this,options);
 };
@@ -220,8 +241,16 @@ ThumbView.prototype.add = function(slide)
 	this.addSlide(slide.content);
 }
 
+/*
+ThumbView.prototype.update = function()
+{
+	this.set(S5Creator.singleton().getComponent("Editor").get());
+}
+*/
+
 ThumbView.prototype.getAll = function()
 {
+	this.set(S5Creator.singleton().getComponent("Editor").get());
 	return $j(this._box).find(this._options.thumbSelector).html();
 }
 

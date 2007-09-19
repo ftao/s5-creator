@@ -26,7 +26,7 @@ function S5Creator(options)
 {
 	this._options = $j.extend({
 			thumbViewSelector:	".s5ThumbView",
-			editorSelector:		".s5Editor",
+			editorId:	"s5Editor",
 			layoutSelector:		".s5Layout",
 			previewSelector:	".s5Preview",
 			themeSelector:		".s5Theme",
@@ -72,15 +72,19 @@ S5Creator.prototype.init = function()
 	var pt = $j(s5c._options.presentationToolSelector).presentationTool(
 			s5c._options.presentationToolOptions
 	);
-	$j(s5c._options.editorSelector).wymeditor(
+	var editor = new Editor (s5c._options.editorId,
 			s5c._options.editorOptions
+	);
+	var ts = new ThemeSelector ($j(s5c._options.themeSelector),
+			s5c._options.themeOptions
 	);
 	this._components = {
 		ThumbView: tv,
-		Editor: $j.wymeditors(0),
+		Editor: editor,
 		Layout : layout,
 		Backend : new s5c._options.backend(s5c._options.backendOptions),
-		PresentationTool:pt
+		PresentationTool:pt,
+		ThemeSelector:ts
 	}
 }
 

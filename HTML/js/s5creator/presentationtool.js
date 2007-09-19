@@ -72,6 +72,9 @@ PresentationTool.prototype.init = function()
 			case 'preview_pres':
 				pt.save();
 				pt.preview();
+			case 'select_theme_pres':
+				S5Creator.singleton().getComponent("ThemeSelector").show();
+				break;
 			}
 		}
 	)
