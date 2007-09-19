@@ -6,32 +6,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>S5 Editor</title>
 <link rel="stylesheet" href="css/layout.css" media="screen"/>
-<link rel="stylesheet" type="text/css" media="screen"
-	href="js/wymeditor/skins/default/screen.css" />
-<link rel="stylesheet" type="text/css" media="screen"
-	href="css/jqModal.css" />
-<style type="text/css" media="screen">
-.wym_box .wym_iframe iframe { height: 350px;width:600px}
-</style>
 <!--script type="text/javascript" src="js/firebug-lite/firebug.js"></script-->
-<script type="text/javascript">
-	console = {log : function(){}};
-</script>
 <script type="text/javascript" src="js/jquery/jquery-1.1.4.js"></script>
+<script type="text/javascript">
+	//console = {log : function(){}};
+	var $j = jQuery.noConflict();
+</script>
+
+<script type="text/javascript" src="js/tiny_mce/tiny_mce_src.js"></script>
 <script type="text/javascript" src="js/jquery/json.js"></script>
 <script type="text/javascript" src="js/jquery/jquery.blockui.js"></script>
 <script type="text/javascript" src="js/jquery/dialog.js"></script>
 <script type="text/javascript" src="js/s5creator/slide.js"></script>
-<script type="text/javascript" src="js/wymeditor/jquery.wymeditor.js"></script>
+
+
+<script type="text/javascript" src="js/s5creator/editor.js"></script>
+
 <script type="text/javascript" src="js/s5creator/thumbView.js"></script>
 <script type="text/javascript" src="js/s5creator/layout.js"></script>
+<script type="text/javascript" src="js/s5creator/themeselector.js"></script>
 <script type="text/javascript" src="js/s5creator/backend.js"></script>
 <script type="text/javascript" src="js/s5creator/presentationtool.js"></script>
-
-<script type="text/javascript"
-	src="js/wymeditor/plugins/s5c/jquery.wymeditor.s5c.js"></script>
 <script type="text/javascript" src="js/s5creator/s5creator.js"></script>
 <script type="text/javascript" src="js/init.js"></script>
+<script type="text/javascript" >
+
+</script>
 </head>
 <body>
 <div id="contentWrapper">
@@ -57,6 +57,7 @@
 					<li action="save_pres">保存</li>
 					<li action="remove_pres">删除</li>
 					<li action="preview_pres">预览</li>
+					<li action="select_theme_pres">改变主题</li>
 				</ul>
 			</div>
 		</div>
@@ -76,8 +77,8 @@
 	</div>
 	<div id="main">
 		<form method="post" action="">
-		<textarea id="wymeditor"></textarea>
-		<input type="submit" class="wymsubmit" />
+		<textarea id="s5Editor" name="s5Editor" class="s5Editor"></textarea>
+		<!--input type="submit" class="wymsubmit" /-->
 		</form>
 	</div>
 </div>
@@ -111,7 +112,22 @@
 			</li>
 		</ul>
 	</div>
-
+	<div id="theme_selector" >
+		<ul>
+			<li class="theme" theme="blank">
+				<h1>空白主题</h1>
+				<img src="s5themes/ui/blank/thumb.png" alt="空白主题"></img>
+			</li>
+			<li class="theme" theme="i18n">
+				<h1>国际化主题</h1>
+				<img src="s5themes/ui/i18n/thumb.png" alt="国际化主题"></img>
+			</li>
+			<li class="theme" theme="s5default">
+				<h1>S5默认</h1>
+				<img src="s5themes/ui/s5default/thumb.png" alt="国际化主题"></img>
+			</li>
+		</ul>
+	</div>
 <!--/div-->
 </body>
 </html>

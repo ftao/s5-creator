@@ -1,0 +1,20 @@
+/*
+ Theme: i18n
+ Eric A. Meyer (http://meyerweb.com/)
+ Theme placed under CC by-sa 2.0 license
+*/
+
+body {color: #210; font: 28px Arial, sans-serif;}
+a {text-decoration: none; color: #336; border-bottom: 1px dotted;}
+h1, h2, h3, h4, h5, h6 {font-size: 1em; margin: 0;}
+sup {font-size: 0.75em; font-weight: normal;
+  vertical-align: 0.5em; line-height: 1px;}
+ul {margin-left: 1em; padding-left: 0;}
+li {margin-bottom: 0.66em;}
+li li {margin: 0.33em 0; font-size: smaller;}
+
+
+h1 {font-size: 1.66em; line-height: 1; letter-spacing: -1px;
+  margin: 0 -15% 1em 0; padding: 0.5em 15% 0.06125em 0; border-bottom: 0.06125em solid rgb(90,94,120);}
+
+.slide .current {text-shadow: 0 0 0.25em #9AABD7;}
