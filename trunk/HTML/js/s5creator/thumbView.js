@@ -108,6 +108,7 @@ ThumbView.prototype.init = function()
 			}
 		}
 	)
+	$j(this._box).find(this._options.slideSelector).draggable();
 }
 /**
  * 返回当前选择的幻灯片
