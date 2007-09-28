@@ -1,8 +1,7 @@
-var $j = jQuery.noConflict();
 
 function ThemeSelector(box,options)
 {
-	this._options = $j.extend({
+	this._options = $.extend({
 		themePath: "s5themes/ui",
 		thumbImgName: "thumb.png",
 		editorCssName:"editor.css",
@@ -22,20 +21,7 @@ function ThemeSelector(box,options)
 ThemeSelector.prototype.init = function()
 {
 	var ts = this;
-
-	this._dlg = new Dialog(this._box,{
-		title:"改变主题",
-		buttons:"accept,cancel",
-		ondialogaccept:function()
-		{
-			return ts.onaccept();
-		},
-		ondialogcancel:function()
-		{
-			return ts.oncancel();
-		}
-	});
-	$j(this._box).find(this._options.themeSelector).click(
+	$(this._box).find(this._options.themeSelector).click(
 		function()
 		{
 			ts.select(this);
@@ -43,35 +29,16 @@ ThemeSelector.prototype.init = function()
 	);
 }
 
-ThemeSelector.prototype.onaccept = function()
-{
-	var selected = this.select();
-	if (selected.length != 1)
-	{
-		return false;
-	}
-	var editor = S5Creator.singleton().getComponent("Editor");
-	var path = this._options.themePath + '/'
-			 + $j(selected).attr('theme') + '/' + this._options.editorCssName;
-	editor.setContentCss(path);
-	selected.removeClass(this._options.selectedClass);
-}
-
-ThemeSelector.prototype.oncancel = function()
-{
-	this.select().removeClass(this._options.selectedClass);
-}
 
 ThemeSelector.prototype.select = function(theme)
 {
 	if(theme)
 	{
-		$j(this._box).find(this._options.themeSelector).removeClass(this._options.selectedClass);
-		$j(theme).addClass(this._options.selectedClass);
-	}
-	else
-	{
-		return $j(this._box).find("." + this._options.selectedClass);
+		var editor = S5Creator.singleton().getComponent("Editor");
+		var path = this._options.themePath + '/'
+			 + $(theme).attr('theme') + '/' + this._options.editorCssName;
+		editor.setContentCss(path);
+		$(this._box).dialogClose();
 	}
 }
 
@@ -82,6 +49,21 @@ ThemeSelector.prototype.loadThemes = function()
 
 ThemeSelector.prototype.show = function()
 {
-	this._dlg.show();
+	var ts = this;
+	if(this._dlg_already_created)
+	{
+		$(this._box).dialogOpen();
+	}
+	else
+	{
+		$(this._box).addClass("flora").show().dialog({
+			title:"改变主题",
+			width:800,
+			height:250,
+			position:"center",
+			resize:false
+		});
+		this._dlg_already_created = true;
+	}
 }
 

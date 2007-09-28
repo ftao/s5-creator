@@ -14,7 +14,7 @@
  */
 function PHPBackend(options)
 {
-	this._options = $j.extend({
+	this._options = $.extend({
 		storageSelector: ".thumb",
 		url:"../backend/php/index.php",
 		idName:"presentation_id",
@@ -42,7 +42,7 @@ PHPBackend.prototype.load = function(pid,callback)
 	var backend = this;
 	var param = {};
 	param[this._options.idName] = pid;
-	$j.getJSON(
+	$.getJSON(
 		this.buildURL("load"),
 		param,
 		function(data)
@@ -72,8 +72,8 @@ PHPBackend.prototype.save = function(content,callback)
 
 	this._lastloaded.content = content ;
 	var param = {};
-	param[this._options.dataParamName] = $j.toJSON(this._lastloaded);
-	$j.post(
+	param[this._options.dataParamName] = $.toJSON(this._lastloaded);
+	$.post(
 		this.buildURL("save"),
 		param,
 		function(data){
@@ -95,9 +95,9 @@ PHPBackend.prototype.create = function(name,callback)
 
 	var backend = this;
 	var param = {};
-	param[this._options.dataParamName]=$j.toJSON({"name":name});
+	param[this._options.dataParamName]=$.toJSON({"name":name});
 
-	$j.getJSON(
+	$.getJSON(
 		this.buildURL("create"),
 		param,
 		function(data)
@@ -118,7 +118,7 @@ PHPBackend.prototype.create = function(name,callback)
 PHPBackend.prototype.list = function(callback)
 {
 	var backend = this;
-	$j.getJSON(
+	$.getJSON(
 		this.buildURL("list"),
 		{},
 		function(data)
@@ -147,7 +147,7 @@ PHPBackend.prototype.remove = function(callback)
 		return false;
 	}
 	param[this._options.idName] = pid;
-	$j.get(
+	$.get(
 		this.buildURL("remove"),
 		param,
 		function(data)

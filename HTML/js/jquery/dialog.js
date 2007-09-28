@@ -10,7 +10,6 @@
  *        Tao Fei  (Filia.Tao@gmail.com)
  */
 
-var $j = jQuery.noConflict();
 
 /**
  * @name Dialog
@@ -21,7 +20,7 @@ var $j = jQuery.noConflict();
 function Dialog(content,options)
 {
 	this._content = content;
-	this._options = $j.extend({
+	this._options = $.extend({
 		buttons:"accept,cancel",
 		buttonlabelcancel:"cancel",
 		buttonlabelaccept:"OK",
@@ -35,7 +34,7 @@ function Dialog(content,options)
 				+ "</div>",
 		css:{width:"auto",height:"auto"}
 	},options);
-	this._box = $j(this._options.template);
+	this._box = $(this._options.template);
 	this.init();
 }
 
@@ -50,9 +49,9 @@ Dialog.prototype.init = function()
 		accept: function(){dlg.hide()},
 		cancel: function(){dlg.hide()}
 	}
-	$j(this._box).find(".dlg_title").html(this._options.title);
-	$j(this._content).show();
-	$j(this._box).find(".dlg_content").append(this._content);
+	$(this._box).find(".dlg_title").html(this._options.title);
+	$(this._content).show();
+	$(this._box).find(".dlg_content").append(this._content);
 
 	//build the buttons
 	var buttons = this._options.buttons.split(',');
@@ -60,7 +59,7 @@ Dialog.prototype.init = function()
 	{
 		if(buttons[i] == "")
 			continue;
-		$j(this._box).find(".dlg_button").append(
+		$(this._box).find(".dlg_button").append(
 			  "<button class='"
 			+ buttons[i]
 			+ "'>"
@@ -77,7 +76,7 @@ Dialog.prototype.init = function()
 		//@see http://www.cnblogs.com/zitiger/archive/2007/06/08/776777.html
 		(function(){
 			var button = buttons[j];
-			$j(dlg._box).find("." + button).click(
+			$(dlg._box).find("." + button).click(
 				function(event){
 					var callback =	dlg._options["ondialog"+button];
 					var ret = true;
@@ -106,8 +105,8 @@ Dialog.prototype.init = function()
 Dialog.prototype.show = function()
 {
 
-	$j.blockUI(this._box,this._options.css);
-	//$j(this._box).width($j(this._box).find("dlg_content").width());
+	$.blockUI(this._box,this._options.css);
+	//$(this._box).width($(this._box).find("dlg_content").width());
 }
 
 /**
@@ -116,7 +115,7 @@ Dialog.prototype.show = function()
  */
 Dialog.prototype.hide = function()
 {
-	$j.unblockUI();
+	$.unblockUI();
 }
 
 /**
@@ -126,7 +125,7 @@ Dialog.prototype.hide = function()
  */
 Dialog.prototype.content = function(content)
 {
-	$j(this._box).find(".dlg_content").empty().append(content);
+	$(this._box).find(".dlg_content").empty().append(content);
 }
 
 /**
@@ -136,7 +135,7 @@ Dialog.prototype.content = function(content)
  */
 Dialog.prototype.title = function(title)
 {
-	$j(this._box).find(".dlg_title").empty().append(title);
+	$(this._box).find(".dlg_title").empty().append(title);
 }
 
 
@@ -197,7 +196,7 @@ Dialog.confirm = function(msg,callback)
  */
 Dialog.prompt = function(msg,defaultValue,callback)
 {
-	var content =$j("<input type=\"text\" class=\"input\" value=\""
+	var content =$("<input type=\"text\" class=\"input\" value=\""
 				+ defaultValue + "\"/>");
 	var dlg = new Dialog(content,{
 		title:msg,
@@ -206,7 +205,7 @@ Dialog.prompt = function(msg,defaultValue,callback)
 		buttonlabelcancel:"Cancel",
 		ondialogaccept: function(){
 			if(typeof callback == "function")
-				callback($j(dlg).find(".input").val());
+				callback($(dlg).find(".input").val());
 		},
 		ondialogcancel: function(){
 			if(typeof callback == "function")

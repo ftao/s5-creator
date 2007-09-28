@@ -24,7 +24,7 @@
  */
 function S5Creator(options)
 {
-	this._options = $j.extend({
+	this._options = $.extend({
 			thumbViewSelector:	".s5ThumbView",
 			editorId:	"s5Editor",
 			layoutSelector:		".s5Layout",
@@ -63,19 +63,19 @@ S5Creator.prototype.init = function()
 {
 	var s5c = this;
 	//creat and init the components
-	var tv =  $j(s5c._options.thumbViewSelector).thumbView(
+	var tv =  $(s5c._options.thumbViewSelector).thumbView(
 			s5c._options.thumbViewOptions
 	);
-	var layout = $j(s5c._options.layoutSelector).layoutChooser(
+	var layout = $(s5c._options.layoutSelector).layoutChooser(
 			s5c._options.layoutOptions
 	);
-	var pt = $j(s5c._options.presentationToolSelector).presentationTool(
+	var pt = $(s5c._options.presentationToolSelector).presentationTool(
 			s5c._options.presentationToolOptions
 	);
 	var editor = new Editor (s5c._options.editorId,
 			s5c._options.editorOptions
 	);
-	var ts = new ThemeSelector ($j(s5c._options.themeSelector),
+	var ts = new ThemeSelector ($(s5c._options.themeSelector),
 			s5c._options.themeOptions
 	);
 	this._components = {

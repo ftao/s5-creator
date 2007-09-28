@@ -1,4 +1,4 @@
-$j.fn.layoutChooser = function(options){
+jQuery.fn.layoutChooser = function(options){
 	return new Layout(this,options);
 };
 
@@ -8,7 +8,7 @@ $j.fn.layoutChooser = function(options){
  */
 function Layout(box,options)
 {
-	var options = $j.extend({
+	var options = $.extend({
 		layoutSelector:".slide",
 		selectedClass:"selected",
 		okSelector:"button.ok",
@@ -16,6 +16,7 @@ function Layout(box,options)
 	}, options);
 	this._options = options;
 	this._box = box;
+
 	this.init();
 }
 
@@ -27,19 +28,7 @@ Layout.prototype.init  = function()
 {
 	var layout = this;
 
-	this._dlg = new Dialog(this._box,{
-		title:"选择幻灯片布局模板",
-		buttons:"accept,cancel",
-		ondialogaccept:function()
-		{
-			return layout.onaccept();
-		},
-		ondialogcancel:function()
-		{
-			return layout.oncancel();
-		}
-	});
-	$j(this._box).find(this._options.layoutSelector).click(
+	$(this._box).find(this._options.layoutSelector).click(
 		function()
 		{
 			layout.select(this);
@@ -56,39 +45,12 @@ Layout.prototype.select = function(layout)
 {
 	if(layout)
 	{
-		$j(this._box).find(this._options.layoutSelector).removeClass(this._options.selectedClass);
-		$j(layout).addClass(this._options.selectedClass);
-	}
-	else
-	{
-		return $j(this._box).find("." + this._options.selectedClass);
+		var tv = S5Creator.singleton().getComponent("ThumbView");
+		tv.add(new Slide($(layout).html()));
+		$(this._box).dialogClose();
 	}
 }
 
-/**
- * @name onaccept
- * @description this function will be called when the ok button is clicked
- */
-Layout.prototype.onaccept = function()
-{
-	var selected = this.select();
-	if (selected.length != 1)
-	{
-		return false;
-	}
-	var tv = S5Creator.singleton().getComponent("ThumbView");
-	tv.add(new Slide(selected.html()));
-	selected.removeClass(this._options.selectedClass);
-}
-
-/**
- * @name oncacnel
- * @description this function will be called when the cancel button is clicked
- */
-Layout.prototype.oncancel = function()
-{
-	this.select().removeClass(this._options.selectedClass);
-}
 
 /****************************************************************
  *  下面是公共接口, 其他代码只应该使用这些函数
@@ -106,5 +68,21 @@ Layout.prototype.get = function()
 
 Layout.prototype.show = function()
 {
-	this._dlg.show();
+	var layout = this;
+	if(this._dlg_already_created)
+	{
+		$(this._box).dialogOpen();
+	}
+	else
+	{
+		$(this._box).addClass("flora").show().dialog({
+			'title':"选择幻灯片布局模板",
+			width:440,
+			height:200,
+			position:"center",
+			resize:false
+		});
+		this._dlg_already_created = true;
+	}
 }
+

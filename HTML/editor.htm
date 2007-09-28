@@ -7,21 +7,22 @@
 <title>S5 Editor</title>
 <link rel="stylesheet" href="css/layout.css" media="screen"/>
 <!--script type="text/javascript" src="js/firebug-lite/firebug.js"></script-->
+<!--script type="text/javascript" src="js/jquery/jquery-latest.pack.js"></script-->
 <script type="text/javascript" src="js/jquery/jquery-1.2.1.js"></script>
-<script type="text/javascript">
-	//console = {log : function(){}};
-	var $j = jQuery.noConflict();
-</script>
+<script type="text/javascript" src="js/jquery.ui-1.0/ui.mouse.js"></script>
+<script type="text/javascript" src="js/jquery.ui-1.0/ui.draggable.js"></script>
+<script type="text/javascript" src="js/jquery.ui-1.0//ui.draggable.ext.js"></script>
 
 <script type="text/javascript" src="js/tiny_mce/tiny_mce_src.js"></script>
 <script type="text/javascript" src="js/jquery/json.js"></script>
 <script type="text/javascript" src="js/jquery/jquery.blockui.js"></script>
 <script type="text/javascript" src="js/jquery/dialog.js"></script>
+
+<script type="text/javascript">
+	console = {log : function(){}};
+</script>
 <script type="text/javascript" src="js/s5creator/slide.js"></script>
-
-
 <script type="text/javascript" src="js/s5creator/editor.js"></script>
-
 <script type="text/javascript" src="js/s5creator/thumbView.js"></script>
 <script type="text/javascript" src="js/s5creator/layout.js"></script>
 <script type="text/javascript" src="js/s5creator/themeselector.js"></script>
@@ -32,6 +33,12 @@
 <script type="text/javascript" >
 
 </script>
+<link rel="stylesheet" href="js/jquery.ui-1.0/themes/flora/flora.all.css" type="text/css" media="screen" title="Flora (Default)">
+<script type="text/javascript" src="js/jquery.ui-1.0/jquery.dimensions.js"></script>
+<script type="text/javascript" src="js/jquery.ui-1.0/ui.dialog.js"></script>
+<script type="text/javascript" src="js/jquery.ui-1.0/ui.resizable.js"></script>
+<script type="text/javascript" src="js/jquery.ui-1.0/ui.mouse.js"></script>
+<script type="text/javascript" src="js/jquery.ui-1.0/ui.draggable.js"></script>
 </head>
 <body>
 <div id="contentWrapper">
@@ -82,7 +89,7 @@
 		</form>
 	</div>
 </div>
-<!--div id="hidden" -->
+<div id="hidden" style="visibility:none;">
 	<div id="layout_switch">
 		<ul>
 			<li class="layout" layout="Title-Only">
@@ -128,6 +135,6 @@
 			</li>
 		</ul>
 	</div>
-<!--/div-->
+</div>
 </body>
 </html>

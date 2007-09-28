@@ -26,7 +26,7 @@
 	}
 
 	$.ui.dialog = function(el, o) {
-		
+
 		var options = {
 			width: 300,
 			height: 200,
@@ -37,6 +37,7 @@
 			resize: true,
 			shadow: false // It's quite slow
 		};
+
 		var o = o || {}; $.extend(options, o); //Extend and copy options
 		this.element = el; var self = this; //Do bindings
 		$.data(this.element, "ui-dialog", this);
@@ -48,7 +49,7 @@
 		var uiDialog = uiDialogContainer.parent()
 			.addClass('ui-dialog').addClass(uiDialogContent.attr('className'))
 			.css({position: 'absolute', width: options.width, height: options.height});
-    
+
         if (options.modal == false && options.resize == true) {
 		    uiDialog.append("<div class='ui-resizable-n ui-resizable-handle'></div>")
                 .append("<div class='ui-resizable-s ui-resizable-handle'></div>")
@@ -58,7 +59,7 @@
                 .append("<div class='ui-resizable-se ui-resizable-handle'></div>")
                 .append("<div class='ui-resizable-sw ui-resizable-handle'></div>")
                 .append("<div class='ui-resizable-nw ui-resizable-handle'></div>");
-      
+
 		    uiDialog.resizable();
 		}
 
@@ -68,7 +69,7 @@
 		uiDialogTitlebar.append('<span class="ui-dialog-title">' + title + '</span>');
 		uiDialogTitlebar.append('<div class="ui-dialog-titlebar-close"></div>');
 		$('.ui-dialog-titlebar-close', uiDialogTitlebar)
-			.hover(function() { $(this).addClass('ui-dialog-titlebar-close-hover'); }, 
+			.hover(function() { $(this).addClass('ui-dialog-titlebar-close-hover'); },
 			       function() { $(this).removeClass('ui-dialog-titlebar-close-hover'); })
 			.mousedown(function(ev) {
 				ev.stopPropagation();
@@ -86,11 +87,11 @@
 		    	uiDialogButtonPane.append(btn);
 		    });
 		}
-        
+
         if (options.modal == false && options.drag == true) {
 		    uiDialog.draggable({ handle: '.ui-dialog-titlebar' });
         }
-        
+
 		this.open = function() {
 			var wnd = $(window), top = 0, left = 0;
 			switch (options.position) {
