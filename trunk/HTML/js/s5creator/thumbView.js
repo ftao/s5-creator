@@ -28,7 +28,7 @@ jQuery.fn.parentsOrSelf = function(jqexpr) {
     return n.parents(jqexpr).slice(0,1);
 };
 
-$j.fn.thumbView = function(options){
+jQuery.fn.thumbView = function(options){
 	return new ThumbView(this,options);
 };
 
@@ -41,7 +41,7 @@ $j.fn.thumbView = function(options){
  */
 function ThumbView(box,options)
 {
-	this._options = $j.extend({
+	this._options = $.extend({
 		toolbarSelector:	 	".slide_toolbar",
 		toolbarItemSelector: 	".slide_toolbar ul li",
 		actionNameAttr: 		"action",
@@ -65,33 +65,33 @@ ThumbView.prototype.init = function()
 {
 	var tv  = this;
 	//点击选择
-	$j(this._box).find(this._options.thumbSelector).click(
+	$(this._box).find(this._options.thumbSelector).click(
 		function(event){
 			var target = event.target;
 			//parerntsOfSelf is in jquery.wymeditor.js
-			target = $j(target).parentsOrSelf(tv._options.slideSelector);
-			//if (!$j(target).is(tv._options.slideSelector))
-			//	target = $j(target).parents(tv._options.slideSelector);
+			target = $(target).parentsOrSelf(tv._options.slideSelector);
+			//if (!$(target).is(tv._options.slideSelector))
+			//	target = $(target).parents(tv._options.slideSelector);
 			tv.select(target);
 		}
 	)
 
 	//双击编辑
-	$j(this._box).find(this._options.thumbSelector).dblclick(
+	$(this._box).find(this._options.thumbSelector).dblclick(
 		function(event){
 			var target = event.target;
-			target = $j(target).parentsOrSelf(tv._options.slideSelector);
-			//if (!$j(target).is(tv._options.slideSelector))
-			//	target = $j(target).parents(tv._options.slideSelector);
-			if ($j(target).length == 1)
+			target = $(target).parentsOrSelf(tv._options.slideSelector);
+			//if (!$(target).is(tv._options.slideSelector))
+			//	target = $(target).parents(tv._options.slideSelector);
+			if ($(target).length == 1)
 				tv.editSlide(target);
 		}
 	)
 
 
-	$j(this._box).find(this._options.toolbarItemSelector).click(
+	$(this._box).find(this._options.toolbarItemSelector).click(
 		function(event){
-			var action = $j(this).attr('action');
+			var action = $(this).attr('action');
 			console.log(action);
 			switch(action)
 			{
@@ -108,7 +108,7 @@ ThumbView.prototype.init = function()
 			}
 		}
 	)
-	$j(this._box).find(this._options.slideSelector).draggable();
+
 }
 /**
  * 返回当前选择的幻灯片
@@ -118,16 +118,18 @@ ThumbView.prototype.init = function()
  */
 ThumbView.prototype.select = function(slide)
 {
-
+	var tv = this;
 	if(!slide)
 	{
-		return $j(this._box).find("." + this._options.selectedClass);
+		return $(this._box).find("." + this._options.selectedClass);
 	}
 	else
 	{
 		console.log("select " + slide);
-		$j(slide).toggleClass(this._options.selectedClass);
+		$(slide).toggleClass(this._options.selectedClass);
+
 	}
+
 }
 
 
@@ -138,7 +140,7 @@ ThumbView.prototype.select = function(slide)
 ThumbView.prototype.update = function(slide)
 {
 	var selector = this._options.thumbSelector + " ." + this._options.editingClass;
-	var editing = $j(this._box).find(selector);
+	var editing = $(this._box).find(selector);
 	editing.html(slide.content);
 }
 
@@ -148,14 +150,14 @@ ThumbView.prototype.addSlide = function(content,after)
 
 	//choose layout here
 	var content = content || "";
-	var newSlide = $j(this._options.slideTemplate.replaceAll("{SLIDE_CONTENT}",content));
+	var newSlide = $(this._options.slideTemplate.replaceAll("{SLIDE_CONTENT}",content));
 	if(after && after.length == 1)
 	{
-		$j(after).after(newSlide);
+		$(after).after(newSlide);
 	}
 	else
 	{
-		$j(this._box).find(this._options.thumbSelector).append(newSlide);
+		$(this._box).find(this._options.thumbSelector).append(newSlide);
 	}
 	this.editSlide(newSlide);
 }
@@ -168,14 +170,14 @@ ThumbView.prototype.addSlide = function(content,after)
  */
 ThumbView.prototype.editSlide = function(slide){
 
-	console.log("edit slide " + $j(slide).html());
+	console.log("edit slide " + $(slide).html());
 	var slide = slide || this.select();
-	if(!slide || $j(slide).length != 1)	// no select or more than one selected
+	if(!slide || $(slide).length != 1)	// no select or more than one selected
 	{
-		console.log("will not edit " + $j(slide).get());
+		console.log("will not edit " + $(slide).get());
 		return false;
 	}
-	if($j(slide).is("." + this._options.editingClass))//已经在编辑状态
+	if($(slide).is("." + this._options.editingClass))//已经在编辑状态
 	{
 		console.log("already editing this slide");
 		return false;
@@ -185,11 +187,11 @@ ThumbView.prototype.editSlide = function(slide){
 	var editor = S5Creator.singleton().getComponent("Editor")
 	this.set(editor.get());
 
-	$j(this._box)
+	$(this._box)
 		.find("." + this._options.editingClass)
 		.removeClass(this._options.editingClass);
 
-	$j(slide).addClass(this._options.editingClass);	//应该产生一些效果
+	$(slide).addClass(this._options.editingClass);	//应该产生一些效果
 
 	//更新编辑器
 	editor.set(this.get());
@@ -208,11 +210,11 @@ ThumbView.prototype.deleteSlide = function(slide){
 		console.log("nothig to delete");
 		return false;
 	}
-	if($j(slide).is("." + this._options.editingClass))
+	if($(slide).is("." + this._options.editingClass))
 	{
 		S5Creator.singleton().getComponent("Editor").set(new Slide(" "));
 	}
-	$j(slide).remove();
+	$(slide).remove();
 };
 
 /****************************************************************
@@ -225,7 +227,7 @@ ThumbView.prototype.deleteSlide = function(slide){
  */
 ThumbView.prototype.get = function()
 {
-	return new Slide($j(this._box).find("." + this._options.editingClass).html());
+	return new Slide($(this._box).find("." + this._options.editingClass).html());
 }
 
 /**
@@ -234,7 +236,7 @@ ThumbView.prototype.get = function()
  */
 ThumbView.prototype.set = function(slide)
 {
-	$j(this._box).find("." + this._options.editingClass).html(slide.content);
+	$(this._box).find("." + this._options.editingClass).html(slide.content);
 }
 
 ThumbView.prototype.add = function(slide)
@@ -252,12 +254,12 @@ ThumbView.prototype.update = function()
 ThumbView.prototype.getAll = function()
 {
 	this.set(S5Creator.singleton().getComponent("Editor").get());
-	return $j(this._box).find(this._options.thumbSelector).html();
+	return $(this._box).find(this._options.thumbSelector).html();
 }
 
 ThumbView.prototype.setAll = function(html)
 {
-	$j(this._box).find(this._options.thumbSelector).html(html);
+	$(this._box).find(this._options.thumbSelector).html(html);
 	S5Creator.singleton().getComponent("Editor").set(new Slide(" "));
 	this.editSlide();
 }
@@ -268,7 +270,7 @@ ThumbView.prototype.setAll = function(html)
  */
 ThumbView.prototype.focus = function(index)
 {
-	var slides = $j(this._box).find(this._options.slideSelector);
+	var slides = $(this._box).find(this._options.slideSelector);
 	if (index < 0)
 		index = slides.length + index;
 	if(index < 0 || index >= slides.length)
@@ -281,7 +283,7 @@ ThumbView.prototype.focus = function(index)
  */
 ThumbView.prototype.clean = function()
 {
-	var slides = $j(this._box).find(this._options.slideSelector);
+	var slides = $(this._box).find(this._options.slideSelector);
 	slides.removeClass(this._options.selectedClass);
 	slides.removeClass(this._options.editingClass);
 }

@@ -10,10 +10,11 @@ tinyMCE.init({
 	theme_advanced_buttons3 : "",
 	plugins :"table,advhr,advimage,advlink",
 	width : "600",
-	height: "350"
+	height: "350",
+	content_css : "s5themes/ui/blank/editor.css"
 });
 
-$j(function() {
+jQuery(function() {
 
 	S5Creator.singleton({
 			thumbViewSelector:	"#left",

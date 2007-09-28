@@ -2,7 +2,6 @@
  * TinyMCE Adapter for S5Creator
  */
 
-//var $j = jQuery.noConflict();
 
 function Editor(editor_id,options)
 {
@@ -36,18 +35,18 @@ Editor.prototype.setContentCss = function(css_file_path)
 {
 	console.log(css_file_path);
 	var doc = this._mce.getDoc();
-	var csses = $j(doc).find("head").find("link[@rel=stylesheet]");
+	var csses = $(doc).find("head").find("link[@rel=stylesheet]");
 	console.log(csses);
 	for (var i = 0 ; i < csses.length; i++ )
 	{
 
-		if ($j(csses[i]).attr('href').indexOf("tiny_mce") == -1)
+		if ($(csses[i]).attr('href').indexOf("tiny_mce") == -1)
 		{
-			$j(csses[i]).remove();
+			$(csses[i]).remove();
 		}
 	}
 
-	$j(doc).find("head").append(
+	$(doc).find("head").append(
 		"<link rel='stylesheet' href='"
 		+ css_file_path
 		+ "'/>"

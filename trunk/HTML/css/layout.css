@@ -5,6 +5,7 @@ body {
 	font-family: arial,helvetica;
 	margin: 0;
 	padding: 0;
+	width:100%;
 }
 #contentWrapper {
 	z-index:10
@@ -149,8 +150,8 @@ theme selector
 
 #theme_selector {
 	display:none;
-	width:700px;
-	height:150px;
+	width:800px;
+	height:250px;
 	z-index:2000;
 }
 
@@ -165,11 +166,12 @@ theme selector
 	font-size:100%;
 	height:5px;
 }
+/*
 #theme_selector .selected {
 	background-color:red;
 	border:1px;
 }
-
+*/
 
 /*
 create presentation dialog

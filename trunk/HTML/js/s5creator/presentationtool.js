@@ -5,7 +5,7 @@
  * 问题是和backend部分如何联系?
  */
 
-$j.fn.presentationTool = function(options)
+jQuery.fn.presentationTool = function(options)
 {
 	return new PresentationTool(this,options);
 }
@@ -17,7 +17,7 @@ $j.fn.presentationTool = function(options)
  */
 function PresentationTool(box,options)
 {
-	this._options = $j.extend({
+	this._options = $.extend({
 		toolbarItemSelector: ".toolbar ul li",
 		infobarItemSelector: ".info span",
 		messageSelector: ".info .message",
@@ -32,9 +32,9 @@ PresentationTool.prototype.init = function()
 	var pt = this;
 
 
-	$j(this._box).find(this._options.toolbarItemSelector).click(
+	$(this._box).find(this._options.toolbarItemSelector).click(
 		function(event){
-			var action = $j(this).attr('action');
+			var action = $(this).attr('action');
 			console.log(action);
 			switch(action)
 			{
@@ -93,10 +93,10 @@ PresentationTool.prototype.create  = function(name)
 		name,
 		function(data)
 		{
-			$j(pt._box).find(pt._options.messageSelector).html(
+			$(pt._box).find(pt._options.messageSelector).html(
 				"文件已加载"
 			);
-			$j(pt._box).find(pt._options.nameSelector).html(
+			$(pt._box).find(pt._options.nameSelector).html(
 				data.name
 			);
 			S5Creator.singleton().getComponent("ThumbView").setAll(data.content);
@@ -119,10 +119,10 @@ PresentationTool.prototype.load = function(pid)
 		function(data)
 		{
 			console.log(data);
-			$j(pt._box).find(pt._options.messageSelector).html(
+			$(pt._box).find(pt._options.messageSelector).html(
 				"文件已加载"
 			);
-			$j(pt._box).find(pt._options.nameSelector).html(
+			$(pt._box).find(pt._options.nameSelector).html(
 				data.name
 			);
 			var tv = S5Creator.singleton().getComponent("ThumbView");
@@ -175,11 +175,11 @@ PresentationTool.prototype.list = function()
 				html += "</li>";
 			}
 			html += "</ol>";
-			var list = $j(html);
-			$j(list).find("li").click(
+			var list = $(html);
+			$(list).find("li").click(
 				function(event){
 					dlg.hide();
-					var pid = $j(this).attr("pid");
+					var pid = $(this).attr("pid");
 					pt.load(pid);
 				}
 			);
@@ -201,7 +201,7 @@ PresentationTool.prototype.remove = function()
 		function(data)
 		{
 			var msg = (data == '1'?"文件已删除":"文件删除失败");
-			$j(pt._box).find(pt._options.messageSelector).html(msg);
+			$(pt._box).find(pt._options.messageSelector).html(msg);
 			if(data == "1")
 			{
 				var tv = S5Creator.singleton().getComponent("ThumbView").setAll("");
