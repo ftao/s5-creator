@@ -37,7 +37,7 @@ ThemeSelector.prototype.select = function(theme)
 		var path = this._options.themePath + '/'
 			 + $(theme).attr('theme') + '/' + this._options.editorCssName;
 		//注意这里
-		S5Creator.singleton().notify("theme_change",path);
+		$.Observer.notify("theme_change",path);
 		$(this._box).dialogClose();
 	}
 }

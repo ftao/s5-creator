@@ -18,13 +18,13 @@ Editor.prototype.init = function()
 	var editor = this;
 
 	//注册主题改变事件
-	S5Creator.singleton().register(
+	$.Observer.register(
 		"theme_change",
 		this.setContentCss.bind(this)
 	);
 
 	//注册幻灯片改变事件 (也就是编辑另一个幻灯片)
-	S5Creator.singleton().register(
+	$.Observer.register(
 		"slide_change",
 		this.changeSlide.bind(this)
 	)
@@ -46,7 +46,7 @@ Editor.prototype.notifyUpdate = function()
 	var slide = this.get();
 	if(this._slide && this._slide.content != slide.content)	// dirty now
 	{
-		S5Creator.singleton().notify("editor_dirty",slide)
+		$.Observer.notify("editor_dirty",slide)
 		this._slide = slide;
 	}
 }

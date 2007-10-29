@@ -7,6 +7,10 @@
  * licensed under GPL license.
  */
 
+jQuery.fn.thumbView = function(options){
+	return new ThumbView(this,options);
+};
+
 /**
  * ThumbView 需要暴露给外部的接口
  *  1. 设置/获得当前编辑的幻灯片 (内容, 可能有其他信息, 封装成Slide 对象)
@@ -79,11 +83,18 @@ ThumbView.prototype.init = function()
 		}
 	)
 
-	S5Creator.singleton().register(
+	$.Observer.register(
 		"editor_dirty",
 		this.set.bind(this)
 	);
-
+	$.Observer.register(
+		"presentation_loaded",
+		function(data){
+			tv.setAll(data.content);
+			tv.clean();
+			tv.focus(0);
+		}
+	);
 }
 /**
  * 返回当前选择的幻灯片
@@ -155,7 +166,7 @@ ThumbView.prototype.editSlide = function(slide){
 		return false;
 	}
 	//通知 "改变正在编辑的幻灯片"
-	S5Creator.singleton().notify("slide_change",new Slide($(slide).html()));
+	$.Observer.notify("slide_change",new Slide($(slide).html()));
 
 	$(this._box)
 		.find("." + this._options.editingClass)
@@ -191,7 +202,7 @@ ThumbView.prototype.deleteSlide = function(slide){
 		}
 		else	// no slide
 		{
-			S5Creator.singleton().notify("slide_change",null);
+			$.Observer.notify("slide_change",null);
 		}
 
 	}
@@ -225,12 +236,7 @@ ThumbView.prototype.add = function(slide)
 	this.addSlide(slide.content);
 }
 
-/*
-ThumbView.prototype.update = function()
-{
-	this.set(S5Creator.singleton().getComponent("Editor").get());
-}
-*/
+
 
 ThumbView.prototype.getAll = function()
 {
@@ -241,8 +247,7 @@ ThumbView.prototype.getAll = function()
 ThumbView.prototype.setAll = function(html)
 {
 	$(this._box).find(this._options.thumbSelector).html(html);
-	S5Creator.singleton().getComponent("Editor").set(new Slide(" "));
-	this.editSlide();
+
 }
 
 /**
