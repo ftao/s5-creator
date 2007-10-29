@@ -3,7 +3,9 @@
  * 主要是新建/加载/保存/另存为 演示文稿
  * 其他附加功能可能有 作者信息/时间日期/其他信息
  * 问题是和backend部分如何联系?
+ *
  */
+// 我在考虑简化成一个简单的工具栏, 使用jquery 已有的工具
 
 jQuery.fn.presentationTool = function(options)
 {
@@ -83,6 +85,7 @@ PresentationTool.prototype.init = function()
 
 }
 
+// should move to some other place
 /**
  * create a new presentation with name
  * @param {String} name
@@ -102,6 +105,7 @@ PresentationTool.prototype.create  = function(name)
 			$(pt._box).find(pt._options.nameSelector).html(
 				data.name
 			);
+			//$.Observer.notify("presentation_loaded",data);
 			S5Creator.singleton().getComponent("ThumbView").setAll(data.content);
 		}
 	);
@@ -128,9 +132,7 @@ PresentationTool.prototype.load = function(pid)
 			$(pt._box).find(pt._options.nameSelector).html(
 				data.name
 			);
-			var tv = S5Creator.singleton().getComponent("ThumbView");
-			tv.setAll(data.content);
-			tv.focus(0);
+			$.Observer.notify("presentation_loaded",data);
 		}
 	);
 }
@@ -145,8 +147,6 @@ PresentationTool.prototype.save = function()
 	console.log("saveing  ");
 	var pt = this;
 	var tv = S5Creator.singleton().getComponent("ThumbView");
-	//不需要做清理, 保持所有状态.
-	//tv.clean();
 	var content = tv.getAll();
 	var backend = S5Creator.singleton().getComponent("Backend");
 	backend.save(content,function(){});
@@ -155,6 +155,7 @@ PresentationTool.prototype.save = function()
 /**
  * list the files
  * 列出文件(名称)
+ * 不应该发在这里
  */
 PresentationTool.prototype.list = function()
 {
@@ -197,6 +198,7 @@ PresentationTool.prototype.list = function()
 /**
  * remove current file
  * 删除当前文件
+ * 不应该放在这里
  */
 PresentationTool.prototype.remove = function()
 {

@@ -24,5 +24,8 @@ jQuery(function() {
 			themeSelector:		"#theme_selector",
 			backend:			PHPBackend
 	});
+	var pid = parseURL(document.location.href).query;
+	console.log(pid);
+	S5Creator.singleton().getComponent('PresentationTool').load(pid);
 
 });
