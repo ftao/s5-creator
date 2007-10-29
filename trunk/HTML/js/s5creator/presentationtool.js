@@ -31,7 +31,6 @@ PresentationTool.prototype.init = function()
 {
 	var pt = this;
 
-
 	$(this._box).find(this._options.toolbarItemSelector).click(
 		function(event){
 			var action = $(this).attr('action');
@@ -49,22 +48,24 @@ PresentationTool.prototype.init = function()
 				//or create on time and reuse it
 				//if(!this._inputNameDlg)
 				//{
-					this._inputNameDlg = Dialog.prompt(
-						'输入文件名称',
-						'新建演示文稿',
-						function(value)
-						{
-							if (value != null)
-							{
-								if(value == "")
- 									value = "new presentation";
-								pt.create(value);
-							}
+				var input = $("<input type=\"text\" class=\"input\" value=\""
+				+ '新建演示文稿' + "\"/>");
+				input.appendTo("body").addClass("flora").dialog({
+					buttons: {
+						'确定':function(){
+							var value = input.val();
+							if(value == "")
+ 								return;
+							pt.create(value);
+							input.dialogClose();
 						}
-					);
-				//}
-				//else
-				//	this._inputNameDlg.show();
+					},
+					height:100,
+					'title':'输入文件名称',
+					position:"center",
+					resize:false
+				});
+				input[0].select();
 				break;
 			case 'remove_pres':
 				pt.remove();
@@ -72,6 +73,7 @@ PresentationTool.prototype.init = function()
 			case 'preview_pres':
 				pt.save();
 				pt.preview();
+				break;
 			case 'select_theme_pres':
 				S5Creator.singleton().getComponent("ThemeSelector").show();
 				break;
@@ -93,6 +95,7 @@ PresentationTool.prototype.create  = function(name)
 		name,
 		function(data)
 		{
+			//S5Creator.singleton().presentaion = data;
 			$(pt._box).find(pt._options.messageSelector).html(
 				"文件已加载"
 			);
@@ -155,13 +158,14 @@ PresentationTool.prototype.save = function()
  */
 PresentationTool.prototype.list = function()
 {
+
 	var pt = this;
-	var dlg = new Dialog("正在获取文件列表...",{
-		buttons:"cancel",
-		title:"",
-		ondialogcancle:function(){ dlg.hide();}
+	var dlg = $("<div >正在获取文件列表...</div>").appendTo("body").addClass("flora").dialog({
+			'title':"",
+			position:"center",
+			resize:false
 	});
-	dlg.show();
+
 
 	var backend = S5Creator.singleton().getComponent("Backend");
 	backend.list(
@@ -178,13 +182,14 @@ PresentationTool.prototype.list = function()
 			var list = $(html);
 			$(list).find("li").click(
 				function(event){
-					dlg.hide();
+					dlg.dialogClose();
 					var pid = $(this).attr("pid");
 					pt.load(pid);
 				}
 			);
-			dlg.title("请单击文件载入");
-			dlg.content(list);
+
+			dlg.empty().append(list);
+			dlg.parents(".ui-dialog").height(50 + list.height());
 		}
 	);
 }
