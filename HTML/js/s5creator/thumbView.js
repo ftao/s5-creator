@@ -7,31 +7,6 @@
  * licensed under GPL license.
  */
 
-/** should move to somewhere else*/
-String.prototype.replaceAll = function(old, rep) {
-  var rExp = new RegExp(old, "g");
-  return(this.replace(rExp, rep));
-};
-
-// Returns the Parents or the node itself
-// jqexpr = a jQuery expression
-jQuery.fn.parentsOrSelf = function(jqexpr) {
-  var n = this;
-
-  if (n[0].nodeType == 3)
-    n = n.parents().slice(0,1);
-
-//  if (n.is(jqexpr)) // XXX should work, but doesn't (probably a jQuery bug)
-  if (n.filter(jqexpr).size() == 1)
-    return n;
-  else
-    return n.parents(jqexpr).slice(0,1);
-};
-
-jQuery.fn.thumbView = function(options){
-	return new ThumbView(this,options);
-};
-
 /**
  * ThumbView 需要暴露给外部的接口
  *  1. 设置/获得当前编辑的幻灯片 (内容, 可能有其他信息, 封装成Slide 对象)
@@ -59,7 +34,7 @@ function ThumbView(box,options)
 }
 
 /**
- * TODO:关于单击/双击事件 以后增加的slide 如何增加这些事件
+ *
  */
 ThumbView.prototype.init = function()
 {
@@ -68,10 +43,7 @@ ThumbView.prototype.init = function()
 	$(this._box).find(this._options.thumbSelector).click(
 		function(event){
 			var target = event.target;
-			//parerntsOfSelf is in jquery.wymeditor.js
 			target = $(target).parentsOrSelf(tv._options.slideSelector);
-			//if (!$(target).is(tv._options.slideSelector))
-			//	target = $(target).parents(tv._options.slideSelector);
 			tv.select(target);
 		}
 	)
@@ -81,8 +53,6 @@ ThumbView.prototype.init = function()
 		function(event){
 			var target = event.target;
 			target = $(target).parentsOrSelf(tv._options.slideSelector);
-			//if (!$(target).is(tv._options.slideSelector))
-			//	target = $(target).parents(tv._options.slideSelector);
 			if ($(target).length == 1)
 				tv.editSlide(target);
 		}
@@ -109,6 +79,11 @@ ThumbView.prototype.init = function()
 		}
 	)
 
+	S5Creator.singleton().register(
+		"editor_dirty",
+		this.set.bind(this)
+	);
+
 }
 /**
  * 返回当前选择的幻灯片
@@ -127,7 +102,6 @@ ThumbView.prototype.select = function(slide)
 	{
 		console.log("select " + slide);
 		$(slide).toggleClass(this._options.selectedClass);
-
 	}
 
 }
@@ -147,8 +121,6 @@ ThumbView.prototype.update = function(slide)
 ThumbView.prototype.addSlide = function(content,after)
 {
 	var after = after || this.select();
-
-	//choose layout here
 	var content = content || "";
 	var newSlide = $(this._options.slideTemplate.replaceAll("{SLIDE_CONTENT}",content));
 	if(after && after.length == 1)
@@ -182,10 +154,8 @@ ThumbView.prototype.editSlide = function(slide){
 		console.log("already editing this slide");
 		return false;
 	}
-
-	//更新现有编辑内容
-	var editor = S5Creator.singleton().getComponent("Editor")
-	this.set(editor.get());
+	//通知 "改变正在编辑的幻灯片"
+	S5Creator.singleton().notify("slide_change",new Slide($(slide).html()));
 
 	$(this._box)
 		.find("." + this._options.editingClass)
@@ -193,8 +163,6 @@ ThumbView.prototype.editSlide = function(slide){
 
 	$(slide).addClass(this._options.editingClass);	//应该产生一些效果
 
-	//更新编辑器
-	editor.set(this.get());
 };
 
 /**
@@ -212,7 +180,20 @@ ThumbView.prototype.deleteSlide = function(slide){
 	}
 	if($(slide).is("." + this._options.editingClass))
 	{
-		S5Creator.singleton().getComponent("Editor").set(new Slide(" "));
+		// try to find a slide to edit
+		// try next slide
+		var siblings = $(slide).next(this._options.slideSelector);
+		if(siblings.length == 0) // try previous slide
+			siblings = $(slide).prev(this._options.slideSelector);
+		if(siblings.length > 0 )
+		{
+			this.edit(siblings[0]);
+		}
+		else	// no slide
+		{
+			S5Creator.singleton().notify("slide_change",null);
+		}
+
 	}
 	$(slide).remove();
 };

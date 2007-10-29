@@ -39,6 +39,8 @@ function S5Creator(options)
 			themeOptions: {},
 			backednOptions:{}
 		},options);
+	this.presentaion = null;	// 保存当前编辑的演示文稿
+	this._topics = {};
 	//this._box = box || document.body;
 }
 
@@ -107,5 +109,23 @@ S5Creator.prototype.update = function(from,to)
 {
 	this.getComponent(to).set(this.getComponent(from).get());
 }
+
+S5Creator.prototype.register = function(topic,observer)
+{
+	if (!(this._topics[topic] instanceof Array))
+		this._topics[topic] = [];
+	this._topics[topic].push(observer);
+}
+
+S5Creator.prototype.notify = function(topic,data)
+{
+	console.log("notify " + topic);
+	if (!(this._topics[topic] instanceof Array))
+		return ;
+	this._topics[topic].each(function(observer){
+		observer.call(null,data);
+	})
+}
+
 
 

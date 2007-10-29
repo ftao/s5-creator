@@ -34,10 +34,10 @@ ThemeSelector.prototype.select = function(theme)
 {
 	if(theme)
 	{
-		var editor = S5Creator.singleton().getComponent("Editor");
 		var path = this._options.themePath + '/'
 			 + $(theme).attr('theme') + '/' + this._options.editorCssName;
-		editor.setContentCss(path);
+		//注意这里
+		S5Creator.singleton().notify("theme_change",path);
 		$(this._box).dialogClose();
 	}
 }
@@ -66,4 +66,3 @@ ThemeSelector.prototype.show = function()
 		this._dlg_already_created = true;
 	}
 }
-
