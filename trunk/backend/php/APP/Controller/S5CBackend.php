@@ -49,6 +49,7 @@ class Controller_S5CBackend extends FLEA_Controller_Action
     function actionSave()
     {
     	$data = (array)json_decode($_POST['data']);
+    	//print_r($data);
 		$modelPres =& new Presentations();
 		echo (int)$modelPres->save($data);
     }

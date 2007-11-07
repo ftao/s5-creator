@@ -6,14 +6,6 @@ Function.prototype.bind = function(obj)
 	}
 }
 
-Array.prototype.each = function(func)
-{
-	var len = this.length;
-	for(var i = 0; i < len ; i++)
-	{
-		func(this[i]);
-	}
-}
 
 //copy from jquery.wymeditor.js
 
@@ -53,7 +45,7 @@ jQuery.Observer = {
 		console.log("notify " + topic);
 		if (!(this._topics[topic] instanceof Array))
 			return ;
-		this._topics[topic].each(function(observer){
+		$.each(this._topics[topic],function(i,observer){
 			observer.call(null,data);
 		});
 	}

@@ -126,13 +126,10 @@ PresentationTool.prototype.load = function(pid)
 		function(data)
 		{
 			console.log(data);
-			$(pt._box).find(pt._options.messageSelector).html(
-				"文件已加载"
-			);
 			$(pt._box).find(pt._options.nameSelector).html(
 				data.name
 			);
-			$.Observer.notify("presentation_loaded",data);
+			$.Observer.notify("file_loaded",data);
 		}
 	);
 }
@@ -145,11 +142,14 @@ PresentationTool.prototype.load = function(pid)
 PresentationTool.prototype.save = function()
 {
 	console.log("saveing  ");
+	$.Observer.notify("file_saving");
 	var pt = this;
 	var tv = S5Creator.singleton().getComponent("ThumbView");
 	var content = tv.getAll();
 	var backend = S5Creator.singleton().getComponent("Backend");
-	backend.save(content,function(){});
+	backend.save(content,function(data){
+		$.Observer.notify("file_saved",data == 1);
+	});
 }
 
 /**

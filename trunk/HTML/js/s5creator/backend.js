@@ -69,7 +69,6 @@ PHPBackend.prototype.save = function(content,callback)
 	}
 
 	var backend = this;
-
 	this._lastloaded.content = content ;
 	var param = {};
 	param[this._options.dataParamName] = $.toJSON(this._lastloaded);
