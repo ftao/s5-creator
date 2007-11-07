@@ -88,7 +88,7 @@ ThumbView.prototype.init = function()
 		this.set.bind(this)
 	);
 	$.Observer.register(
-		"presentation_loaded",
+		"file_loaded",
 		function(data){
 			tv.setAll(data.content);
 			tv.clean();
@@ -198,7 +198,7 @@ ThumbView.prototype.deleteSlide = function(slide){
 			siblings = $(slide).prev(this._options.slideSelector);
 		if(siblings.length > 0 )
 		{
-			this.edit(siblings[0]);
+			this.editSlide(siblings[0]);
 		}
 		else	// no slide
 		{

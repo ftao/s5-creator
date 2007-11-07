@@ -31,13 +31,15 @@ function S5Creator(options)
 			previewSelector:	".s5Preview",
 			themeSelector:		".s5Theme",
 			presentationToolSelector :".s5PreTool",
+			statusBarSelector:	"#status",
 			thumbViewOptions: {},
 			editorOptions: {},
 			layoutOptions: {},
 			previewOptions: {},
 			presentationToolOptions:{},
 			themeOptions: {},
-			backednOptions:{}
+			backednOptions:{},
+			statusBarOptions:{}
 		},options);
 	this.presentaion = null;	// 保存当前编辑的演示文稿
 	this._topics = {};
@@ -80,13 +82,17 @@ S5Creator.prototype.init = function()
 	var ts = new ThemeSelector ($(s5c._options.themeSelector),
 			s5c._options.themeOptions
 	);
+	var sb = new StatusBar ($(s5c._options.statusBarSelector),
+			s5c._options.statusBarOptions
+	);
 	this._components = {
 		ThumbView: tv,
 		Editor: editor,
 		Layout : layout,
 		Backend : new s5c._options.backend(s5c._options.backendOptions),
 		PresentationTool:pt,
-		ThemeSelector:ts
+		ThemeSelector:ts,
+		StatusBar:sb
 	}
 }
 
