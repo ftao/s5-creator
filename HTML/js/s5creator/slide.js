@@ -19,16 +19,4 @@ Slide.prototype.state = function(state)
 		return this.state;
 }
 
-/**
- * 一个幻灯片,包含若干张环灯片
- * 主要作为数据容器,所有数据都可暴露
- * MVC中M,减少抽象层次,不提供方法.
- */
-function Presentation()
-{
-	this.slides = [];
-	this.theme = "default";
-	//TODO:
-}
-
 

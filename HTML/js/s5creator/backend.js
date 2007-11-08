@@ -49,7 +49,6 @@ PHPBackend.prototype.load = function(pid,callback)
 		param,
 		function(data)
 		{
-			backend._lastloaded = data;
 			if (typeof callback == "function")
 				callback(data);
 		}
@@ -64,15 +63,10 @@ PHPBackend.prototype.load = function(pid,callback)
  */
 PHPBackend.prototype.save = function(presentation,callback)
 {
-	if(!this._lastloaded)		//we cant't save nothing
-	{
-		console.log("nothing to save");
-		return false;
-	}
+
 	var backend = this;
-	this._lastloaded = $.extend(this._lastloaded,presentation);
 	var param = {};
-	param[this._options.dataParamName] = $.toJSON(this._lastloaded);
+	param[this._options.dataParamName] = $.toJSON(presentation);
 	$.post(
 		this.buildURL("save"),
 		param,
@@ -151,12 +145,10 @@ PHPBackend.prototype.remove = function(pid,callback)
 	);
 }
 
-PHPBackend.prototype.preview = function()
+PHPBackend.prototype.preview = function(pid)
 {
-	if(!this._lastloaded)
-		return false;
 	var url = this.buildURL("preview");
-	url += "&presentation_id=" + this._lastloaded.presentation_id;
+	url += "&presentation_id=" + pid;
 	window.open(url);
 	return true;
 }

@@ -41,7 +41,7 @@ function S5Creator(options)
 			backednOptions:{},
 			statusBarOptions:{}
 		},options);
-	this.presentaion = null;	// 保存当前编辑的演示文稿
+	this.presentation = null;	// 保存当前编辑的演示文稿
 
 	//this._box = box || document.body;
 }
@@ -94,12 +94,15 @@ S5Creator.prototype.init = function()
 		ThemeSelector:ts,
 		StatusBar:sb
 	}
-	$.Observer.register("theme_changed",function(data){
-		this.presentaion.theme = data.theme;
+	$.Observer.register("file_loaded",function(data){
+		s5c.presentation = data;
+	});
+	$.Observer.register("theme_change",function(data){
+		s5c.presentation.theme = data.theme;
 	});
 
-	$.Observer.register("content_changed",function(data){
-		this.presentaion.content = data.content;
+	$.Observer.register("content_change",function(data){
+		s5c.presentation.content = data.content;
 	});
 }
 
