@@ -22,6 +22,8 @@ function PHPBackend(options)
 	},options);
 
 }
+
+
 /**
  * @name buildURL
  * @description help function, build the url based on action
@@ -57,19 +59,18 @@ PHPBackend.prototype.load = function(pid,callback)
 /**
  * @name save
  * @description save a presentation to server
- * @param {String} content the content to save
+ * @param {Presentation}  Presentation to save
  * @param {Function} callback
  */
-PHPBackend.prototype.save = function(content,callback)
+PHPBackend.prototype.save = function(presentation,callback)
 {
 	if(!this._lastloaded)		//we cant't save nothing
 	{
 		console.log("nothing to save");
 		return false;
 	}
-
 	var backend = this;
-	this._lastloaded.content = content ;
+	this._lastloaded = $.extend(this._lastloaded,presentation);
 	var param = {};
 	param[this._options.dataParamName] = $.toJSON(this._lastloaded);
 	$.post(
@@ -131,28 +132,19 @@ PHPBackend.prototype.list = function(callback)
 }
 /**
  * @name remove
- * @description delete current presentation from server
+ * @description delete  presentation  with pid from server
  * @param {Function} callback
  */
-PHPBackend.prototype.remove = function(callback)
+PHPBackend.prototype.remove = function(pid,callback)
 {
 	var backend = this;
 	var param = {};
-	var pid = null;
-	try{
-		pid = this._lastloaded[this._options.idName];
-	}
-	catch(e){
-		return false;
-	}
 	param[this._options.idName] = pid;
 	$.get(
 		this.buildURL("remove"),
 		param,
 		function(data)
 		{
-			if(data == "1")
-				backend._lastloaded = null;
 			if (typeof callback == "function")
 				callback(data);
 		}

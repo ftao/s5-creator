@@ -31,8 +31,8 @@ class Controller_S5CBackend extends FLEA_Controller_Action
 	function actionList()
 	{
     	$modelPres =& new Presentations();
-    	$sql = sprintf("SELECT `%s`,`%s` FROM `%s`",
-    		$modelPres->primaryKey,"name",$modelPres->tableName);
+    	$sql = sprintf("SELECT `%s`,`%s`,`%s`,`%s` FROM `%s`",
+    		$modelPres->primaryKey,"name","author","updated",$modelPres->tableName);
 		$all_pres = $modelPres->findBySql($sql);
 		echo json_encode($all_pres);
 	}
@@ -49,7 +49,6 @@ class Controller_S5CBackend extends FLEA_Controller_Action
     function actionSave()
     {
     	$data = (array)json_decode($_POST['data']);
-    	//print_r($data);
 		$modelPres =& new Presentations();
 		echo (int)$modelPres->save($data);
     }

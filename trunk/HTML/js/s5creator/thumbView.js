@@ -85,7 +85,11 @@ ThumbView.prototype.init = function()
 
 	$.Observer.register(
 		"editor_dirty",
-		this.set.bind(this)
+		function(data)
+		{
+			tv.set(data);
+			$.Observer.notify("content_changed",this.getAll());
+		}
 	);
 	$.Observer.register(
 		"file_loaded",
@@ -95,6 +99,7 @@ ThumbView.prototype.init = function()
 			tv.focus(0);
 		}
 	);
+
 }
 /**
  * 返回当前选择的幻灯片
@@ -207,6 +212,7 @@ ThumbView.prototype.deleteSlide = function(slide){
 
 	}
 	$(slide).remove();
+	$.Observer.notify("content_changed",{data:this.getAll()});
 };
 
 /****************************************************************
