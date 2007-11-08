@@ -20,8 +20,11 @@ Editor.prototype.init = function()
 	//注册主题改变事件
 	$.Observer.register(
 		"theme_change",
-		this.setContentCss.bind(this)
+		function(data){
+			editor.setContentCss(data.path);
+		}
 	);
+
 
 	//注册幻灯片改变事件 (也就是编辑另一个幻灯片)
 	$.Observer.register(

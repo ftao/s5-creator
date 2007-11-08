@@ -1,6 +1,6 @@
 /**
  * Presentation tool
- * 主要是新建/加载/保存/另存为 演示文稿
+ * 主要是加载/保存/另存为 演示文稿
  * 其他附加功能可能有 作者信息/时间日期/其他信息
  * 问题是和backend部分如何联系?
  *
@@ -39,9 +39,6 @@ PresentationTool.prototype.init = function()
 			console.log(action);
 			switch(action)
 			{
-			case 'load_pres':
-				pt.list();
-				break;
 			case 'save_pres':
 				pt.save();
 				break;
@@ -68,9 +65,6 @@ PresentationTool.prototype.init = function()
 					resize:false
 				});
 				input[0].select();
-				break;
-			case 'remove_pres':
-				pt.remove();
 				break;
 			case 'preview_pres':
 				pt.save();
@@ -144,77 +138,11 @@ PresentationTool.prototype.save = function()
 	console.log("saveing  ");
 	$.Observer.notify("file_saving");
 	var pt = this;
-	var tv = S5Creator.singleton().getComponent("ThumbView");
-	var content = tv.getAll();
-	var backend = S5Creator.singleton().getComponent("Backend");
-	backend.save(content,function(data){
+	var s5c = S5Creator.singleton();
+	var backend = s5c.getComponent("Backend");
+	backend.save(s5c.presentation,function(data){
 		$.Observer.notify("file_saved",data == 1);
 	});
-}
-
-/**
- * list the files
- * 列出文件(名称)
- * 不应该发在这里
- */
-PresentationTool.prototype.list = function()
-{
-
-	var pt = this;
-	var dlg = $("<div >正在获取文件列表...</div>").appendTo("body").addClass("flora").dialog({
-			'title':"",
-			position:"center",
-			resize:false
-	});
-
-
-	var backend = S5Creator.singleton().getComponent("Backend");
-	backend.list(
-		function(data)
-		{
-			var html = "<ol style='cursor: default;text-align:left'>";
-			for(var i = 0 ; i < data.length; i++)
-			{
-				html += "<li pid='" + data[i].presentation_id + "'>"
-				html += data[i].name;
-				html += "</li>";
-			}
-			html += "</ol>";
-			var list = $(html);
-			$(list).find("li").click(
-				function(event){
-					dlg.dialogClose();
-					var pid = $(this).attr("pid");
-					pt.load(pid);
-				}
-			);
-
-			dlg.empty().append(list);
-			dlg.parents(".ui-dialog").height(50 + list.height());
-		}
-	);
-}
-
-/**
- * remove current file
- * 删除当前文件
- * 不应该放在这里
- */
-PresentationTool.prototype.remove = function()
-{
-	var pt = this;
-	var backend = S5Creator.singleton().getComponent("Backend");
-	backend.remove(
-		function(data)
-		{
-			var msg = (data == '1'?"文件已删除":"文件删除失败");
-			$(pt._box).find(pt._options.messageSelector).html(msg);
-			if(data == "1")
-			{
-				var tv = S5Creator.singleton().getComponent("ThumbView").setAll("");
-			}
-		}
-	);
 }
 
 PresentationTool.prototype.preview = function()

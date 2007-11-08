@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" debug="true">
+<html xmlns="http://www.w3.org/1999/xhtml" debug="false">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>S5 Editor</title>
-<link rel="stylesheet" href="css/layout.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="css/layout.css" media="screen"/>
 <script type="text/javascript" src="js/firebug-lite/firebug.js"></script>
 <!--script type="text/javascript" src="js/jquery/jquery-latest.pack.js"></script-->
 <script type="text/javascript" src="js/jquery/jquery-1.2.1.js"></script>
@@ -16,66 +16,95 @@
 
 
 <script type="text/javascript" src="js/jquery/json.js"></script>
-<script type="text/javascript">
-	//console = {log : function(){}};
-</script>
 <script type="text/javascript" src="js/s5creator/slide.js"></script>
 <script type="text/javascript" src="js/s5creator/backend.js"></script>
 
-<link rel="stylesheet" href="js/jquery.ui-1.0/themes/flora/flora.all.css" type="text/css" media="screen" title="Flora (Default)">
+<link type="text/css" rel="stylesheet" media="screen" title="Flora (Default)"
+	href="js/jquery.ui-1.0/themes/flora/flora.all.css"/>
 <script type="text/javascript" src="js/jquery.ui-1.0/jquery.dimensions.js"></script>
 <script type="text/javascript" src="js/jquery.ui-1.0/ui.dialog.js"></script>
 <script type="text/javascript" src="js/jquery.ui-1.0/ui.resizable.js"></script>
 <script type="text/javascript" src="js/jquery.ui-1.0/ui.mouse.js"></script>
 <script type="text/javascript" src="js/jquery.ui-1.0/ui.draggable.js"></script>
+<script type="text/javascript" src="js/jquery.ui-1.0/ui.tablesorter.js"></script>
 <script type="text/javascript">
 jQuery(function() {
 	backend = new PHPBackend();
 	backend.list(function(data){
+		$('.file_list tbody').empty();
 		$.each(data,
 			function(i,obj)
 			{
-				$('.file_list').append(
-					"<li pid='" + obj.presentation_id + "'>"
-				  + obj.name
-				  + "</li>");
+				console.log(obj);
+				$('.file_list tbody').append(
+				    "<tr>"
+				  + "<td><input class='p_checkbox' type='checkbox' id='"
+				  + obj.presentation_id + "'/></td>"
+				  +	"<td><a target='_blank' href='editor.htm?pid="
+				  + obj.presentation_id + "'>"
+				  + obj.name + "</a></td><td>"
+				  + (obj.author || "未知") + "</td><td>"
+				  + (new Date(obj.updated * 1000)).toLocaleString()
+				  + "</tr>");
 			}
 		);
-		$(".file_list").find("li").click(
-			function(event){
-				var pid = $(this).attr("pid");
-				window.open("editor.htm?" + pid);
-			}
-		);
+		$(".file_list").tablesorter({headers:{0:{sorter: false}},sortList:[], widgets: ['zebra']});
 
 	});
-	//load file list
-});
-		function(data)
-		{
-			var html = "<ol style='cursor: default;text-align:left'>";
-			for(var i = 0 ; i < data.length; i++)
+	$(".toolbar ul li").click(
+		function(e){
+			var action = $(this).attr("action");
+			switch(action)
 			{
-				html += "<li pid='" + data[i].presentation_id + "'>"
-				html += data[i].name;
-				html += "</li>";
+				case 'delete':
+					$(".p_checkbox[checked]").each(
+						function(i){
+							var check_box = this;
+							backend.remove(
+								$(check_box).attr("id"),
+								function(data)
+								{
+									if(data == "1")
+									{
+										$(check_box).parents('tr').remove();
+									}
+								}
+							);
+						}
+					);
+				break;
 			}
-			html += "</ol>";
-			var list = $(html);
-			$(list).find("li").click(
-				function(event){
-					dlg.dialogClose();
-					var pid = $(this).attr("pid");
-					pt.load(pid);
-				}
-			);
-
-			dlg.empty().append(list);
-			dlg.parents(".ui-dialog").height(50 + list.height());
 		}
+	);
+	$(".select_action").click(
+		function(e){
+			var which = $(this).attr("which");
+			switch(which)
+			{
+				case 'none':
+					$(".p_checkbox").removeAttr("checked");
+					break;
+				case 'all':
+					$(".p_checkbox").attr("checked","checked");
+					break;
+				case 'reverse':
+					$(".p_checkbox").each(function(i){
+						if($(this).attr('checked'))
+							$(this).removeAttr('checked');
+						else
+							$(this).attr("checked","checked");
+					});
+					break;
+			}
+		}
+	);
+
+});
+
 </script>
 </head>
 <body>
+<a href='javascript:$("html").attr("debug","true");void(0);'>打开调试</a>
 <div id="contentWrapper">
 	<div id="header">
 		<h1>Your S5 Files</h1>
@@ -84,15 +113,30 @@ jQuery(function() {
 		<h1>文件列表</h1>
 		<P>
 		本应该在这里提供树形列表的. 暂时不用了.
-		本页的功能是文件管理. 目前还没有完善, 很多功能仍然在编辑器界面中, 应该移动到这里. 
+		本页的功能是文件管理. 目前还没有完善, 很多功能仍然在编辑器界面中, 应该移动到这里.
 		</p>
-		<ol style="cursor: default;text-align:left">
-		</ol>
+
 	</div>
 	<div id="main">
 		<p>请点击文件名, 加载文件(新窗口)</p>
-		<ul class="file_list" style="cursor: default;text-align:left">
-		</ul>
+		<div class="toolbar">
+			<ul>
+				<li action="create_pres">新建</li>
+				<li action="delete">删除</li>
+			</ul>
+		</div>
+		<table class="file_list tablesorter">
+		<thead>
+		<tr><th></th><th>名称</th><th>作者</th><th>最后更新时间</th></tr>
+		</thead>
+		<tbody>
+		</tbody>
+		</table>
+		<div>选择:
+			<span class="select_action" which="all">全部</span>
+			<span class="select_action" which="none">无</span>
+			<span class="select_action" which="reverse">反选</span>
+		</div>
 	</div>
 </div>
 

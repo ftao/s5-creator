@@ -42,7 +42,7 @@ function S5Creator(options)
 			statusBarOptions:{}
 		},options);
 	this.presentaion = null;	// 保存当前编辑的演示文稿
-	this._topics = {};
+
 	//this._box = box || document.body;
 }
 
@@ -94,6 +94,13 @@ S5Creator.prototype.init = function()
 		ThemeSelector:ts,
 		StatusBar:sb
 	}
+	$.Observer.register("theme_changed",function(data){
+		this.presentaion.theme = data.theme;
+	});
+
+	$.Observer.register("content_changed",function(data){
+		this.presentaion.content = data.content;
+	});
 }
 
 /**

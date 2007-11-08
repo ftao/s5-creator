@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" debug="true">
+<html xmlns="http://www.w3.org/1999/xhtml" debug="false">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>S5 Editor</title>
@@ -38,6 +38,7 @@
 <script type="text/javascript" src="js/jquery.ui-1.0/ui.draggable.js"></script>
 </head>
 <body>
+<a href='javascript:$("html").attr("debug","true");void(0);'>打开调试</a>
 <div id="contentWrapper">
 	<div id="header">
 		<h1>S5 Editor</h1>
@@ -60,9 +61,8 @@
 			<div class="toolbar">
 				<ul>
 					<li class="createPresTrigger" action="create_pres">新建</li>
-					<li action="load_pres">加载</li>
+
 					<li action="save_pres">保存</li>
-					<li action="remove_pres">删除</li>
 					<li action="preview_pres">预览</li>
 					<li action="select_theme_pres">改变主题</li>
 				</ul>
