@@ -20,7 +20,7 @@ jQuery.fn.presentationTool = function(options)
 function PresentationTool(box,options)
 {
 	this._options = $.extend({
-		toolbarItemSelector: ".toolbar ul li",
+		toolbarItemSelector: ".toolbar button",
 		infobarItemSelector: ".info span",
 		messageSelector: ".info .message",
 		nameSelector: ".info .name"
@@ -148,6 +148,7 @@ PresentationTool.prototype.save = function()
 PresentationTool.prototype.preview = function()
 {
 	var pt = this;
-	var backend = S5Creator.singleton().getComponent("Backend");
-	backend.preview();
+	var s5c = S5Creator.singleton();
+	var backend = s5c.getComponent("Backend");
+	backend.preview(s5c.presentation["presentation_id"]);
 }

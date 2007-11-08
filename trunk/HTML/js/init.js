@@ -25,7 +25,6 @@ jQuery(function() {
 			backend:			PHPBackend
 	});
 	var search = window.location.search;
-	console.log(search);
 	var pid = search.substr(search.lastIndexOf("pid=")+4);
 	console.log(pid);
 	S5Creator.singleton().getComponent('PresentationTool').load(pid);

@@ -1,4 +1,4 @@
-/*
+/**
  * thumbView.js
  * 缩略图视图
  * 显示缩略图
@@ -88,7 +88,7 @@ ThumbView.prototype.init = function()
 		function(data)
 		{
 			tv.set(data);
-			$.Observer.notify("content_changed",this.getAll());
+			$.Observer.notify("content_change",{content:tv.getAll()});
 		}
 	);
 	$.Observer.register(
@@ -187,6 +187,7 @@ ThumbView.prototype.editSlide = function(slide){
  * @param Element slide
  */
 ThumbView.prototype.deleteSlide = function(slide){
+	var tv = this;
 	console.log("delete slide " + slide);
 	var slide = slide || this.select();
 	if(!slide)
@@ -212,7 +213,7 @@ ThumbView.prototype.deleteSlide = function(slide){
 
 	}
 	$(slide).remove();
-	$.Observer.notify("content_changed",{data:this.getAll()});
+	$.Observer.notify("content_change",{content:tv.getAll()});
 };
 
 /****************************************************************

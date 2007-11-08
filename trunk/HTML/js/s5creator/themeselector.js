@@ -45,11 +45,6 @@ ThemeSelector.prototype.select = function(theme)
 	}
 }
 
-ThemeSelector.prototype.loadThemes = function()
-{
-
-}
-
 ThemeSelector.prototype.show = function()
 {
 	var ts = this;
