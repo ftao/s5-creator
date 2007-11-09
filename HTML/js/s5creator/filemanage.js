@@ -4,7 +4,8 @@ function FileManager(options,backend){
 		toolbarItemSelector:".toolbar button",
 		fileListSelector:".file_list tbody",
 		checkboxSelector:".p_checkbox",
-		selectButtonSelector:".select_action"
+		selectButtonSelector:".select_action",
+		newFileInputSelector:"#new_file_name"
 	});
 	this._backend = backend;
 	this.init();
@@ -20,46 +21,67 @@ FileManager.prototype.init = function()
 			switch(action)
 			{
 				case 'create':
-				var input = fm.buildCreateForm("新建演示文稿");
-				input.appendTo("body").addClass("flora").dialog({
-					buttons: {
-						'确定':function(){
-							var value = input.val();
-							if(value == "")
- 								return;
-							fm.create(value);
-							input.dialogClose();
-						}
-					},
-					height:100,
-					'title':'输入文件名称',
-					position:"center",
-					resize:false
-				});
-				input[0].select();
+				var input = $(fm._options.newFileInputSelector);
+				if(input.length <= 0 ){
+					input = $(fm.buildCreateForm("新建演示文稿"));
+					input.appendTo("body").addClass("flora").dialog({
+						buttons: {
+							'确定':function(){
+								var value = input.val();
+								if(value == "")
+	 								return;
+								fm.create(value);
+								input.dialogClose();
+							}
+						},
+						height:100,
+						'title':'输入文件名称',
+						position:"center",
+						resize:false
+					});
+					input[0].select();
+				}
+				else
+				{
+					input.val("新建演示文稿");
+					input.dialogOpen();
+					input[0].select();
+				}
+
 				break;
 				case 'delete':
+				var to_delete = [];
 				$(fm._options.checkboxSelector + "[checked]").each(
 					function(i){
-						var check_box = this;
-						fm._backend.remove(
-							$(check_box).attr("id"),
-							function(data)
+						to_delete.push($(this).attr("id"));
+					}
+				);
+				if(to_delete.length <= 0 )
+					return ;
+				fm._backend.remove(
+					to_delete,
+					function(data)
+					{
+						var pids = data[0];
+						var ret = data[1];
+						for(var i = 0; i < pids.length; i++)
+						{
+							if(ret[i] == 1)
 							{
-								if(data == "1")
-								{
-									$(check_box).parents('tr').remove();
-								}
+								$(fm._options.checkboxSelector + "#" + pids[i]).parents('tr').remove();
 							}
-						);
+						}
+						$(fm._options.fileListSelector).parents("table").trigger("update");
+						setTimeout(function(){
+
+						},500);
 					}
 				);
 				//似乎浏览器需要时间去移除元素, 这里放一个半秒钟的延时.
 				//否则update 不会有效果.
 				//这个郁闷了我好久啊...
-				setTimeout(function(){
-					$(fm._options.fileListSelector).parents("table").trigger("update");
-				},500);
+				//我错了, 应该AJAX 的延时
+
 				break;
 			}
 		}
@@ -136,7 +158,7 @@ FileManager.prototype.buildTr = function(obj)
 
 FileManager.prototype.buildCreateForm = function(defaultName)
 {
-	var input = $('<input type="text" class="input" value="'
+	var input = $('<input id="new_file_name" input type="text" class="input" value="'
 				+ defaultName + '"/>');
 	return input;
 }

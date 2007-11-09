@@ -71,7 +71,6 @@ PHPBackend.prototype.save = function(presentation,callback)
 		this.buildURL("save"),
 		param,
 		function(data){
-			console.log(data);
 			if (typeof callback == "function")
 				callback(data);
 		}
@@ -96,8 +95,6 @@ PHPBackend.prototype.create = function(name,callback)
 		param,
 		function(data)
 		{
-			console.log(data);
-			backend._lastloaded = data;
 			if (typeof callback == "function")
 				callback(data);
 		}
@@ -129,16 +126,17 @@ PHPBackend.prototype.list = function(callback)
  * @description delete  presentation  with pid from server
  * @param {Function} callback
  */
-PHPBackend.prototype.remove = function(pid,callback)
+PHPBackend.prototype.remove = function(pids,callback)
 {
 	var backend = this;
 	var param = {};
-	param[this._options.idName] = pid;
-	$.get(
+	param[this._options.dataParamName] = $.toJSON(pids);
+	$.post(
 		this.buildURL("remove"),
 		param,
 		function(data)
 		{
+			data = $.parseJSON(data);
 			if (typeof callback == "function")
 				callback(data);
 		}
