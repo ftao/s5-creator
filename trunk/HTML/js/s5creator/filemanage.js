@@ -72,16 +72,8 @@ FileManager.prototype.init = function()
 							}
 						}
 						$(fm._options.fileListSelector).parents("table").trigger("update");
-						setTimeout(function(){
-
-						},500);
 					}
 				);
-				//似乎浏览器需要时间去移除元素, 这里放一个半秒钟的延时.
-				//否则update 不会有效果.
-				//这个郁闷了我好久啊...
-				//我错了, 应该AJAX 的延时
-
 				break;
 			}
 		}

@@ -22,6 +22,7 @@ function PresentationTool(box,options)
 	this._options = $.extend({
 		toolbarItemSelector: ".toolbar button",
 		infobarItemSelector: ".info span",
+		lastSavedTimeSelector: ".info .date span",
 		messageSelector: ".info .message",
 		nameSelector: ".info .name"
 	},options);
@@ -42,30 +43,6 @@ PresentationTool.prototype.init = function()
 			case 'save_pres':
 				pt.save();
 				break;
-			case 'create_pres':
-				//create every time ?
-				//or create on time and reuse it
-				//if(!this._inputNameDlg)
-				//{
-				var input = $("<input type=\"text\" class=\"input\" value=\""
-				+ '新建演示文稿' + "\"/>");
-				input.appendTo("body").addClass("flora").dialog({
-					buttons: {
-						'确定':function(){
-							var value = input.val();
-							if(value == "")
- 								return;
-							pt.create(value);
-							input.dialogClose();
-						}
-					},
-					height:100,
-					'title':'输入文件名称',
-					position:"center",
-					resize:false
-				});
-				input[0].select();
-				break;
 			case 'preview_pres':
 				pt.save();
 				pt.preview();
@@ -76,35 +53,23 @@ PresentationTool.prototype.init = function()
 			}
 		}
 	)
-
-}
-
-// should move to some other place
-/**
- * create a new presentation with name
- * @param {String} name
- */
-PresentationTool.prototype.create  = function(name)
-{
-	var pt = this;
-	var backend = S5Creator.singleton().getComponent("Backend");
-	backend.create(
-		name,
-		function(data)
+	$.Observer.register("file_saved",function(success){
+		if(success)
 		{
-			//S5Creator.singleton().presentaion = data;
-			$(pt._box).find(pt._options.messageSelector).html(
-				"文件已加载"
-			);
-			$(pt._box).find(pt._options.nameSelector).html(
-				data.name
-			);
-			//$.Observer.notify("presentation_loaded",data);
-			S5Creator.singleton().getComponent("ThumbView").setAll(data.content);
+			$(pt._options.lastSavedTimeSelector).html((new Date()).toLocaleString())
 		}
-	);
-
+	});
+	$.Observer.register("file_saved",function(success){
+		$(pt._options.toolbarItemSelector + "[action=save_pres]").removeAttr("disabled");
+	});
+	$.Observer.register("file_loaded",function(data){
+		$(pt._options.lastSavedTimeSelector).html((new Date(data.updated * 1000)).toLocaleString())
+	});
+	$.Observer.register("file_saving",function(data){
+		$(pt._options.toolbarItemSelector + "[action=save_pres]").attr("disabled","disabled");
+	});
 }
+
 
 /**
  * load a presentation by presentation id
