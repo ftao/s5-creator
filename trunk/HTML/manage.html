@@ -18,6 +18,7 @@
 <script type="text/javascript" src="js/jquery/json.js"></script>
 <script type="text/javascript" src="js/s5creator/slide.js"></script>
 <script type="text/javascript" src="js/s5creator/backend.js"></script>
+<script type="text/javascript" src="js/s5creator/filemanage.js"></script>
 
 <link type="text/css" rel="stylesheet" media="screen" title="Flora (Default)"
 	href="js/jquery.ui-1.0/themes/flora/flora.all.css"/>
@@ -29,76 +30,10 @@
 <script type="text/javascript" src="js/jquery.ui-1.0/ui.tablesorter.js"></script>
 <script type="text/javascript">
 jQuery(function() {
-	backend = new PHPBackend();
-	backend.list(function(data){
-		$('.file_list tbody').empty();
-		$.each(data,
-			function(i,obj)
-			{
-				console.log(obj);
-				$('.file_list tbody').append(
-				    "<tr>"
-				  + "<td><input class='p_checkbox' type='checkbox' id='"
-				  + obj.presentation_id + "'/></td>"
-				  +	"<td><a target='_blank' href='editor.htm?pid="
-				  + obj.presentation_id + "'>"
-				  + obj.name + "</a></td><td>"
-				  + (obj.author || "未知") + "</td><td>"
-				  + (new Date(obj.updated * 1000)).toLocaleString()
-				  + "</tr>");
-			}
-		);
-		$(".file_list").tablesorter({headers:{0:{sorter: false}},sortList:[], widgets: ['zebra']});
 
-	});
-	$(".toolbar ul li").click(
-		function(e){
-			var action = $(this).attr("action");
-			switch(action)
-			{
-				case 'delete':
-					$(".p_checkbox[checked]").each(
-						function(i){
-							var check_box = this;
-							backend.remove(
-								$(check_box).attr("id"),
-								function(data)
-								{
-									if(data == "1")
-									{
-										$(check_box).parents('tr').remove();
-									}
-								}
-							);
-						}
-					);
-				break;
-			}
-		}
-	);
-	$(".select_action").click(
-		function(e){
-			var which = $(this).attr("which");
-			switch(which)
-			{
-				case 'none':
-					$(".p_checkbox").removeAttr("checked");
-					break;
-				case 'all':
-					$(".p_checkbox").attr("checked","checked");
-					break;
-				case 'reverse':
-					$(".p_checkbox").each(function(i){
-						if($(this).attr('checked'))
-							$(this).removeAttr('checked');
-						else
-							$(this).attr("checked","checked");
-					});
-					break;
-			}
-		}
-	);
-
+	var backend = new PHPBackend();
+	var fm = new FileManager({},backend);
+	fm.loadList();
 });
 
 </script>
@@ -115,15 +50,12 @@ jQuery(function() {
 		本应该在这里提供树形列表的. 暂时不用了.
 		本页的功能是文件管理. 目前还没有完善, 很多功能仍然在编辑器界面中, 应该移动到这里.
 		</p>
-
 	</div>
 	<div id="main">
 		<p>请点击文件名, 加载文件(新窗口)</p>
 		<div class="toolbar">
-			<ul>
-				<li action="create_pres">新建</li>
-				<li action="delete">删除</li>
-			</ul>
+				<button action="create">新建</button>
+				<button action="delete">删除</button>
 		</div>
 		<table class="file_list tablesorter">
 		<thead>
