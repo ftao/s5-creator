@@ -22,7 +22,7 @@ function ThumbView(box,options)
 {
 	this._options = $.extend({
 		toolbarSelector:	 	".slide_toolbar",
-		toolbarItemSelector: 	".slide_toolbar ul li",
+		toolbarItemSelector: 	".slide_toolbar button",
 		actionNameAttr: 		"action",
 		thumbSelector:	 		".thumb",
 		slideSelector:			".slide",
