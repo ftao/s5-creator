@@ -1,4 +1,8 @@
-
+/**
+ * 文件管理
+ * @param {Hash} options
+ * @param {Backend} backend
+ */
 function FileManager(options,backend){
 	this._options = $.extend(options,{
 		toolbarItemSelector:".toolbar button",
@@ -10,7 +14,9 @@ function FileManager(options,backend){
 	this._backend = backend;
 	this.init();
 }
-
+/**
+ * 初始化, 添加工具栏事件处理, 添加选择按钮事件处理
+ */
 FileManager.prototype.init = function()
 {
 	var fm = this;
@@ -39,15 +45,15 @@ FileManager.prototype.init = function()
 						position:"center",
 						resize:false
 					});
-					input[0].select();
+
 				}
 				else
 				{
 					input.val("新建演示文稿");
 					input.dialogOpen();
-					input[0].select();
 				}
-
+				input[0].select();
+				input[0].focus();
 				break;
 				case 'delete':
 				var to_delete = [];
@@ -85,13 +91,13 @@ FileManager.prototype.init = function()
 			switch(which)
 			{
 				case 'none':
-					$(".p_checkbox").removeAttr("checked");
+					$(fm._options.checkboxSelector).removeAttr("checked");
 					break;
 				case 'all':
-					$(".p_checkbox").attr("checked","checked");
+					$(fm._options.checkboxSelector).attr("checked","checked");
 					break;
 				case 'reverse':
-					$(".p_checkbox").each(function(i){
+					$(fm._options.checkboxSelector).each(function(i){
 						if($(this).attr('checked'))
 							$(this).removeAttr('checked');
 						else
@@ -103,7 +109,9 @@ FileManager.prototype.init = function()
 	);
 }
 
-
+/**
+ * 加载文件列表,并插入到表格中
+ */
 FileManager.prototype.loadList = function()
 {
 	var fm = this;
@@ -122,6 +130,10 @@ FileManager.prototype.loadList = function()
 	});
 }
 
+/**
+ * 新建一个文件,并将生成的信息 放入到表格中
+ * @param {String} name
+ */
 FileManager.prototype.create = function(name)
 {
 	var fm = this;
@@ -135,6 +147,11 @@ FileManager.prototype.create = function(name)
 	);
 }
 
+/**
+ * 根据文件信息, 生成表格中的一行
+ * @param {Object} obj
+ * @return {String} HTML string for tr element
+ */
 FileManager.prototype.buildTr = function(obj)
 {
 	return "<tr>"
@@ -148,6 +165,10 @@ FileManager.prototype.buildTr = function(obj)
 	+ "</tr>";
 }
 
+/**
+ * 生成一个输入框
+ * @param {Object} defaultName
+ */
 FileManager.prototype.buildCreateForm = function(defaultName)
 {
 	var input = $('<input id="new_file_name" input type="text" class="input" value="'
