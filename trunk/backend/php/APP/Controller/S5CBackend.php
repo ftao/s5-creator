@@ -66,9 +66,17 @@ class Controller_S5CBackend extends FLEA_Controller_Action
 
     function actionRemove()
     {
-    	$pid = $_GET['presentation_id'];
+    	$pids = json_decode($_POST['data']);
+    	if(!is_array($pids))
+    		$pids = array($pids);
+    	//print_r($pids);
     	$modelPres =& new Presentations();
-    	echo (int)$modelPres->removeByPkv($pid);
+    	$ret = array();
+    	foreach($pids as $pid)
+    	{
+    		$ret[] = ((int)$modelPres->removeByPkv($pid));
+    	}
+    	echo json_encode(array($pids,$ret));
     }
 
     function actionPreview()
